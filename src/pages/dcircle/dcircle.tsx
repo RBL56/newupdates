@@ -202,7 +202,13 @@ const Dcircle = observer(() => {
         <div className='dcircle'>
             <div className='header'>
                 <div className='index-display'>
-                    <div className='index-name'>{VOLATILITY_OPTIONS.find(o => o.value === volatility)?.label}</div>
+                    <div className='index-name'>
+                        {useStore().client.virtual_hook_settings.is_scanner_enabled ? (
+                            volatility.startsWith('JD') ? localize('All Jump Index') : localize('All Volatility Index')
+                        ) : (
+                            VOLATILITY_OPTIONS.find(o => o.value === volatility)?.label
+                        )}
+                    </div>
                     <div className='index-value'>{currentPrice}</div>
                     <div className={`change ${priceChange.isUp ? 'up' : 'down'}`}>
                         {priceChange.value} ({priceChange.percent}%) {priceChange.isUp ? '↑' : '↓'}

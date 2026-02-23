@@ -6,7 +6,7 @@
     <variable id="[13;h[Aa6^F?UtC#,Zr[">Martingale</variable>
     <variable id="Y=b.m:UR1*1P_b!:c%Ak">win-stake</variable>
     <variable id="s_state">strategy_state</variable>
-    <variable id="e_found">entry_found</variable>
+    <variable id="sticky_count">Sticky_Runs_Remaining</variable>
   </variables>
   <block type="trade_definition" id="1xUY@FfRRbB$T-92x;An" deletable="false" x="0" y="60">
     <statement name="TRADE_OPTIONS">
@@ -14,6 +14,9 @@
         <field name="MARKET_LIST">synthetic_index</field>
         <field name="SUBMARKET_LIST">random_index</field>
         <field name="SYMBOL_LIST">1HZ10V</field>
+        <field name="VIRTUAL_HOOK">FALSE</field>
+        <field name="ALTERNATING_MARKET">TRUE</field>
+        <field name="SCANNING_ALL_MARKET">TRUE</field>
         <next>
           <block type="trade_definition_tradetype" id="!:L[aT1lRE^@Yb}v@,41" deletable="false" movable="false">
             <field name="TRADETYPECAT_LIST">digits</field>
@@ -90,6 +93,16 @@
                                 <field name="NUM">0</field>
                               </block>
                             </value>
+                            <next>
+                              <block type="variables_set" id="sticky_init">
+                                <field name="VAR" id="sticky_count">Sticky_Runs_Remaining</field>
+                                <value name="VALUE">
+                                  <block type="math_number" id="sticky_init_val">
+                                    <field name="NUM">0</field>
+                                  </block>
+                                </value>
+                              </block>
+                            </next>
                           </block>
                         </next>
                       </block>
@@ -103,15 +116,76 @@
       </block>
     </statement>
     <statement name="SUBMARKET">
-      <block type="variables_set" id="reset_entry">
-        <field name="VAR" id="e_found">entry_found</field>
-        <value name="VALUE">
-          <block type="logic_boolean" id="reset_entry_bool">
-            <field name="BOOL">FALSE</field>
+      <block type="controls_if" id="sticky_check">
+        <mutation xmlns="http://www.w3.org/1999/xhtml" else="1"></mutation>
+        <value name="IF0">
+          <block type="logic_compare" id="is_sticky">
+            <field name="OP">GT</field>
+            <value name="A">
+              <block type="variables_get" id="get_sticky_val">
+                <field name="VAR" id="sticky_count">Sticky_Runs_Remaining</field>
+              </block>
+            </value>
+            <value name="B">
+              <block type="math_number" id="sticky_zero">
+                <field name="NUM">0</field>
+              </block>
+            </value>
           </block>
         </value>
-        <next>
-          <block type="controls_whileUntil" id="entry_loop">
+        <statement name="DO0">
+          <block type="variables_set" id="dec_sticky">
+            <field name="VAR" id="sticky_count">Sticky_Runs_Remaining</field>
+            <value name="VALUE">
+              <block type="math_arithmetic" id="sticky_sub">
+                <field name="OP">MINUS</field>
+                <value name="A">
+                  <block type="variables_get" id="get_sticky_prev">
+                    <field name="VAR" id="sticky_count">Sticky_Runs_Remaining</field>
+                  </block>
+                </value>
+                <value name="B">
+                  <block type="math_number" id="sticky_one">
+                    <field name="NUM">1</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <next>
+              <block type="notify" id="sticky_notify">
+                <field name="NOTIFICATION_TYPE">info</field>
+                <field name="NOTIFICATION_SOUND">silent</field>
+                <value name="MESSAGE">
+                  <shadow type="text" id="sticky_msg">
+                    <field name="TEXT">Sticky Run Active: Staying on current market.</field>
+                  </shadow>
+                </value>
+                <next>
+                  <block type="variables_set" id="set_entry_sticky">
+                    <field name="VAR" id="e_found">entry_found</field>
+                    <value name="VALUE">
+                      <block type="logic_boolean" id="sticky_entry_bool">
+                        <field name="BOOL">TRUE</field>
+                      </block>
+                    </value>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </statement>
+        <statement name="ELSE">
+          <block type="variables_set" id="reset_entry">
+            <field name="VAR" id="e_found">entry_found</field>
+            <value name="VALUE">
+              <block type="logic_boolean" id="reset_entry_bool">
+                <field name="BOOL">FALSE</field>
+              </block>
+            </value>
+          </block>
+        </statement>
+      </block>
+      <block type="controls_whileUntil" id="entry_loop">
             <field name="MODE">UNTIL</field>
             <value name="BOOL">
               <block type="variables_get" id="get_entry">

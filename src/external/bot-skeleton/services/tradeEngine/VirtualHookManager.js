@@ -38,12 +38,26 @@ class VirtualHookManager {
         this.tradeEngine = tradeEngine;
 
         // 1. Discover symbols if either scanner or alternating is on
-        if ((settings.is_scanner_enabled || settings.alternating_market) && this.vh_variables.scanned_symbols.length === 0) {
-            await this.discoverScannedSymbols();
+        // Re-discover if current symbol is not in scanned list (or if list is empty)
+        if (settings.is_scanner_enabled || settings.alternating_market) {
+            const is_new_type = this.vh_variables.scanned_symbols.length > 0 &&
+                ((tradeEngine.symbol.startsWith('JD') && !this.vh_variables.scanned_symbols[0].startsWith('JD')) ||
+                    (!tradeEngine.symbol.startsWith('JD') && this.vh_variables.scanned_symbols[0].startsWith('JD')));
+
+            if (this.vh_variables.scanned_symbols.length === 0 || is_new_type) {
+                await this.discoverScannedSymbols(tradeEngine.symbol);
+
+                // User requirement: Notify whether scanning volatility or jump
+                if (settings.is_scanner_enabled) {
+                    const market_type = tradeEngine.symbol.startsWith('JD') ? 'All Jump' : 'All Volatility';
+                    globalObserver.emit('ui.log.info', `Scanning ${market_type} Markets active.`);
+                }
+            }
         }
 
         // 2. Start background scanner if scanner is enabled
-        if (settings.is_scanner_enabled && this.vh_variables.active_subscriptions.size === 0) {
+        if (settings.is_scanner_enabled && (this.vh_variables.active_subscriptions.size === 0 ||
+            (this.vh_variables.active_subscriptions.size > 0 && !this.vh_variables.active_subscriptions.has(this.vh_variables.scanned_symbols[0])))) {
             await this.startBackgroundScanner(tradeEngine);
         }
 
@@ -57,7 +71,7 @@ class VirtualHookManager {
         return null;
     }
 
-    async discoverScannedSymbols() {
+    async discoverScannedSymbols(currentSymbol = '') {
         const { client } = DBotStore.instance;
         const settings = client.virtual_hook_settings;
         const { active_symbols } = ApiHelpers.instance;
@@ -66,21 +80,17 @@ class VirtualHookManager {
         const all_symbols = active_symbols.getAllSymbols();
 
         let target_symbols = [];
+        const isJump = currentSymbol.startsWith('JD') || currentSymbol.startsWith('J');
 
-        if (settings.scan_volatility) {
-            target_symbols = target_symbols.concat(
-                all_symbols.filter(s => s.submarket === 'random_index' && s.symbol.includes('V'))
-            );
-        }
-
-        if (settings.scan_jumps) {
-            target_symbols = target_symbols.concat(
-                all_symbols.filter(s => s.submarket === 'random_index' && s.symbol.includes('J'))
-            );
+        if (isJump) {
+            target_symbols = all_symbols.filter(s => s.submarket === 'random_index' && (s.symbol.includes('J') || s.symbol.startsWith('JD')));
+        } else {
+            // Default to Volatility
+            target_symbols = all_symbols.filter(s => s.submarket === 'random_index' && (s.symbol.includes('V') || s.symbol.startsWith('R_')));
         }
 
         this.vh_variables.scanned_symbols = target_symbols.map(s => s.symbol);
-        console.log(`[VirtualHookManager] Found ${this.vh_variables.scanned_symbols.length} symbols for scanning/alternating`);
+        console.log(`[VirtualHookManager] Found ${this.vh_variables.scanned_symbols.length} symbols for adaptive scanning (Current: ${currentSymbol})`);
     }
 
     async startBackgroundScanner(tradeEngine) {
@@ -133,9 +143,31 @@ class VirtualHookManager {
     }
 
     switchToSymbol(tradeEngine, symbol) {
+        if (tradeEngine.symbol === symbol) return;
+
+        console.log(`[VirtualHookManager] Switching TradeEngine to ${symbol}`);
         tradeEngine.symbol = symbol;
         tradeEngine.options.symbol = symbol;
         if (tradeEngine.tradeOptions) tradeEngine.tradeOptions.symbol = symbol;
+
+        // Sync with Blockly variable if it exists
+        try {
+            const { interpreter } = tradeEngine;
+            if (interpreter) {
+                const variables = interpreter.globalScope.properties;
+                // Look for the sticky runs variable by name (case-insensitive)
+                const sticky_var = Object.keys(variables).find(k => k.toLowerCase().includes('sticky_runs_remaining'));
+                if (sticky_var) {
+                    variables[sticky_var] = 3;
+                    console.log(`[VirtualHookManager] Synced Sticky_Runs_Remaining (3) to Blockly`);
+                }
+            }
+        } catch (e) {
+            console.warn('[VirtualHookManager] Failed to sync sticky variable to Blockly:', e);
+        }
+
+        this.vh_variables.sticky_runs_remaining = 3;
+        globalObserver.emit('ui.log.info', `Market Scanner: Switching to ${symbol}. Sticky run started (3 trades).`);
         tradeEngine.makeDirectPurchaseDecision();
     }
 
