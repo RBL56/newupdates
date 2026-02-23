@@ -7,6 +7,7 @@
     <variable id="Y=b.m:UR1*1P_b!:c%Ak">win-stake</variable>
     <variable id="s_state">strategy_state</variable>
     <variable id="sticky_count">Sticky_Runs_Remaining</variable>
+    <variable id="e_found">entry_found</variable>
   </variables>
   <block type="trade_definition" id="1xUY@FfRRbB$T-92x;An" deletable="false" x="0" y="60">
     <statement name="TRADE_OPTIONS">
@@ -184,8 +185,8 @@
             </value>
           </block>
         </statement>
-      </block>
-      <block type="controls_whileUntil" id="entry_loop">
+        <next>
+          <block type="controls_whileUntil" id="entry_loop">
             <field name="MODE">UNTIL</field>
             <value name="BOOL">
               <block type="variables_get" id="get_entry">
@@ -238,6 +239,16 @@
                                 <field name="BOOL">TRUE</field>
                               </block>
                             </value>
+                            <next>
+                              <block type="variables_set" id="p_sticky_set">
+                                <field name="VAR" id="sticky_count">Sticky_Runs_Remaining</field>
+                                <value name="VALUE">
+                                  <block type="math_number" id="p_sticky_val">
+                                    <field name="NUM">2</field>
+                                  </block>
+                                </value>
+                              </block>
+                            </next>
                           </block>
                         </statement>
                       </block>
@@ -268,6 +279,16 @@
                                 <field name="BOOL">TRUE</field>
                               </block>
                             </value>
+                            <next>
+                              <block type="variables_set" id="s_sticky_set">
+                                <field name="VAR" id="sticky_count">Sticky_Runs_Remaining</field>
+                                <value name="VALUE">
+                                  <block type="math_number" id="s_sticky_val">
+                                    <field name="NUM">2</field>
+                                  </block>
+                                </value>
+                              </block>
+                            </next>
                           </block>
                         </statement>
                       </block>

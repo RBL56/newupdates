@@ -203,9 +203,12 @@ const Dcircle = observer(() => {
             <div className='header'>
                 <div className='index-display'>
                     <div className='index-name'>
-                        {useStore().client.virtual_hook_settings.is_scanner_enabled ? (
-                            volatility.startsWith('JD') ? localize('All Jump Index') : localize('All Volatility Index')
-                        ) : (
+                        {useStore().client.virtual_hook_settings.is_scanner_enabled ? (() => {
+                            if (volatility.startsWith('JD')) return localize('All Jump Index');
+                            if (volatility.startsWith('1HZ')) return localize('All Volatility (1s) Index');
+                            if (volatility.startsWith('R_')) return localize('All Plain Volatility Index');
+                            return localize('All Markets');
+                        })() : (
                             VOLATILITY_OPTIONS.find(o => o.value === volatility)?.label
                         )}
                     </div>

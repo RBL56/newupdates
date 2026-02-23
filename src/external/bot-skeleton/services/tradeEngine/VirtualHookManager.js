@@ -40,17 +40,29 @@ class VirtualHookManager {
         // 1. Discover symbols if either scanner or alternating is on
         // Re-discover if current symbol is not in scanned list (or if list is empty)
         if (settings.is_scanner_enabled || settings.alternating_market) {
-            const is_new_type = this.vh_variables.scanned_symbols.length > 0 &&
-                ((tradeEngine.symbol.startsWith('JD') && !this.vh_variables.scanned_symbols[0].startsWith('JD')) ||
-                    (!tradeEngine.symbol.startsWith('JD') && this.vh_variables.scanned_symbols[0].startsWith('JD')));
+            const getMarketType = (sym) => {
+                if (sym.startsWith('JD') || sym.startsWith('J')) return 'jump';
+                if (sym.startsWith('1HZ')) return 'volatility_1s';
+                if (sym.startsWith('R_')) return 'volatility_plain';
+                return 'unknown';
+            };
+
+            const current_type = getMarketType(tradeEngine.symbol);
+            const scanned_type = this.vh_variables.scanned_symbols.length > 0 ? getMarketType(this.vh_variables.scanned_symbols[0]) : null;
+
+            const is_new_type = scanned_type && current_type !== scanned_type;
 
             if (this.vh_variables.scanned_symbols.length === 0 || is_new_type) {
                 await this.discoverScannedSymbols(tradeEngine.symbol);
 
                 // User requirement: Notify whether scanning volatility or jump
                 if (settings.is_scanner_enabled) {
-                    const market_type = tradeEngine.symbol.startsWith('JD') ? 'All Jump' : 'All Volatility';
-                    globalObserver.emit('ui.log.info', `Scanning ${market_type} Markets active.`);
+                    let market_display = 'Markets';
+                    if (current_type === 'jump') market_display = 'Jump';
+                    if (current_type === 'volatility_1s') market_display = 'Volatility (1s)';
+                    if (current_type === 'volatility_plain') market_display = 'Plain Volatility';
+
+                    globalObserver.emit('ui.log.info', `Scanning ${market_display} Markets active.`);
                 }
             }
         }
@@ -73,24 +85,37 @@ class VirtualHookManager {
 
     async discoverScannedSymbols(currentSymbol = '') {
         const { client } = DBotStore.instance;
-        const settings = client.virtual_hook_settings;
         const { active_symbols } = ApiHelpers.instance;
 
         await active_symbols.retrieveActiveSymbols();
         const all_symbols = active_symbols.getAllSymbols();
 
         let target_symbols = [];
+
+        // Define Granular Categories
         const isJump = currentSymbol.startsWith('JD') || currentSymbol.startsWith('J');
+        const is1sVolatility = currentSymbol.startsWith('1HZ');
+        const isPlainVolatility = currentSymbol.startsWith('R_');
 
         if (isJump) {
-            target_symbols = all_symbols.filter(s => s.submarket === 'random_index' && (s.symbol.includes('J') || s.symbol.startsWith('JD')));
+            target_symbols = all_symbols.filter(s =>
+                s.submarket === 'random_index' && (s.symbol.startsWith('J') || s.symbol.startsWith('JD'))
+            );
+        } else if (is1sVolatility) {
+            target_symbols = all_symbols.filter(s =>
+                s.submarket === 'random_index' && s.symbol.startsWith('1HZ')
+            );
+        } else if (isPlainVolatility) {
+            target_symbols = all_symbols.filter(s =>
+                s.submarket === 'random_index' && s.symbol.startsWith('R_')
+            );
         } else {
-            // Default to Volatility
-            target_symbols = all_symbols.filter(s => s.submarket === 'random_index' && (s.symbol.includes('V') || s.symbol.startsWith('R_')));
+            // Fallback for other potential random index types
+            target_symbols = all_symbols.filter(s => s.submarket === 'random_index');
         }
 
         this.vh_variables.scanned_symbols = target_symbols.map(s => s.symbol);
-        console.log(`[VirtualHookManager] Found ${this.vh_variables.scanned_symbols.length} symbols for adaptive scanning (Current: ${currentSymbol})`);
+        console.log(`[VirtualHookManager] Found ${this.vh_variables.scanned_symbols.length} symbols for category (Current: ${currentSymbol})`);
     }
 
     async startBackgroundScanner(tradeEngine) {
@@ -129,7 +154,7 @@ class VirtualHookManager {
         }
 
         // Scanner logic: monitor background symbols and switch on pattern match
-        if (client.virtual_hook_settings.is_scanner_enabled && this.vh_variables.mode === 'VIRTUAL') {
+        if (client.virtual_hook_settings.is_scanner_enabled) {
             if (this.shouldSwitchToMarket(symbol, ticks)) {
                 console.log(`[VirtualHookManager] Scanner Pattern Match: Switching to ${symbol}`);
                 this.switchToSymbol(tradeEngine, symbol);
@@ -192,41 +217,42 @@ class VirtualHookManager {
             }
         }
 
-        if (!settings.is_enabled && !settings.alternating_market) return;
+        if (settings.is_enabled) {
+            const is_win = contract.profit > 0;
 
-        const is_win = contract.profit > 0;
+            if (this.vh_variables.mode === 'VIRTUAL') {
+                if (!is_win) {
+                    this.vh_variables.consecutive_losses++;
+                } else {
+                    this.vh_variables.consecutive_losses = 0;
+                }
 
-        if (this.vh_variables.mode === 'VIRTUAL') {
-            if (!is_win) {
-                this.vh_variables.consecutive_losses++;
+                if (this.vh_variables.consecutive_losses >= settings.virtual_trades_condition) {
+                    this.vh_variables.mode = 'REAL';
+                    this.vh_variables.real_trades_count = 0;
+                    console.log('[VirtualHookManager] SWITCHING TO REAL MODE');
+
+                    if (settings.alternating_market) {
+                        this.alternateMarket();
+                    }
+                }
             } else {
-                this.vh_variables.consecutive_losses = 0;
-            }
+                this.vh_variables.real_trades_count++;
+                const real_limit = settings.real_trades_condition === 'Immediately' ? 1 : parseInt(settings.real_trades_condition);
 
-            if (settings.is_enabled && this.vh_variables.consecutive_losses >= settings.virtual_trades_condition) {
-                this.vh_variables.mode = 'REAL';
-                this.vh_variables.real_trades_count = 0;
-                console.log('[VirtualHookManager] SWITCHING TO REAL MODE');
+                if (this.vh_variables.real_trades_count >= real_limit) {
+                    this.vh_variables.mode = 'VIRTUAL';
+                    this.vh_variables.consecutive_losses = 0;
+                    console.log('[VirtualHookManager] SWITCHING BACK TO VIRTUAL MODE');
 
-                if (settings.alternating_market) {
-                    this.alternateMarket();
-                }
-            } else if (!settings.is_enabled && settings.alternating_market) {
-                this.alternateMarket();
-            }
-        } else {
-            this.vh_variables.real_trades_count++;
-            const real_limit = settings.real_trades_condition === 'Immediately' ? 1 : parseInt(settings.real_trades_condition);
-
-            if (this.vh_variables.real_trades_count >= real_limit) {
-                this.vh_variables.mode = 'VIRTUAL';
-                this.vh_variables.consecutive_losses = 0;
-                console.log('[VirtualHookManager] SWITCHING BACK TO VIRTUAL MODE');
-
-                if (settings.alternating_market) {
-                    this.alternateMarket();
+                    if (settings.alternating_market) {
+                        this.alternateMarket();
+                    }
                 }
             }
+        } else if (settings.alternating_market) {
+            // If VH is disabled but Alternating Market is enabled, alternate every trade
+            this.alternateMarket();
         }
     }
 
