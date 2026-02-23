@@ -148,7 +148,7 @@ window.Blockly.JavaScript.javascriptGenerator.forBlock.last_digits_condition = b
             className: 'journal__text--warn',
             message: '__ANALYSIS__' + JSON.stringify({
                 type: 'analysis',
-                market: Bot.getSymbolDisplayName(),
+                market: Bot.isScanning() ? Bot.getScannerMarketName() : Bot.getSymbolDisplayName(),
                 condition: '${condition}',
                 digit: ${digit},
                 digits: digits,

@@ -57,12 +57,12 @@ class VirtualHookManager {
 
                 // User requirement: Notify whether scanning volatility or jump
                 if (settings.is_scanner_enabled) {
-                    let market_display = 'Markets';
-                    if (current_type === 'jump') market_display = 'Jump';
-                    if (current_type === 'volatility_1s') market_display = 'Volatility (1s)';
-                    if (current_type === 'volatility_plain') market_display = 'Plain Volatility';
+                    let market_display = 'All Markets';
+                    if (current_type === 'jump') market_display = 'All Jump Markets';
+                    if (current_type === 'volatility_1s') market_display = 'All Volatility (1s) Markets';
+                    if (current_type === 'volatility_plain') market_display = 'All Volatility Markets';
 
-                    globalObserver.emit('ui.log.info', `Scanning ${market_display} Markets active.`);
+                    globalObserver.emit('ui.log.info', `${market_display} active.`);
                 }
             }
         }
