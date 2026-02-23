@@ -2,9 +2,9 @@ import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import Text from '@/components/shared_ui/text';
-import ToggleSwitch from '@/components/shared_ui/toggle-switch';
 import { useStore } from '@/hooks/useStore';
 import { LabelPairedChevronDownMdFillIcon } from '@deriv/quill-icons/LabelPaired';
+import ToggleSwitch from '@/components/shared_ui/toggle-switch';
 import { localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import { rudderStackSendOpenEvent } from '../../../analytics/rudderstack-common-events';
@@ -64,7 +64,13 @@ const Toolbox = observer(() => {
                 />
                 <div className='db-toolbox__turbo-mode'>
                     <div className='db-toolbox__turbo-mode__label'>
-                        <svg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                        <svg
+                            width='16'
+                            height='16'
+                            viewBox='0 0 16 16'
+                            fill='none'
+                            xmlns='http://www.w3.org/2000/svg'
+                        >
                             <path
                                 d='M9.33333 1.33334L2 9.33334H6.66667L6 14.6667L13.3333 6.66668H8.66667L9.33333 1.33334Z'
                                 fill='#FF00FF'

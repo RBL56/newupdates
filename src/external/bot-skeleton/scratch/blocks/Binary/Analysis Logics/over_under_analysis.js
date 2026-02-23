@@ -51,18 +51,16 @@ window.Blockly.Blocks.over_under_analysis = {
 
 window.Blockly.JavaScript.javascriptGenerator.forBlock.over_under_analysis = block => {
     const condition = block.getFieldValue('CONDITION');
-    const threshold =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
-            block,
-            'THRESHOLD',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
-        ) || '4';
-    const digitsCount =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
-            block,
-            'DIGITS_COUNT',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
-        ) || '1000';
+    const threshold = window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        block,
+        'THRESHOLD',
+        window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+    ) || '4';
+    const digitsCount = window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        block,
+        'DIGITS_COUNT',
+        window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+    ) || '1000';
 
     let conditionCode;
     switch (condition) {

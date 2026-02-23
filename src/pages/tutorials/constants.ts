@@ -503,10 +503,7 @@ export const quick_strategy_content = (): TQuickStrategyContent[] => [
     {
         qs_name: 'STRATEGY_1_3_2_6',
         type: localize('About 1-3-2-6'),
-        content: [
-            localize('Exploring the 1-3-2-6 strategy in LOCO THE TRADER'),
-            localize('An example of 1-3-2-6 strategy'),
-        ],
+        content: [localize('Exploring the 1-3-2-6 strategy in LOCO THE TRADER'), localize('An example of 1-3-2-6 strategy')],
         search_id: `${QUICK_STRATEGY_GUIDES}-5`,
     },
 ];

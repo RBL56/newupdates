@@ -82,7 +82,7 @@ const watchScope = ({ store, stopScope, passScope, passFlag, turboMode, engine }
     });
 };
 
-export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Proposal(Ticks(Total(class {}))))))) {
+export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Proposal(Ticks(Total(class { }))))))) {
     constructor($scope) {
         super();
         this.observer = $scope.observer;

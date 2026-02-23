@@ -5,9 +5,9 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 import ChunkLoader from '@/components/loader/chunk-loader';
 import RoutePromptDialog from '@/components/route-prompt-dialog';
 import { crypto_currencies_display_order, fiat_currencies_display_order } from '@/components/shared';
-import { AuthProvider } from '@/contexts/AuthContext';
 import { useOfflineDetection } from '@/hooks/useOfflineDetection';
 import { StoreProvider } from '@/hooks/useStore';
+import { AuthProvider } from '@/contexts/AuthContext';
 import CallbackPage from '@/pages/callback';
 import Endpoint from '@/pages/endpoint';
 import { TAuthData } from '@/types/api-types';
@@ -18,6 +18,7 @@ import './app-root.scss';
 const Layout = lazy(() => import('../components/layout'));
 const AppRoot = lazy(() => import('./app-root'));
 import LoadingScreen from '@/components/loading-screen/loading-screen';
+
 // i18n is now initialized in main.tsx before this component loads
 // We just need to get the existing instance for the TranslationProvider
 import { initializeI18n } from '@deriv-com/translations';

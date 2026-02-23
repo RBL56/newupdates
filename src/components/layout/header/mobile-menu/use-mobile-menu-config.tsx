@@ -56,58 +56,59 @@ const useMobileMenuConfig = (client?: RootStore['client']) => {
     const is_logged_in = client?.is_logged_in;
     const accounts = client?.accounts || {};
 
-    const menuConfig = useMemo((): TMenuConfig[] => {
-        const config: TMenuConfig[] = [
-            [
-                {
-                    as: 'button',
-                    label: localize('Dark theme'),
-                    LeftComponent: LegacyTheme1pxIcon,
-                    RightComponent: <ToggleSwitch value={is_dark_mode_on} onChange={toggleTheme} />,
-                },
-            ],
-        ];
-
-        if (is_logged_in) {
-            config.push([
-                {
-                    as: 'button',
-                    label: localize('Log out'),
-                    LeftComponent: LegacyLogout1pxIcon,
-                    onClick: () => client?.logout(),
-                },
-            ]);
-        } else {
-            config.push([
-                {
-                    as: 'button',
-                    label: localize('Log in'),
-                    LeftComponent: LegacyLogout1pxIcon, // Reusing icon for simplicity or find another
-                    onClick: () => {
-                        const loginButton = document.querySelector(
-                            '.auth-actions button:first-child'
-                        ) as HTMLButtonElement;
-                        if (loginButton) {
-                            loginButton.click();
-                        } else {
-                            // Fallback to generateOAuthURL if button not found
-                            window.location.assign(generateOAuthURL());
-                        }
+    const menuConfig = useMemo(
+        (): TMenuConfig[] => {
+            const config: TMenuConfig[] = [
+                [
+                    {
+                        as: 'button',
+                        label: localize('Dark theme'),
+                        LeftComponent: LegacyTheme1pxIcon,
+                        RightComponent: <ToggleSwitch value={is_dark_mode_on} onChange={toggleTheme} />,
                     },
-                },
-                {
-                    as: 'button',
-                    label: localize('Sign up'),
-                    LeftComponent: LegacyProfileSmIcon,
-                    onClick: () => {
-                        window.open(URLConstants.signup);
-                    },
-                },
-            ]);
-        }
+                ],
+            ];
 
-        return config;
-    }, [is_dark_mode_on, toggleTheme, is_logged_in, client, localize]);
+            if (is_logged_in) {
+                config.push([
+                    {
+                        as: 'button',
+                        label: localize('Log out'),
+                        LeftComponent: LegacyLogout1pxIcon,
+                        onClick: () => client?.logout(),
+                    },
+                ]);
+            } else {
+                config.push([
+                    {
+                        as: 'button',
+                        label: localize('Log in'),
+                        LeftComponent: LegacyLogout1pxIcon, // Reusing icon for simplicity or find another
+                        onClick: () => {
+                            const loginButton = document.querySelector('.auth-actions button:first-child') as HTMLButtonElement;
+                            if (loginButton) {
+                                loginButton.click();
+                            } else {
+                                // Fallback to generateOAuthURL if button not found
+                                window.location.assign(generateOAuthURL());
+                            }
+                        },
+                    },
+                    {
+                        as: 'button',
+                        label: localize('Sign up'),
+                        LeftComponent: LegacyProfileSmIcon,
+                        onClick: () => {
+                            window.open(URLConstants.signup);
+                        },
+                    },
+                ]);
+            }
+
+            return config;
+        },
+        [is_dark_mode_on, toggleTheme, is_logged_in, client, localize]
+    );
 
     return {
         config: menuConfig,

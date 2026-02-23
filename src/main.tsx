@@ -1,5 +1,5 @@
-import ReactDOM from 'react-dom/client';
 import { initializeI18n } from '@deriv-com/translations';
+import ReactDOM from 'react-dom/client';
 import { AuthWrapper } from './app/AuthWrapper';
 import { checkAndSetEndpointFromUrl } from './components/shared';
 import { AnalyticsInitializer } from './utils/analytics';

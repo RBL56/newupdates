@@ -80,10 +80,10 @@
         height: 100% !important;
         border-start-end-radius: 0 !important;
         border-end-end-radius: 0 !important;
-        background-color: #bf00ff;
+        background-color: #BF00FF;
 
         &:hover {
-            background-color: #bf00ff !important;
+            background-color: #BF00FF !important;
         }
     }
 
@@ -92,10 +92,10 @@
         height: 100% !important;
         border-start-end-radius: 0 !important;
         border-end-end-radius: 0 !important;
-        background-color: #bf00ff;
+        background-color: #BF00FF;
 
         &:hover {
-            background-color: #bf00ff !important;
+            background-color: #BF00FF !important;
         }
     }
 
@@ -194,6 +194,7 @@
     &--running {
         #{$animation}__progress {
             .circular-wrapper {
+
                 &.completed,
                 &.active {
                     .static-circle {

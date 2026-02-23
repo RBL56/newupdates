@@ -1,10 +1,16 @@
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';
-import { ContentFlag, isEmptyObject } from '@/components/shared';
+import { ContentFlag, getDecimalPlaces, isEmptyObject } from '@/components/shared';
 import { isEuCountry, isMultipliersOnly, isOptionsBlocked } from '@/components/shared/common/utility';
+import { removeCookies } from '@/components/shared/utils/storage/storage';
 import { api_base } from '@/external/bot-skeleton';
-import { authData$, setAuthData } from '@/external/bot-skeleton/services/api/observables/connection-status-stream';
+import {
+    authData$,
+    balance$,
+    setAccountList,
+    setAuthData,
+    setIsAuthorized,
+} from '@/external/bot-skeleton/services/api/observables/connection-status-stream';
 import type { TAuthData, TLandingCompany } from '@/types/api-types';
-import { AuthManager } from '@/utils/AuthManager';
 import type { Balance, GetAccountStatus, GetSettings, WebsiteStatus } from '@deriv/api-types';
 import { Analytics } from '@deriv-com/analytics';
 
@@ -29,13 +35,14 @@ export default class ClientStore {
     is_client_initialized = false;
 
     // TODO: fix with self exclusion
-    updateSelfExclusion = () => {};
+    updateSelfExclusion = () => { };
 
     virtual_hook_settings = {
         is_enabled: false,
         enable_after_initial: 'Immediately', // 'Immediately' or number of trades
         virtual_trades_condition: 2, // Number of consecutive losses
         real_trades_condition: 'Immediately', // 'Immediately' or number of trades
+        alternating_market: false,
     };
 
     setVirtualHookSettings = (settings: Partial<typeof this.virtual_hook_settings>) => {
@@ -49,6 +56,7 @@ export default class ClientStore {
     };
 
     private authDataSubscription: { unsubscribe: () => void } | null = null;
+    private balanceSubscription: { unsubscribe: () => void } | null = null;
 
     constructor() {
         // Hydrate from localStorage immediately
@@ -79,15 +87,10 @@ export default class ClientStore {
                     // Hydrate all_accounts_balance from client_accounts to ensure last known balances are visible
                     const hydrated_balances: Record<string, { balance: number; currency: string }> = {};
                     Object.values(this.accounts).forEach(account => {
-                        if (
-                            account.loginid &&
-                            (account.balance !== undefined || (account as any).dtrade_balance !== undefined)
-                        ) {
+                        if (account.loginid && (account.balance !== undefined || (account as any).dtrade_balance !== undefined)) {
                             hydrated_balances[account.loginid] = {
-                                balance: parseFloat(
-                                    account.balance?.toString() || (account as any).dtrade_balance?.toString() || '0'
-                                ),
-                                currency: account.currency || 'USD',
+                                balance: parseFloat(account.balance?.toString() || (account as any).dtrade_balance?.toString() || '0'),
+                                currency: account.currency || 'USD'
                             };
                         }
                     });
@@ -154,7 +157,11 @@ export default class ClientStore {
             }
         });
 
-        // Subscribe to auth data changes
+        this.balanceSubscription = balance$.subscribe(balance => {
+            if (balance) {
+                this.setAllAccountsBalance(balance);
+            }
+        });
 
         makeObservable(this, {
             accounts: observable,
@@ -242,7 +249,7 @@ export default class ClientStore {
             is_current_mf || //is_currently logged in mf account via tradershub
             (financial_shortcode || gaming_shortcode || mt_gaming_shortcode
                 ? (eu_shortcode_regex.test(financial_shortcode) && gaming_shortcode !== 'svg') ||
-                  eu_shortcode_regex.test(gaming_shortcode)
+                eu_shortcode_regex.test(gaming_shortcode)
                 : eu_excluded_regex.test(this.residence))
         );
     }
@@ -412,7 +419,7 @@ export default class ClientStore {
             previousBalance: currentBalance,
             tradeAmount,
             newBalance,
-            currency: this.currency,
+            currency: this.currency
         });
     };
 
@@ -498,8 +505,8 @@ export default class ClientStore {
                 ...balance_data,
                 accounts: {
                     ...(this.all_accounts_balance?.accounts || {}),
-                    ...balance_data.accounts,
-                },
+                    ...balance_data.accounts
+                }
             };
         } else if (balance_data.loginid) {
             // Single account update (often from ticks or authorize)
@@ -507,20 +514,20 @@ export default class ClientStore {
                 ...(this.all_accounts_balance?.accounts || {}),
                 [balance_data.loginid]: {
                     balance: balance_data.balance,
-                    currency: balance_data.currency,
-                },
+                    currency: balance_data.currency
+                }
             } as any;
 
             newAllAccountsBalance = {
                 ...this.all_accounts_balance,
                 ...balance_data,
-                accounts: updatedAccounts,
+                accounts: updatedAccounts
             };
         } else {
             // Fallback: just update the top-level balance data
             newAllAccountsBalance = {
                 ...this.all_accounts_balance,
-                ...balance_data,
+                ...balance_data
             };
         }
 
@@ -558,7 +565,7 @@ export default class ClientStore {
                     loginid: this.loginid,
                     oldBalance: this.balance,
                     newBalance,
-                    currency: newCurrency,
+                    currency: newCurrency
                 });
 
                 this.setBalance(newBalance);
@@ -572,6 +579,35 @@ export default class ClientStore {
     };
 
     logout = async () => {
+        // reset all the states
+        this.account_list = [];
+        this.account_status = undefined;
+        this.account_settings = undefined;
+        this.landing_companies = undefined;
+        this.accounts = {};
+        this.is_logged_in = false;
+        this.loginid = '';
+        this.balance = '0';
+        this.currency = 'USD';
+
+        this.is_landing_company_loaded = false;
+
+        this.all_accounts_balance = null;
+
+        localStorage.removeItem('active_loginid');
+        localStorage.removeItem('accountsList');
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('clientAccounts');
+        removeCookies('client_information');
+
+        setIsAuthorized(false);
+        setAccountList([]);
+        setAuthData(null);
+
+        this.setIsLoggingOut(false);
+
+        Analytics.reset();
+
         // disable livechat
         window.LC_API?.close_chat?.();
         window.LiveChatWidget?.call('hide');
@@ -579,7 +615,7 @@ export default class ClientStore {
         // shutdown and initialize intercom
         if (window.Intercom) {
             window.Intercom('shutdown');
-            window.DerivInterCom?.initialize?.({
+            window.DerivInterCom.initialize({
                 hideLauncher: true,
                 token: null,
             });
@@ -592,14 +628,17 @@ export default class ClientStore {
                 window.location.replace('/');
             }
         };
-
-        const result = await api_base?.api?.logout().catch((error: Error) => {
-            console.error('test Logout failed:', error);
-        });
-
-        AuthManager.logout(false);
-        resolveNavigation();
-        return result;
+        return api_base?.api
+            ?.logout()
+            .then(() => {
+                resolveNavigation();
+                return Promise.resolve();
+            })
+            .catch((error: Error) => {
+                console.error('test Logout failed:', error);
+                resolveNavigation();
+                return Promise.reject(error);
+            });
     };
 
     switchAccount = async (loginId: string) => {
@@ -639,13 +678,16 @@ export default class ClientStore {
         const search_params = new URLSearchParams(window.location.search);
         const account = this.accounts[loginId];
         if (account) {
-            const account_param = account.is_virtual ? 'demo' : account.currency || 'USD';
+            const account_param = account.is_virtual ? 'demo' : (account.currency || 'USD');
             search_params.set('account', account_param);
             sessionStorage.setItem('query_param_currency', account_param);
             window.history.pushState({}, '', `${window.location.pathname}?${search_params.toString()}`);
         }
 
-        const account_type = loginId.match(/[a-zA-Z]+/g)?.join('') || '';
+        const account_type =
+            loginId
+                .match(/[a-zA-Z]+/g)
+                ?.join('') || '';
 
         Analytics.setAttributes({
             account_type,

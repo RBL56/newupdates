@@ -45,12 +45,11 @@ window.Blockly.Blocks.rise_fall_percentage = {
 
 window.Blockly.JavaScript.javascriptGenerator.forBlock.rise_fall_percentage = block => {
     const direction = block.getFieldValue('DIRECTION');
-    const ticksCount =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
-            block,
-            'TICKS_COUNT',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
-        ) || '1000';
+    const ticksCount = window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        block,
+        'TICKS_COUNT',
+        window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+    ) || '1000';
 
     const code = `(function() {
         var ticks = Bot.getTicks().slice(-${ticksCount} - 1);

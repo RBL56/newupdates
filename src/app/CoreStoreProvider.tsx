@@ -219,8 +219,8 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
                 }),
                 api_base.api.getAccountStatus().then((res: TSocketResponseData<'get_account_status'>) => {
                     client?.setAccountStatus(res.get_account_status);
-                }),
-            ]);
+                })
+            ])
 
             // Timeout fallback to ensure the app loads even if requests hang
             // Increased to 5000ms for mobile devices with slower connections

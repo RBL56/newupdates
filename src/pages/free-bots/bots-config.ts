@@ -1,11 +1,12 @@
-import entryPointBotOver2Xml from '@/xml/_Entry point Bot over 2.xml';
-import locoSpeedBotEntryXml from '@/xml/LOCO SPEED BOT WITH ENTRY .xml';
-import locoV15Xml from '@/xml/LOCO V1.5.xml';
 import locofxv2megamindXml from '@/xml/LOCOFX V2 MEGAMIND.xml';
 import locospeedbotXml from '@/xml/locospeedbot.xml';
+import locoV15Xml from '@/xml/LOCO V1.5.xml';
+import locoSpeedBotEntryXml from '@/xml/LOCO SPEED BOT WITH ENTRY .xml';
+import entryPointBotOver2Xml from '@/xml/_Entry point Bot over 2.xml';
+import unstoppableDifferBotXml from '@/xml/UNSTOPPABLE DIFFER BOT.xml';
 import overUnderAutoSwitcherXml from '@/xml/OVER UNDER AUTO SWITCHER.xml';
 import under3BotV1Xml from '@/xml/UNDER_3_BOT_V1.xml';
-import unstoppableDifferBotXml from '@/xml/UNSTOPPABLE DIFFER BOT.xml';
+import noAnalysisBotXml from '@/xml/no_analysis_bot.xml';
 
 export type TBotConfig = {
     id: string;
@@ -71,6 +72,13 @@ export const FREE_BOTS: TBotConfig[] = [
         name: 'UNDER3 BOT V1',
         description: 'Automated trading strategy for Under 3',
         xml: under3BotV1Xml,
+        category: 'Automatic',
+    },
+    {
+        id: 'no_analysis_bot',
+        name: 'No Analysis Bot',
+        description: 'Dynamic digit strategy that shifts logic on loss',
+        xml: noAnalysisBotXml,
         category: 'Automatic',
     },
 ];

@@ -422,9 +422,7 @@ const TradingPlanCalculator = () => {
                         {planData.map(row => (
                             <div key={row.day} className='plan-card'>
                                 <div className='card-header'>
-                                    <div className='day-badge'>
-                                        {localize('Day')} {row.day}
-                                    </div>
+                                    <div className='day-badge'>{localize('Day')} {row.day}</div>
                                     <div className='cum-pct'>{row.cumPct}% ROI</div>
                                 </div>
                                 <div className='card-body'>
@@ -447,9 +445,7 @@ const TradingPlanCalculator = () => {
                                             <>
                                                 {row.sessionProfits.map((sp, i) => (
                                                     <div key={i} className='session-item'>
-                                                        <span className='label'>
-                                                            {localize('Session')} {i + 1}
-                                                        </span>
+                                                        <span className='label'>{localize('Session')} {i + 1}</span>
                                                         <span className='value'>+${sp}</span>
                                                     </div>
                                                 ))}

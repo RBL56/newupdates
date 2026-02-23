@@ -5,8 +5,8 @@ import { ProposalOpenContract } from '@deriv/api-types';
 import { TPortfolioPosition, TStores } from '@deriv/stores/types';
 import { TContractInfo } from '../components/summary/summary-card.types';
 import { transaction_elements } from '../constants/transactions';
-import copyTradingService from '../services/copy-trading-service';
 import { getStoredItemsByKey, getStoredItemsByUser, setStoredItemsByKey } from '../utils/session-storage';
+import copyTradingService from '../services/copy-trading-service';
 import RootStore from './root-store';
 
 type TTransaction = {

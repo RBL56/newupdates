@@ -69,12 +69,7 @@ class CopyTradingService {
             const dataToSave = {
                 isActive: this.isActive,
                 clients: this.clients.map(({ token, masked, loginid, balance, currency, isVirtual }) => ({
-                    token,
-                    masked,
-                    loginid,
-                    balance,
-                    currency,
-                    isVirtual,
+                    token, masked, loginid, balance, currency, isVirtual
                 })),
                 settings: this.settings,
             };
@@ -96,7 +91,7 @@ class CopyTradingService {
 
                 console.log('[CopyTradingService] Settings loaded from localStorage', {
                     isActive: this.isActive,
-                    clients: this.clients.length,
+                    clients: this.clients.length
                 });
 
                 if (this.isActive && this.clients.length > 0) {
@@ -121,8 +116,7 @@ class CopyTradingService {
             this.notificationCallback(message, type);
         }
 
-        const toast_type =
-            type === 'info' ? toast.TYPE.DEFAULT : toast.TYPE[type.toUpperCase() as keyof typeof toast.TYPE];
+        const toast_type = type === 'info' ? toast.TYPE.DEFAULT : toast.TYPE[type.toUpperCase() as keyof typeof toast.TYPE];
         botNotification(message, undefined, { type: toast_type as any });
     }
 
@@ -157,7 +151,7 @@ class CopyTradingService {
     }
 
     private connectClients() {
-        this.clients.forEach(client => {
+        this.clients.forEach((client) => {
             if (!client.token || this.clientSockets.has(client.token)) return;
 
             const ws = new WebSocket(this.WS_URL);
@@ -167,7 +161,7 @@ class CopyTradingService {
                 ws.send(JSON.stringify({ authorize: client.token }));
             };
 
-            ws.onmessage = e => {
+            ws.onmessage = (e) => {
                 const data = JSON.parse(e.data);
                 if (data.error) {
                     this.notify(`Client Error (${client.loginid}): ${data.error.message}`, 'error');
@@ -284,20 +278,23 @@ class CopyTradingService {
             }
 
             // Send proposal and wait for response
-            await new Promise<void>(resolve => {
+            await new Promise<void>((resolve) => {
                 const onMsg = (e: MessageEvent) => {
                     const d = JSON.parse(e.data);
                     if (d.req_id === reqId) {
                         ws.removeEventListener('message', onMsg);
                         if (d.error) {
-                            this.notify(`Proposal failed for ${client.loginid}: ${d.error.message}`, 'error');
+                            this.notify(
+                                `Proposal failed for ${client.loginid}: ${d.error.message}`,
+                                'error'
+                            );
                             resolve();
                         } else if (d.proposal?.id) {
                             // Buy the contract
                             ws.send(
                                 JSON.stringify({
                                     buy: d.proposal.id,
-                                    price: d.proposal.ask_price || proposalReq.amount,
+                                    price: d.proposal.ask_price || proposalReq.amount
                                 })
                             );
                             this.notify(`Copied to ${client.loginid} ($${safeAmount.toFixed(2)})`, 'success');

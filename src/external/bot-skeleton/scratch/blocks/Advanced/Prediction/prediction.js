@@ -24,12 +24,11 @@ window.Blockly.Blocks.prediction_setter_v2 = {
 };
 
 window.Blockly.JavaScript.javascriptGenerator.forBlock.prediction_setter_v2 = block => {
-    const value =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
-            block,
-            'PREDICTION_VALUE',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
-        ) || '0';
+    const value = window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        block,
+        'PREDICTION_VALUE',
+        window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+    ) || '0';
     return [`${value}`, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };
 
@@ -57,12 +56,11 @@ window.Blockly.Blocks.check_last_digits_equality = {
 };
 
 window.Blockly.JavaScript.javascriptGenerator.forBlock.check_last_digits_equality = block => {
-    const count =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
-            block,
-            'DIGITS_COUNT',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
-        ) || '1';
+    const count = window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        block,
+        'DIGITS_COUNT',
+        window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+    ) || '1';
 
     // Logic to check last digits equality (placeholder logic)
     // In a real scenario, this would access the ticks history

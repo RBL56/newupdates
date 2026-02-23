@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { DBOT_TABS } from '@/constants/bot-contents';
+import { Localize } from '@deriv-com/translations';
 import { useStore } from '@/hooks/useStore';
 import copyTradingService from '@/services/copy-trading-service';
-import { Localize } from '@deriv-com/translations';
+import { DBOT_TABS } from '@/constants/bot-contents';
 import './copy-trading.scss';
 
 // Configuration
@@ -51,7 +51,7 @@ const CopyTrading = observer(() => {
             ...c,
             status: 'connecting',
             socket: null,
-            reconnectAttempts: 0,
+            reconnectAttempts: 0
         }));
     });
     const [isCopying, setIsCopying] = useState(() => copyTradingService.getStatus().isActive);
@@ -60,6 +60,7 @@ const CopyTrading = observer(() => {
     const [notifications, setNotifications] = useState<Notification[]>([]);
 
     // Risk Controls
+
 
     // Refs for real-time logic
     const secondarySocketRef = useRef<WebSocket | null>(null);
@@ -218,7 +219,7 @@ const CopyTrading = observer(() => {
         // NOTE: We no longer disable copy trading on unmount so it runs in background
         return () => {
             secondarySocketRef.current?.close();
-            copyTradingService.setNotificationCallback(() => {}); // Remove callback but keep service running
+            copyTradingService.setNotificationCallback(() => { }); // Remove callback but keep service running
         };
     }, [connectSecondary, connectClient, addNotification]);
 
@@ -254,12 +255,8 @@ const CopyTrading = observer(() => {
             {!client.is_logged_in && (
                 <div className='auth-overlay'>
                     <div className='auth-message'>
-                        <h2>
-                            <Localize i18n_default_text='Authentication Required' />
-                        </h2>
-                        <p>
-                            <Localize i18n_default_text='Please log in to your Deriv account to access Copy Trading.' />
-                        </p>
+                        <h2><Localize i18n_default_text='Authentication Required' /></h2>
+                        <p><Localize i18n_default_text='Please log in to your Deriv account to access Copy Trading.' /></p>
                         <button
                             className='btn btn-secondary leave-btn'
                             onClick={() => dashboard.setActiveTab(0)}
@@ -283,46 +280,27 @@ const CopyTrading = observer(() => {
 
                         <div className={`status-indicator ${client.is_logged_in ? 'active' : 'inactive'}`}>
                             {client.is_logged_in ? (
-                                <>
-                                    <i className='fas fa-check-circle'></i> Connected
-                                </>
+                                <><i className='fas fa-check-circle'></i> Connected</>
                             ) : (
-                                <>
-                                    <i className='fas fa-times-circle'></i> Not Connected
-                                </>
+                                <><i className='fas fa-times-circle'></i> Not Connected</>
                             )}
                         </div>
 
                         <div style={{ margin: '12px 0 0', lineHeight: 1.5 }}>
                             <strong>LoginID:</strong> {client.loginid || '—'}
                             <br />
-                            <strong>Balance:</strong>{' '}
-                            {client.is_logged_in ? `${masterBalance} ${client.currency}` : '—'}
+                            <strong>Balance:</strong> {client.is_logged_in ? `${masterBalance} ${client.currency}` : '—'}
                             <br />
                             <strong>Type:</strong> {client.is_virtual ? 'DEMO' : 'REAL'}
                         </div>
 
-                        <div
-                            style={{
-                                marginTop: '16px',
-                                padding: '12px',
-                                background: 'var(--card-light)',
-                                borderRadius: '8px',
-                                fontSize: '1.2rem',
-                                color: 'var(--grey)',
-                            }}
-                        >
-                            <i className='fas fa-info-circle'></i> All trades made anywhere in the app will be copied to
-                            client accounts when copy trading is active.
+                        <div style={{ marginTop: '16px', padding: '12px', background: 'var(--card-light)', borderRadius: '8px', fontSize: '1.2rem', color: 'var(--grey)' }}>
+                            <i className='fas fa-info-circle'></i> All trades made anywhere in the app will be copied to client accounts when copy trading is active.
                         </div>
 
                         {!client.is_logged_in && (
-                            <div
-                                className='login-warning'
-                                style={{ marginTop: '12px', color: 'var(--danger)', fontSize: '1.2rem' }}
-                            >
-                                <i className='fas fa-exclamation-triangle'></i> Please log in to your main account to
-                                use copy trading.
+                            <div className='login-warning' style={{ marginTop: '12px', color: 'var(--danger)', fontSize: '1.2rem' }}>
+                                <i className='fas fa-exclamation-triangle'></i> Please log in to your main account to use copy trading.
                             </div>
                         )}
                     </div>
@@ -341,8 +319,8 @@ const CopyTrading = observer(() => {
                         {secondary.status === 'active'
                             ? 'Connected'
                             : secondary.status === 'connecting'
-                              ? 'Connecting...'
-                              : 'Not Connected'}
+                                ? 'Connecting...'
+                                : 'Not Connected'}
                     </div>
 
                     <div style={{ margin: '12px 0 0', lineHeight: 1.5 }}>
@@ -461,6 +439,8 @@ const CopyTrading = observer(() => {
                             <i className='fas fa-stop'></i> Stop
                         </button>
                     </div>
+
+
                 </div>
 
                 <div className='card'>

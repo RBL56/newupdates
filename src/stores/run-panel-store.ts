@@ -7,7 +7,6 @@ import { contract_stages, TContractStage } from '@/constants/contract-stage';
 import { run_panel } from '@/constants/run-panel';
 import { ErrorTypes, MessageTypes, observer, unrecoverable_errors } from '@/external/bot-skeleton';
 import { getSelectedTradeType } from '@/external/bot-skeleton/scratch/utils';
-import { api_base } from '@/external/bot-skeleton/services/api/api-base';
 // import { journalError, switch_account_notification } from '@/utils/bot-notifications';
 import GTM from '@/utils/gtm';
 import { helpers } from '@/utils/store-helpers';
@@ -16,6 +15,7 @@ import { TStores } from '@deriv/stores/types';
 import { localize } from '@deriv-com/translations';
 import { TDbot } from 'Types';
 import RootStore from './root-store';
+import { api_base } from '@/external/bot-skeleton/services/api/api-base';
 
 export type TContractState = {
     buy?: Buy;
@@ -199,6 +199,8 @@ export default class RunPanelStore {
             this.showLoginDialog();
             return;
         }
+
+
 
         /**
          * Due to Apple's policy on cellular data usage in ios audioElement.play() should be initially called on

@@ -39,12 +39,7 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
                             <div className='dashboard__tutorial-header'>
                                 <Text weight='bold'>{localize('Tutorials')}</Text>
                                 <div className='dashboard__tutorial-close' onClick={() => setTutorialVisibility(false)}>
-                                    <Text
-                                        color='loss-dangerous'
-                                        size='xs'
-                                        weight='bold'
-                                        className='dashboard__tutorial-close-btn'
-                                    >
+                                    <Text color='loss-dangerous' size='xs' weight='bold' className='dashboard__tutorial-close-btn'>
                                         {localize('Close')}
                                     </Text>
                                 </div>
@@ -56,11 +51,7 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
                     ) : (
                         <>
                             {client.is_logged_in && (
-                                <Announcements
-                                    is_mobile={!isDesktop}
-                                    is_tablet={isTablet}
-                                    handleTabChange={handleTabChange}
-                                />
+                                <Announcements is_mobile={!isDesktop} is_tablet={isTablet} handleTabChange={handleTabChange} />
                             )}
                             <div className='quick-panel'>
                                 <div
@@ -85,9 +76,7 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
                                         color='prominent'
                                         lineHeight='s'
                                         size={isDesktop ? 's' : 'xxs'}
-                                        className={classNames('subtitle', {
-                                            'subtitle__has-list': has_dashboard_strategies,
-                                        })}
+                                        className={classNames('subtitle', { 'subtitle__has-list': has_dashboard_strategies })}
                                     >
                                         {localize(
                                             'Import a bot from your computer or Google Drive, build it from scratch, or start with a quick strategy.'

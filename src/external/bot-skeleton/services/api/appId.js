@@ -10,7 +10,7 @@ const FALLBACK_SERVERS = [
     'green.derivws.com',
     'blue.derivws.com',
     'red.derivws.com',
-    'frontend.derivws.com',
+    'frontend.derivws.com'
 ];
 
 let currentServerIndex = 0;
@@ -24,9 +24,7 @@ export const generateDerivApiInstance = () => {
     let serverToUse = configServer;
     if (connectionAttempts > 0 && currentServerIndex < FALLBACK_SERVERS.length) {
         serverToUse = FALLBACK_SERVERS[currentServerIndex];
-        console.log(
-            `[WebSocket] Trying fallback server ${currentServerIndex + 1}/${FALLBACK_SERVERS.length}: ${serverToUse}`
-        );
+        console.log(`[WebSocket] Trying fallback server ${currentServerIndex + 1}/${FALLBACK_SERVERS.length}: ${serverToUse}`);
     }
 
     const cleanedServer = serverToUse.replace(/[^a-zA-Z0-9.]/g, '');
@@ -48,7 +46,7 @@ export const generateDerivApiInstance = () => {
         currentServerIndex = 0;
     });
 
-    deriv_socket.addEventListener('error', error => {
+    deriv_socket.addEventListener('error', (error) => {
         console.error('%c[WebSocket] ✗ Connection error:', 'color: #f44336; font-weight: bold', error);
         console.error('[WebSocket] Failed URL:', socket_url);
         console.error('[WebSocket] Failed server:', cleanedServer);
@@ -58,16 +56,14 @@ export const generateDerivApiInstance = () => {
         // Try next fallback server
         if (currentServerIndex < FALLBACK_SERVERS.length - 1) {
             currentServerIndex++;
-            console.log(
-                `[WebSocket] Will try next fallback server on reconnect: ${FALLBACK_SERVERS[currentServerIndex]}`
-            );
+            console.log(`[WebSocket] Will try next fallback server on reconnect: ${FALLBACK_SERVERS[currentServerIndex]}`);
         } else {
             console.error('[WebSocket] All fallback servers exhausted. Please check your network connection.');
             currentServerIndex = 0; // Reset for next retry cycle
         }
     });
 
-    deriv_socket.addEventListener('close', event => {
+    deriv_socket.addEventListener('close', (event) => {
         console.warn('%c[WebSocket] Connection closed', 'color: #ff9800; font-weight: bold');
         console.warn('[WebSocket] Close code:', event.code);
         console.warn('[WebSocket] Close reason:', event.reason || 'No reason provided');
@@ -85,7 +81,7 @@ export const generateDerivApiInstance = () => {
             1009: 'Message too big',
             1010: 'Missing extension',
             1011: 'Internal server error',
-            1015: 'TLS handshake failure',
+            1015: 'TLS handshake failure'
         };
 
         if (closeCodeMessages[event.code]) {

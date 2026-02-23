@@ -137,21 +137,14 @@ class DBot {
                 this.workspace.addChangeListener(event => this.workspace.dispatchBlockEventEffects(event));
                 this.workspace.addChangeListener(event => {
                     if (event.type === 'drag' && !event.isStart && !is_mobile) validateErrorOnBlockDelete();
-                    if (
-                        event.type === window.Blockly.Events.BLOCK_CHANGE ||
-                        event.type === window.Blockly.Events.BLOCK_CREATE
-                    ) {
+                    if (event.type === window.Blockly.Events.BLOCK_CHANGE || event.type === window.Blockly.Events.BLOCK_CREATE) {
                         const block = this.workspace.getBlockById(event.blockId);
                         if (is_mobile && block && event.element === 'collapsed') {
                             block.contextMenu = false;
                         }
 
                         // Sync Turbo Mode global state from workspace block
-                        if (
-                            ['trade_definition_tradeoptions', 'trade_definition_tradeoptions_payout'].includes(
-                                block?.type
-                            )
-                        ) {
+                        if (['trade_definition_tradeoptions', 'trade_definition_tradeoptions_payout'].includes(block?.type)) {
                             const turboModeField = block.getField('TURBO_MODE');
                             if (turboModeField) {
                                 const isTurbo = turboModeField.getValue() === 'TRUE';

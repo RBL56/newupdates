@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useEffect } from 'react';
 import Cookies from 'js-cookie';
-import { LocalStore } from '@/components/shared/utils/storage/storage';
 import RootStore from '@/stores/root-store';
-import { AuthManager } from '@/utils/AuthManager';
+import { handleOidcAuthFailure } from '@/utils/auth-utils';
 import { Analytics } from '@deriv-com/analytics';
+import { OAuth2Logout, requestOidcAuthentication } from '@deriv-com/auth-client';
+import { generateOAuthURL } from '@/components/shared/utils/config/config';
 
 /**
  * Provides an object with properties: `oAuthLogout`, `retriggerOAuth2Login`, and `isSingleLoggingIn`.
@@ -19,7 +20,7 @@ import { Analytics } from '@deriv-com/analytics';
  * If `handleLogout` is not provided, the function will resolve immediately.
  *
  * @param {{ handleLogout?: () => Promise<void> }} [options] - An object with an optional `handleLogout` property.
- * @returns {{ oAuthLogout: () => Promise<void>; retriggerOAuth2Login: () => Promise<void>; isSingleLoggingIn: boolean; isOAuth2Enabled: boolean }}
+ * @returns {{ oAuthLogout: () => Promise<void>; retriggerOAuth2Login: () => Promise<void>; isSingleLoggingIn: boolean }}
  */
 export const useOauth2 = ({
     handleLogout,
@@ -57,16 +58,29 @@ export const useOauth2 = ({
 
     const logoutHandler = async () => {
         client?.setIsLoggingOut(true);
-        if (handleLogout) {
-            await handleLogout();
+        try {
+            await OAuth2Logout({
+                redirectCallbackUri: `${window.location.origin}/callback`,
+                WSLogoutAndRedirect: handleLogout ?? (() => Promise.resolve()),
+                postLogoutRedirectUri: window.location.origin,
+            }).catch(err => {
+                // eslint-disable-next-line no-console
+                console.error(err);
+            });
+            await client?.logout().catch(err => {
+                // eslint-disable-next-line no-console
+                console.error('Error during TMB logout:', err);
+            });
+
+            Analytics.reset();
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.error(error);
         }
-        AuthManager.logout();
-        Analytics.reset();
     };
-
     const retriggerOAuth2Login = async () => {
-        window.location.href = AuthManager.getLoginUrl(LocalStore.get('i18n') || 'en');
+        window.location.replace(generateOAuthURL());
     };
 
-    return { oAuthLogout: logoutHandler, retriggerOAuth2Login, isSingleLoggingIn, isOAuth2Enabled: true };
+    return { oAuthLogout: logoutHandler, retriggerOAuth2Login, isSingleLoggingIn };
 };

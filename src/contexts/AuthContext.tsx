@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import LoadingScreen from '@/components/loading-screen/loading-screen';
 import { useStore } from '@/hooks/useStore';
+import LoadingScreen from '@/components/loading-screen/loading-screen';
 import { localize } from '@deriv-com/translations';
 
 interface AuthContextType {
@@ -101,7 +101,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = observer(({
     }
 
     return (
-        <AuthContext.Provider value={{ isInitialized, hasToken, isLoadingUserData }}>{children}</AuthContext.Provider>
+        <AuthContext.Provider value={{ isInitialized, hasToken, isLoadingUserData }}>
+            {children}
+        </AuthContext.Provider>
     );
 });
 

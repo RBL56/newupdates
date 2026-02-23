@@ -96,19 +96,17 @@ window.Blockly.Blocks.last_digits_condition = {
 };
 
 window.Blockly.JavaScript.javascriptGenerator.forBlock.last_digits_condition = block => {
-    const digitsCount =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
-            block,
-            'DIGITS_COUNT',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
-        ) || '3';
+    const digitsCount = window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        block,
+        'DIGITS_COUNT',
+        window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+    ) || '3';
     const condition = block.getFieldValue('CONDITION');
-    const digit =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
-            block,
-            'DIGIT',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
-        ) || '5';
+    const digit = window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        block,
+        'DIGIT',
+        window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+    ) || '5';
 
     let conditionCode;
     switch (condition) {

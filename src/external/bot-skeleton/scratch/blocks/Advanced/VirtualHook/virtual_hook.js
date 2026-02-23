@@ -3,9 +3,7 @@ import { localize } from '@deriv-com/translations';
 window.Blockly.Blocks.virtual_hook = {
     init() {
         this.jsonInit({
-            message0: localize(
-                'Set Virtual Hook Settings %1 Enable Martingale %2 Martingale Factor %3 Max Steps %4 Min. Trades on Real %5 Take Profit %6 Stop Loss %7'
-            ),
+            message0: localize('Set Virtual Hook Settings %1 Enable Martingale %2 Martingale Factor %3 Max Steps %4 Min. Trades on Real %5 Take Profit %6 Stop Loss %7'),
             args0: [
                 {
                     type: 'input_dummy',

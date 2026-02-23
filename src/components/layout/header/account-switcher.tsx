@@ -4,10 +4,12 @@ import { observer } from 'mobx-react-lite';
 import { CurrencyIcon } from '@/components/currency/currency-icon';
 import { addComma, getDecimalPlaces } from '@/components/shared';
 import Popover from '@/components/shared_ui/popover';
+import { api_base } from '@/external/bot-skeleton';
 import { useOauth2 } from '@/hooks/auth/useOauth2';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import { waitForDomElement } from '@/utils/dom-observer';
+import { Analytics } from '@deriv-com/analytics';
 import { localize } from '@deriv-com/translations';
 import { AccountSwitcher as UIAccountSwitcher, Loader, useDevice } from '@deriv-com/ui';
 import DemoAccounts from './common/demo-accounts';
@@ -85,7 +87,7 @@ const RenderAccountItems = ({
 };
 
 const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
-    const { isDesktop } = useDevice();
+    // const { isDesktop } = useDevice(); // Unused now
     const { accountList } = useApiBase();
     const { ui, run_panel, client } = useStore();
     const { accounts } = client;
@@ -157,7 +159,7 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
                     tabsLabels={tabs_labels}
                     modalContentStyle={{
                         content: {
-                            top: isDesktop ? '30%' : '50%',
+                            top: '30%',
                             borderRadius: '10px',
                         },
                     }}

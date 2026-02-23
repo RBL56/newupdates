@@ -45,12 +45,11 @@ window.Blockly.Blocks.digit_frequency_analysis = {
 
 window.Blockly.JavaScript.javascriptGenerator.forBlock.digit_frequency_analysis = block => {
     const condition = block.getFieldValue('CONDITION');
-    const digitsCount =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
-            block,
-            'DIGITS_COUNT',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
-        ) || '1000';
+    const digitsCount = window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        block,
+        'DIGITS_COUNT',
+        window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+    ) || '1000';
 
     const code = `(function() {
         var digits = Bot.getLastDigitList().slice(-${digitsCount});

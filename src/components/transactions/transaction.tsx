@@ -220,28 +220,28 @@ const Transaction = ({ contract, active_transaction_id, onClickTransaction }: TT
                 </div>
                 <div className='transactions__cell transactions__profit'>
                     {contract?.is_virtual_hook ? (
-                        <div
-                            className={classNames('transactions__virtual-hook', {
-                                'transactions__virtual-hook--won': contract?.profit && contract?.profit > 0,
-                                'transactions__virtual-hook--lost': contract?.profit && contract?.profit <= 0,
-                            })}
-                        >
+                        <div className={classNames('transactions__virtual-hook', {
+                            'transactions__virtual-hook--won': contract?.profit && contract?.profit > 0,
+                            'transactions__virtual-hook--lost': contract?.profit && contract?.profit <= 0,
+                        })}>
                             <div className='virtual-hook-label'>{localize('Virtual Hook')}</div>
                             <div className='virtual-hook-status'>
                                 {contract?.profit > 0 ? localize('virtual won') : localize('virtual lost')}
                             </div>
                         </div>
-                    ) : contract?.is_completed ? (
-                        <div
-                            className={classNames({
-                                'transactions__profit--win': contract?.profit && contract?.profit >= 0,
-                                'transactions__profit--loss': contract?.profit && contract?.profit < 0,
-                            })}
-                        >
-                            <Money amount={Math.abs(contract.profit || 0)} currency={contract.currency} show_currency />
-                        </div>
                     ) : (
-                        <TransactionFieldLoader />
+                        contract?.is_completed ? (
+                            <div
+                                className={classNames({
+                                    'transactions__profit--win': contract?.profit && contract?.profit >= 0,
+                                    'transactions__profit--loss': contract?.profit && contract?.profit < 0,
+                                })}
+                            >
+                                <Money amount={Math.abs(contract.profit || 0)} currency={contract.currency} show_currency />
+                            </div>
+                        ) : (
+                            <TransactionFieldLoader />
+                        )
                     )}
                 </div>
             </div>

@@ -129,23 +129,23 @@
         margin-left: 0.8rem;
 
         &.dc-btn--primary {
-            background-color: #bf00ff;
+            background-color: #BF00FF;
 
             &:hover {
-                background-color: #9d00ff;
+                background-color: #9D00FF;
             }
         }
 
         &.dc-btn--secondary {
-            border-color: #bf00ff;
-            color: #bf00ff;
+            border-color: #BF00FF;
+            color: #BF00FF;
 
             &:hover {
-                background-color: rgb(191 0 255 / 8%);
+                background-color: rgba(191, 0, 255, 0.08);
             }
 
             .dc-btn__text {
-                color: #bf00ff;
+                color: #BF00FF;
             }
         }
 

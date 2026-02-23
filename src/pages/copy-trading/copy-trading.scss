@@ -4,13 +4,13 @@
 .copy-trading-page {
     --primary: #00d4c4;
     --primary-dark: #00b8a8;
-    --purple: #{$color-purple};
+    --purple: #8b5cf6;
     --danger: #ff4757;
     --success: #2ed573;
     --warning: #ffa502;
     --dark: #0a0f1c;
-    --card: rgb(30 41 59 / 88%);
-    --card-border: rgb(255 255 255 / 10%);
+    --card: rgba(30, 41, 59, 0.88);
+    --card-border: rgba(255, 255, 255, 0.1);
     --light: #f1f5f9;
     --grey: #94a3b8;
 
@@ -47,7 +47,7 @@
         h1 {
             font-size: 2.7rem;
             background: linear-gradient(90deg, var(--primary), #60a5fa, var(--purple));
-            background-clip: text;
+            -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
             font-weight: 900;
@@ -85,12 +85,12 @@
         text-transform: uppercase;
 
         &.demo {
-            background: rgb(139 92 246 / 20%);
+            background: rgba(139, 92, 246, 0.2);
             color: var(--purple);
         }
 
         &.real {
-            background: rgb(46 213 115 / 20%);
+            background: rgba(46, 213, 115, 0.2);
             color: var(--success);
         }
     }
@@ -105,21 +105,21 @@
         font-weight: 600;
 
         &.active {
-            background: rgb(46 213 115 / 20%);
+            background: rgba(46, 213, 115, 0.2);
             color: var(--success);
-            border: 1px solid rgb(46 213 115 / 40%);
+            border: 1px solid rgba(46, 213, 115, 0.4);
         }
 
         &.inactive {
-            background: rgb(255 71 87 / 20%);
+            background: rgba(255, 71, 87, 0.2);
             color: var(--danger);
-            border: 1px solid rgb(255 71 87 / 40%);
+            border: 1px solid rgba(255, 71, 87, 0.4);
         }
 
         &.connecting {
-            background: rgb(255 165 2 / 20%);
+            background: rgba(255, 165, 2, 0.2);
             color: var(--warning);
-            border: 1px solid rgb(255 165 2 / 40%);
+            border: 1px solid rgba(255, 165, 2, 0.4);
             animation: pulse 2s infinite;
         }
     }
@@ -175,8 +175,8 @@
     }
 
     .token-item {
-        background: rgb(255 255 255 / 5%);
-        border: 1px solid rgb(255 255 255 / 8%);
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 12px;
         padding: 16px;
         margin-bottom: 12px;
@@ -225,7 +225,7 @@
         gap: 24px;
         margin-bottom: 24px;
 
-        @media (width >=769px) {
+        @media (min-width: 769px) {
             grid-template-columns: 1fr 1fr;
         }
     }
@@ -233,7 +233,7 @@
     .secondary-account {
         opacity: 0.7;
         border: 2px dashed var(--grey);
-        background: rgb(30 41 59 / 60%);
+        background: rgba(30, 41, 59, 0.6);
 
         .card-title {
             color: var(--grey);
@@ -246,9 +246,9 @@
         gap: 12px;
         margin: 20px 0;
         padding: 16px;
-        background: rgb(255 255 255 / 3%);
+        background: rgba(255, 255, 255, 0.03);
         border-radius: 12px;
-        border: 1px solid rgb(255 255 255 / 10%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .mode-toggle {
@@ -256,7 +256,7 @@
         align-items: center;
         gap: 8px;
         padding: 8px 16px;
-        background: rgb(255 255 255 / 5%);
+        background: rgba(255, 255, 255, 0.05);
         border-radius: 8px;
         font-size: 0.9rem;
 
@@ -277,10 +277,10 @@
         gap: 12px;
         margin-top: 16px;
         padding: 12px;
-        background: rgb(255 255 255 / 3%);
+        background: rgba(255, 255, 255, 0.03);
         border-radius: 8px;
 
-        @media (width <=480px) {
+        @media (max-width: 480px) {
             grid-template-columns: 1fr;
         }
     }
@@ -298,8 +298,8 @@
 
         input {
             padding: 12px;
-            border: 1px solid rgb(255 255 255 / 10%);
-            background: rgb(0 0 0 / 30%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.3);
             color: white;
             border-radius: 8px;
             width: 100%; // Fill space
@@ -314,7 +314,7 @@
     }
 
     .mode-description {
-        background: rgb(139 92 246 / 10%);
+        background: rgba(139, 92, 246, 0.1);
         padding: 12px;
         border-radius: 8px;
         margin: 12px 0;
@@ -332,7 +332,7 @@
         color: white;
         z-index: 9999;
         font-size: 1.4rem;
-        box-shadow: 0 4px 16px rgb(0 0 0 / 40%);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 
         &.success {
             background: var(--success);
@@ -393,7 +393,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgb(10 15 28 / 85%);
+        background: rgba(10, 15, 28, 0.85);
         backdrop-filter: blur(8px);
         z-index: 1000;
         display: flex;
@@ -408,7 +408,7 @@
             border-radius: 20px;
             border: 1px solid var(--card-border);
             max-width: 400px;
-            box-shadow: 0 10px 30px rgb(0 0 0 / 50%);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 
             h2 {
                 color: var(--primary);
@@ -449,7 +449,7 @@
         }
     }
 
-    @media (width <=768px) {
+    @media (max-width: 768px) {
         .token-item {
             flex-direction: column;
             align-items: flex-start;

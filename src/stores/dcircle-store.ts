@@ -237,7 +237,7 @@ export default class DcircleStore {
         try {
             // Cleanup existing subscription
             if (this.subscriptionId) {
-                api_base.api.send({ forget: this.subscriptionId }).catch(() => {});
+                api_base.api.send({ forget: this.subscriptionId }).catch(() => { });
                 this.subscriptionId = null;
             }
             if (this.messageSubscription) {
@@ -284,7 +284,7 @@ export default class DcircleStore {
                 hasError: !!subRes.error,
                 error: subRes.error?.message,
                 hasTick: !!subRes.tick,
-                tickSymbol: subRes.tick?.symbol,
+                tickSymbol: subRes.tick?.symbol
             });
 
             runInAction(() => {
@@ -407,7 +407,7 @@ export default class DcircleStore {
                 normalized_incoming: incomingSymbol,
                 current: this.volatility,
                 normalized_current: currentSymbol,
-                match: incomingSymbol === currentSymbol,
+                match: incomingSymbol === currentSymbol
             });
         }
 
@@ -484,7 +484,7 @@ export default class DcircleStore {
                     incoming: tick.symbol,
                     expected: this.volatility,
                     normalized_incoming: incomingSymbol,
-                    normalized_expected: currentSymbol,
+                    normalized_expected: currentSymbol
                 });
             }
         }
@@ -492,7 +492,7 @@ export default class DcircleStore {
 
     cleanup() {
         if (this.subscriptionId && api_base.api) {
-            api_base.api.send({ forget: this.subscriptionId }).catch(() => {});
+            api_base.api.send({ forget: this.subscriptionId }).catch(() => { });
             this.subscriptionId = null;
         }
         if (this.messageSubscription) {

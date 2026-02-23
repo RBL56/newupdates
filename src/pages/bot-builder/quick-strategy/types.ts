@@ -23,9 +23,9 @@ export interface ValidationObject {
 export type TValidationItem =
     | TValidationType
     | ({
-          type: TValidationType;
-          value?: number | string;
-      } & ValidationObject);
+        type: TValidationType;
+        value?: number | string;
+    } & ValidationObject);
 
 export type TStrategyDescription = {
     item: TDescriptionItem;

@@ -56,11 +56,10 @@ window.Blockly.Blocks.barrier_changer_value = {
 };
 
 window.Blockly.JavaScript.javascriptGenerator.forBlock.barrier_changer_value = block => {
-    const value =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
-            block,
-            'BARRIER_VALUE',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
-        ) || '0';
+    const value = window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        block,
+        'BARRIER_VALUE',
+        window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+    ) || '0';
     return [`${value}`, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

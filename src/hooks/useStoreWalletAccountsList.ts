@@ -89,7 +89,7 @@ const useStoreWalletAccountsList = () => {
                     const is_malta_wallet = landing_company_name === 'malta';
 
                     const dtrade_loginid = is_wallet
-                        ? account?.linked_to?.find(acc => acc?.platform === 'dtrade')?.loginid || loginid
+                        ? (account?.linked_to?.find(acc => acc?.platform === 'dtrade')?.loginid || loginid)
                         : loginid;
 
                     // Improved balance retrieval with comprehensive fallback chain
@@ -114,7 +114,10 @@ const useStoreWalletAccountsList = () => {
                         const dtradeBalanceFromAccount = (accounts?.[dtrade_loginid ?? ''] as any)?.dtrade_balance;
                         const balanceFromWallet = (account as any).balance;
 
-                        dtrade_balance = balanceFromAccount ?? dtradeBalanceFromAccount ?? balanceFromWallet ?? 0;
+                        dtrade_balance = balanceFromAccount ??
+                            dtradeBalanceFromAccount ??
+                            balanceFromWallet ??
+                            0;
 
                         // Ensure it's a number
                         if (typeof dtrade_balance !== 'number') {
@@ -123,8 +126,7 @@ const useStoreWalletAccountsList = () => {
                         }
                     }
 
-                    const is_dtrader_account_disabled =
-                        Boolean(accounts?.[dtrade_loginid ?? '']?.is_disabled) || is_disabled;
+                    const is_dtrader_account_disabled = Boolean(accounts?.[dtrade_loginid ?? '']?.is_disabled) || is_disabled;
 
                     const wallet_currency_type = is_virtual ? 'Demo' : currency || '';
                     const icons = currency_to_icon_mapper[wallet_currency_type];

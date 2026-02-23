@@ -206,13 +206,13 @@ const QuickStrategyForm = observer(() => {
                                             field.description
                                                 ? typeof field.description === 'function'
                                                     ? () => {
-                                                          // Create a wrapper function that doesn't expect parameters
-                                                          // but internally calls the original function
-                                                          const descriptionFn = field.description as (
-                                                              additional_data?: Record<string, unknown>
-                                                          ) => React.ReactNode;
-                                                          return descriptionFn(additional_data);
-                                                      }
+                                                        // Create a wrapper function that doesn't expect parameters
+                                                        // but internally calls the original function
+                                                        const descriptionFn = field.description as (
+                                                            additional_data?: Record<string, unknown>
+                                                        ) => React.ReactNode;
+                                                        return descriptionFn(additional_data);
+                                                    }
                                                     : String(field.description || '')
                                                 : ''
                                         }

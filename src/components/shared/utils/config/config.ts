@@ -135,10 +135,6 @@ export const getDebugServiceWorker = () => {
     return false;
 };
 
-export const getRedirectUri = () => {
-    return `${window.location.origin}/callback`;
-};
-
 export const generateOAuthURL = () => {
     const hostname = window.location.hostname;
     const app_id = getAppId();
@@ -153,5 +149,5 @@ export const generateOAuthURL = () => {
     // For Vercel, Localhost, or other custom domains, we MUST use deriv.com
     // as the OAuth provider. Previous logic incorrectly tried oauth.vercel.app.
 
-    return `https://oauth.${oauth_domain}/oauth2/authorize?app_id=${app_id}&l=EN&brand=deriv&redirect_uri=${encodeURIComponent(getRedirectUri())}`;
+    return `https://oauth.${oauth_domain}/oauth2/authorize?app_id=${app_id}&l=EN&brand=deriv&redirect_uri=https://baciup.vercel.app/callback`;
 };

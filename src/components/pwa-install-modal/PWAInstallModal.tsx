@@ -96,10 +96,8 @@ const PWAInstallModal: React.FC = () => {
                     {isPWALaunch
                         ? localize("Welcome to LOCO THE TRADER! You're using the mobile app version.")
                         : isDesktop
-                          ? localize(
-                                'Install LOCO THE TRADER as a desktop app for faster access and a native experience!'
-                            )
-                          : localize(
+                            ? localize('Install LOCO THE TRADER as a desktop app for faster access and a native experience!')
+                            : localize(
                                 "We're excited to announce that LOCO THE TRADER platform is now a Progressive Web App (PWA)!"
                             )}
                 </Text>
@@ -126,10 +124,10 @@ const PWAInstallModal: React.FC = () => {
                     {isPWALaunch
                         ? localize('Enjoy the full mobile app experience with offline capabilities and quick access.')
                         : isDesktop
-                          ? localize(
+                            ? localize(
                                 'Get instant access from your desktop, work offline, and enjoy a faster, app-like experience.'
                             )
-                          : localize('Try it now for a quick and seamless experience, just like a native app.')}
+                            : localize('Try it now for a quick and seamless experience, just like a native app.')}
                 </Text>
             </div>
         </div>

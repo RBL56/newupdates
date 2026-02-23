@@ -12,8 +12,8 @@ import { Button } from '@deriv-com/ui';
  */
 const getSelectedCurrency = (
     tokens: Record<string, string>,
-    clientAccounts: Record<string, { loginid: string; token: string; currency: string }>,
-    state: { account?: string } | null
+    clientAccounts: Record<string, any>,
+    state: any
 ): string => {
     const getQueryParams = new URLSearchParams(window.location.search);
     const currency =
@@ -36,8 +36,9 @@ const CallbackPage = () => {
             onSignInSuccess={async (tokens: Record<string, string>, rawState: unknown) => {
                 const state = rawState as { account?: string } | null;
                 const accountsList: Record<string, string> = {};
-                const clientAccounts: Record<string, any> = {};
+                const clientAccounts: Record<string, { loginid: string; token: string; currency: string }> = {};
 
+                console.log('CallbackPage: onSignInSuccess', tokens);
                 for (const [key, value] of Object.entries(tokens)) {
                     if (key.startsWith('acct')) {
                         const tokenKey = key.replace('acct', 'token');
@@ -51,11 +52,13 @@ const CallbackPage = () => {
                         }
                     } else if (key.startsWith('cur')) {
                         const accKey = key.replace('cur', 'acct');
-                        if (tokens[accKey] && clientAccounts[tokens[accKey]]) {
+                        if (tokens[accKey]) {
                             clientAccounts[tokens[accKey]].currency = value;
                         }
                     }
                 }
+                console.log('CallbackPage: accountsList', accountsList);
+                console.log('CallbackPage: clientAccounts', clientAccounts);
 
                 localStorage.setItem('accountsList', JSON.stringify(accountsList));
                 localStorage.setItem('clientAccounts', JSON.stringify(clientAccounts));
@@ -64,7 +67,7 @@ const CallbackPage = () => {
 
                 const api = await generateDerivApiInstance();
                 if (api) {
-                    const { authorize, error } = (await api.authorize(tokens.token1)) as any;
+                    const { authorize, error } = await api.authorize(tokens.token1);
                     api.disconnect();
                     if (error) {
                         // Check if the error is due to an invalid token
@@ -83,54 +86,48 @@ const CallbackPage = () => {
                                 clearAuthData();
                             }
                         }
-                    } else if (authorize) {
-                        localStorage.setItem('callback_token', JSON.stringify(authorize));
-                        localStorage.setItem('active_loginid', authorize.loginid);
-                        localStorage.setItem('authToken', tokens.token1);
-                        localStorage.setItem('client.country', authorize.country);
-
-                        // Update accounts list and details from authorize response
-                        authorize.account_list.forEach((acc: any) => {
-                            const token = accountsList[acc.loginid] || tokens.token1;
-                            accountsList[acc.loginid] = token;
-                            clientAccounts[acc.loginid] = {
-                                ...acc,
-                                token,
-                            };
-                        });
-
-                        localStorage.setItem('accountsList', JSON.stringify(accountsList));
-                        localStorage.setItem('clientAccounts', JSON.stringify(clientAccounts));
-                        is_token_set = true;
+                    } else {
+                        localStorage.setItem('callback_token', authorize.toString());
+                        const clientAccountsArray = Object.values(clientAccounts);
+                        const firstId = authorize?.account_list[0]?.loginid;
+                        const filteredTokens = clientAccountsArray.filter(account => account.loginid === firstId);
+                        if (filteredTokens.length) {
+                            localStorage.setItem('authToken', filteredTokens[0].token);
+                            localStorage.setItem('active_loginid', filteredTokens[0].loginid);
+                            is_token_set = true;
+                        }
                     }
                 }
-
                 if (!is_token_set) {
                     localStorage.setItem('authToken', tokens.token1);
                     localStorage.setItem('active_loginid', tokens.acct1);
                 }
+                // Mobile Reliability Fix: Verify storage and wait for persistence
+                // These optimizations apply to ALL account types (real, demo, crypto, fiat)
+                const storedToken = localStorage.getItem('authToken');
+                if (!storedToken) {
+                    console.warn('Token not found in storage immediately after set, retrying...');
+                    if (tokens.token1) localStorage.setItem('authToken', tokens.token1);
+                }
 
-                // Set logged_state cookie
-                const domain = window.location.hostname.includes('deriv.com') ? '.deriv.com' : undefined;
-                Cookies.set('logged_state', 'true', {
-                    expires: 30,
-                    path: '/',
-                    domain: domain,
-                    secure: true,
-                    sameSite: 'lax',
-                });
-                // Determine the appropriate currency to use
+                // Set sessionStorage flag to signal OAuth redirect completion
+                // This allows immediate detection in AuthContext without waiting for polling
+                sessionStorage.setItem('oauth_redirect_complete', 'true');
+                console.log('[Callback] OAuth redirect complete flag set');
+
+                // Increased delay to 500ms for mobile localStorage persistence
+                // Mobile browsers need more time to flush localStorage to disk
+                await new Promise(resolve => setTimeout(resolve, 500));
+
+                // Final verification that tokens are persisted
+                const finalTokenCheck = localStorage.getItem('authToken');
+                const finalAccountsCheck = localStorage.getItem('accountsList');
+                console.log('[Callback] Final storage check - Token:', !!finalTokenCheck, 'Accounts:', !!finalAccountsCheck);
+
+                // Determine the appropriate currency to use (supports demo, real, crypto, fiat)
                 const selected_currency = getSelectedCurrency(tokens, clientAccounts, state);
 
-                const redirect_url = sessionStorage.getItem('redirect_url');
-                if (redirect_url) {
-                    const url = new URL(redirect_url);
-                    url.searchParams.set('account', selected_currency);
-                    sessionStorage.removeItem('redirect_url');
-                    window.location.replace(url.toString());
-                } else {
-                    window.location.replace(window.location.origin + `/?account=${selected_currency}`);
-                }
+                window.location.replace(`${window.location.origin}${window.location.pathname.replace(/\/callback$/, '')}/?account=${selected_currency}`);
             }}
             renderReturnButton={() => {
                 return (

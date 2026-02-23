@@ -498,6 +498,7 @@
 
     &__search {
         @include mobile-or-tablet-screen {
+
             .tutorials-wrap,
             .faq__wrapper {
                 overflow: unset;

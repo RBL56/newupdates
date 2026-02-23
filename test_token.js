@@ -4,7 +4,7 @@ const token = 'Hv52SXDY0TRsiii';
 const appIds = [106684];
 
 async function testToken(appId) {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
         console.log(`Testing token with App ID: ${appId}...`);
         const ws = new WebSocket(`wss://ws.derivws.com/websockets/v3?app_id=${appId}`);
 
@@ -12,7 +12,7 @@ async function testToken(appId) {
             ws.send(JSON.stringify({ authorize: token }));
         });
 
-        ws.on('message', data => {
+        ws.on('message', (data) => {
             const response = JSON.parse(data);
             if (response.error) {
                 console.log(`App ID ${appId}: Failed - ${response.error.message} (${response.error.code})`);
@@ -23,7 +23,7 @@ async function testToken(appId) {
             resolve();
         });
 
-        ws.on('error', err => {
+        ws.on('error', (err) => {
             console.log(`App ID ${appId}: Connection Error - ${err.message}`);
             resolve();
         });

@@ -12,9 +12,7 @@ const useActiveAccount = ({ allBalanceData }: { allBalanceData: Balance | null }
     const activeAccount = useMemo(
         () =>
             accountList?.find(account => account.loginid === activeLoginid) ||
-            (activeLoginid
-                ? { loginid: activeLoginid, currency: 'USD', is_virtual: activeLoginid.includes('VRT') }
-                : undefined),
+            (activeLoginid ? { loginid: activeLoginid, currency: 'USD', is_virtual: activeLoginid.includes('VRT') } : undefined),
         [activeLoginid, accountList]
     );
 
@@ -31,10 +29,9 @@ const useActiveAccount = ({ allBalanceData }: { allBalanceData: Balance | null }
             balanceValue = currentBalanceData.balance;
         } else if (activeAccount?.balance !== undefined) {
             // Fallback to account balance if available
-            balanceValue =
-                typeof activeAccount.balance === 'number'
-                    ? activeAccount.balance
-                    : parseFloat(activeAccount.balance.toString()) || 0;
+            balanceValue = typeof activeAccount.balance === 'number'
+                ? activeAccount.balance
+                : parseFloat(activeAccount.balance.toString()) || 0;
         }
 
         const formattedBalance = addComma(
@@ -43,19 +40,19 @@ const useActiveAccount = ({ allBalanceData }: { allBalanceData: Balance | null }
 
         return activeAccount
             ? {
-                  ...activeAccount,
-                  currency: displayCurrency,
-                  balance: formattedBalance,
-                  currencyLabel: activeAccount?.is_virtual ? localize('Demo') : displayCurrency,
-                  icon: (
-                      <CurrencyIcon
-                          currency={displayCurrency?.toLowerCase()}
-                          isVirtual={Boolean(activeAccount?.is_virtual)}
-                      />
-                  ),
-                  isVirtual: Boolean(activeAccount?.is_virtual),
-                  isActive: activeAccount?.loginid === activeLoginid,
-              }
+                ...activeAccount,
+                currency: displayCurrency,
+                balance: formattedBalance,
+                currencyLabel: activeAccount?.is_virtual ? localize('Demo') : displayCurrency,
+                icon: (
+                    <CurrencyIcon
+                        currency={displayCurrency?.toLowerCase()}
+                        isVirtual={Boolean(activeAccount?.is_virtual)}
+                    />
+                ),
+                isVirtual: Boolean(activeAccount?.is_virtual),
+                isActive: activeAccount?.loginid === activeLoginid,
+            }
             : undefined;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeAccount, activeLoginid, allBalanceData]);

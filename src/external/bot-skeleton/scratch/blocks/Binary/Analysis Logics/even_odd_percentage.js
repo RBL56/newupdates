@@ -45,12 +45,11 @@ window.Blockly.Blocks.even_odd_percentage = {
 
 window.Blockly.JavaScript.javascriptGenerator.forBlock.even_odd_percentage = block => {
     const type = block.getFieldValue('TYPE');
-    const digitsCount =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
-            block,
-            'DIGITS_COUNT',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
-        ) || '1000';
+    const digitsCount = window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        block,
+        'DIGITS_COUNT',
+        window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+    ) || '1000';
 
     const code = `(function() {
         var digits = Bot.getLastDigitList().slice(-${digitsCount});

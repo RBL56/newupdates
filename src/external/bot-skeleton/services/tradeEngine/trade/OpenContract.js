@@ -38,9 +38,7 @@ export default Engine =>
                                     client.updateBalanceOnTrade(-parseFloat(sellPrice));
 
                                     const optimistic_update_time = performance.now() - balance_update_start;
-                                    console.log(
-                                        `[OpenContract] Optimistic balance update on sell in ${optimistic_update_time.toFixed(2)}ms`
-                                    );
+                                    console.log(`[OpenContract] Optimistic balance update on sell in ${optimistic_update_time.toFixed(2)}ms`);
                                 }
 
                                 // Force balance refresh for accurate update - immediate, no delay

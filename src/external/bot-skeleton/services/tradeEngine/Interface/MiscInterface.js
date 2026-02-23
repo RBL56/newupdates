@@ -1,7 +1,7 @@
 import { localize } from '@deriv-com/translations';
 import { observer as globalObserver } from '../../../utils/observer';
-import ApiHelpers from '../../api/api-helpers';
 import { notify } from '../utils/broadcast';
+import ApiHelpers from '../../api/api-helpers';
 
 const getMiscInterface = tradeEngine => {
     return {

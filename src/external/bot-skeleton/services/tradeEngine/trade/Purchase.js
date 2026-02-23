@@ -43,9 +43,7 @@ export default Engine =>
                             client.updateBalanceOnTrade(parseFloat(buy.buy_price));
 
                             const optimistic_update_time = performance.now() - balance_update_start;
-                            console.log(
-                                `[Purchase] Optimistic balance update in ${optimistic_update_time.toFixed(2)}ms`
-                            );
+                            console.log(`[Purchase] Optimistic balance update in ${optimistic_update_time.toFixed(2)}ms`);
                         }
 
                         // Force balance refresh for accurate update - immediate, no delay

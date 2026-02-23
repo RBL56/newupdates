@@ -1,13 +1,13 @@
 import {
-    SocialFacebookBrandIcon,
-    SocialInstagramBrandIcon,
-    SocialTelegramBrandIcon,
-    SocialTiktokBrandIcon,
     SocialWhatsappBrandIcon,
+    SocialTelegramBrandIcon,
     SocialYoutubeBrandIcon,
+    SocialInstagramBrandIcon,
+    SocialTiktokBrandIcon,
+    SocialFacebookBrandIcon,
 } from '@deriv/quill-icons/Social';
-import Button from '../../shared_ui/button/button';
 import Modal from '../../shared_ui/modal/modal';
+import Button from '../../shared_ui/button/button';
 import Text from '../../shared_ui/text/text';
 import './social-media-modal.scss';
 
@@ -68,7 +68,7 @@ const SocialMediaModal = ({ is_open, toggleModal }: TSocialMediaModal) => {
                             target='_blank'
                             rel='noopener noreferrer'
                             className='social-media-modal__item'
-                            onClick={e => e.preventDefault()}
+                            onClick={(e) => e.preventDefault()}
                         >
                             {link.icon}
                             <Text size='sm' weight='bold' className='social-media-modal__text'>

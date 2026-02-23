@@ -6,14 +6,11 @@ import { excludeOptionFromContextMenu, modifyContextMenu, runIrreversibleEvents 
 window.Blockly.Blocks.trade_definition_market = {
     init() {
         this.jsonInit({
-            message0: localize(
-                'Market: {{ input_market }} > {{ input_submarket }} > {{ input_symbol }} %4 Virtual Hook: %5',
-                {
-                    input_market: '%1',
-                    input_submarket: '%2',
-                    input_symbol: '%3',
-                }
-            ),
+            message0: localize('Market: {{ input_market }} > {{ input_submarket }} > {{ input_symbol }} %4 Virtual Hook: %5 %6 Alternating Market: %7', {
+                input_market: '%1',
+                input_submarket: '%2',
+                input_symbol: '%3',
+            }),
             args0: [
                 {
                     type: 'field_dropdown',
@@ -37,6 +34,14 @@ window.Blockly.Blocks.trade_definition_market = {
                 {
                     type: 'field_checkbox',
                     name: 'VIRTUAL_HOOK',
+                    checked: false,
+                },
+                {
+                    type: 'input_dummy',
+                },
+                {
+                    type: 'field_checkbox',
+                    name: 'ALTERNATING_MARKET',
                     checked: false,
                 },
             ],
@@ -130,6 +135,11 @@ window.Blockly.Blocks.trade_definition_market = {
                 if (DBotStore.instance && DBotStore.instance.client) {
                     DBotStore.instance.client.setVirtualHookSettings({ is_enabled: is_checked });
                 }
+            } else if (event.name === 'ALTERNATING_MARKET') {
+                const is_checked = this.getFieldValue('ALTERNATING_MARKET') === 'TRUE';
+                if (DBotStore.instance && DBotStore.instance.client) {
+                    DBotStore.instance.client.setVirtualHookSettings({ alternating_market: is_checked });
+                }
             }
         } else if (
             event.type === window.Blockly.Events.BLOCK_DRAG &&
@@ -150,11 +160,19 @@ window.Blockly.Blocks.trade_definition_market = {
                 // If XML has it, respect it. If XML lacks it, use store default.
                 if (this.getField('VIRTUAL_HOOK') && settings) {
                     // Logic to avoid overwriting a previous user desire if the XML is old
-                    const has_field_in_xml = event.xml.toString().includes('VIRTUAL_HOOK');
-                    if (!has_field_in_xml && settings.is_enabled) {
+                    const has_vh_field_in_xml = event.xml.toString().includes('VIRTUAL_HOOK');
+                    if (!has_vh_field_in_xml && settings.is_enabled) {
                         this.setFieldValue('TRUE', 'VIRTUAL_HOOK');
                     } else {
                         DBotStore.instance.client.setVirtualHookSettings({ is_enabled: is_checked });
+                    }
+
+                    const is_alternating_checked = this.getFieldValue('ALTERNATING_MARKET') === 'TRUE';
+                    const has_am_field_in_xml = event.xml.toString().includes('ALTERNATING_MARKET');
+                    if (!has_am_field_in_xml && settings.alternating_market) {
+                        this.setFieldValue('TRUE', 'ALTERNATING_MARKET');
+                    } else {
+                        DBotStore.instance.client.setVirtualHookSettings({ alternating_market: is_alternating_checked });
                     }
                 }
             }
@@ -186,10 +204,10 @@ window.Blockly.Blocks.trade_definition_market = {
     },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_market = () => {};
+window.Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_market = () => { };
 
 // Handle Click on VH Settings Label
-document.addEventListener('click', e => {
+document.addEventListener('click', (e) => {
     // Check if the clicked element or any parent has the 'vh-settings' class
     const target = e.target.closest('.vh-settings');
 

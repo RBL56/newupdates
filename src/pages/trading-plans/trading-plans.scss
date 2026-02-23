@@ -286,10 +286,10 @@
                 }
 
                 &.active {
-                    background: rgb(14 158 255 / 10%);
+                    background: rgba(14, 158, 255, 0.1);
                     color: #0e9eff;
                     border: 2px solid #0e9eff;
-                    box-shadow: 0 0 15px rgb(14 158 255 / 20%);
+                    box-shadow: 0 0 15px rgba(14, 158, 255, 0.2);
                 }
             }
         }
@@ -307,32 +307,26 @@
             width: 100%;
             border-collapse: collapse;
             min-width: 800px;
-
             /* Ensure table doesn't squish too much */
 
             th {
                 background: rgb(99 102 241 / 10%);
                 color: #6366f1;
                 padding: 0.8rem;
-
                 /* Reduced padding from 1.2rem */
                 text-align: left;
                 font-size: 0.9rem;
-
                 /* Reduced font size */
                 white-space: nowrap;
-
                 /* Prevent headers from wrapping awkwardly */
             }
 
             td {
                 padding: 0.8rem;
-
                 /* Reduced padding from 1rem */
                 border-bottom: 1px solid var(--border-divider);
                 color: var(--text-prominent);
                 font-size: 0.9rem;
-
                 /* Reduced font size */
                 white-space: nowrap;
             }
@@ -370,7 +364,7 @@
                 justify-content: space-between;
                 align-items: center;
                 padding: 1rem 1.2rem;
-                background: rgb(99 102 241 / 10%);
+                background: rgba(99, 102, 241, 0.1);
                 border-bottom: 1px solid var(--border-divider);
 
                 .day-badge {
@@ -414,7 +408,7 @@
                     }
 
                     &.highlight-green {
-                        background: rgb(16 185 129 / 10%);
+                        background: rgba(16, 185, 129, 0.1);
                         padding: 0.8rem;
                         border-radius: 6px;
 

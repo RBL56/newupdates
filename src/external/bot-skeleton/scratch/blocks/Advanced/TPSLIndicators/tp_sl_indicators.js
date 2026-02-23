@@ -12,9 +12,7 @@ window.Blockly.Blocks.loco_take_profit = {
                 },
             ],
             colour: '#e0e0e0',
-            tooltip: localize(
-                'Your bot is stopped automatically when your profit is more than or equals to your set take profit.'
-            ),
+            tooltip: localize('Your bot is stopped automatically when your profit is more than or equals to your set take profit.'),
             previousStatement: null,
             nextStatement: null,
         });
@@ -28,12 +26,11 @@ window.Blockly.Blocks.loco_take_profit = {
 };
 
 window.Blockly.JavaScript.javascriptGenerator.forBlock.loco_take_profit = block => {
-    const amount =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
-            block,
-            'AMOUNT',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
-        ) || '0';
+    const amount = window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        block,
+        'AMOUNT',
+        window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+    ) || '0';
 
     // Logic to check take profit (placeholder, assumes global context references)
     // This logic ensures the block generates code that can be used in the bot loop
@@ -58,9 +55,7 @@ window.Blockly.Blocks.loco_stop_loss = {
                 },
             ],
             colour: '#e0e0e0',
-            tooltip: localize(
-                'Your bot is stopped automatically when your profit is less than or equals to your set stop loss.'
-            ),
+            tooltip: localize('Your bot is stopped automatically when your profit is less than or equals to your set stop loss.'),
             previousStatement: null,
             nextStatement: null,
         });
@@ -74,12 +69,11 @@ window.Blockly.Blocks.loco_stop_loss = {
 };
 
 window.Blockly.JavaScript.javascriptGenerator.forBlock.loco_stop_loss = block => {
-    const amount =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
-            block,
-            'AMOUNT',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
-        ) || '0';
+    const amount = window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        block,
+        'AMOUNT',
+        window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+    ) || '0';
 
     // Logic to check stop loss
     // Note: Stop loss usually implies negative profit, so we check if total_profit <= -amount (if amount is positive)

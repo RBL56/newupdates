@@ -6,15 +6,16 @@ import Button from '@/components/shared_ui/button';
 import Modal from '@/components/shared_ui/modal';
 import Text from '@/components/shared_ui/text';
 import useActiveAccount from '@/hooks/api/account/useActiveAccount';
-import { useFirebaseCountriesConfig } from '@/hooks/firebase/useFirebaseCountriesConfig';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import useTMB from '@/hooks/useTMB';
+import { useFirebaseCountriesConfig } from '@/hooks/firebase/useFirebaseCountriesConfig';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Header, useDevice, Wrapper } from '@deriv-com/ui';
 import { AppLogo } from '../app-logo';
 import AccountSwitcher from './account-switcher';
 import MobileMenu from './mobile-menu';
+
 import './header.scss';
 
 const AppHeader = observer(() => {
@@ -34,6 +35,10 @@ const AppHeader = observer(() => {
     const { localize, currentLang } = useTranslations();
 
     const { onRenderTMBCheck, isTmbEnabled } = useTMB();
+
+
+
+
 
     // No need for additional state management here since we're handling it in the layout component
 
@@ -78,6 +83,8 @@ const AppHeader = observer(() => {
                                     />
                                 ) : null}
 
+
+
                                 <Button
                                     tertiary
                                     onClick={() => {
@@ -117,6 +124,11 @@ const AppHeader = observer(() => {
                     ) : null}
                 </div>
             </Wrapper>
+
+
+
+
+
         </Header>
     );
 });

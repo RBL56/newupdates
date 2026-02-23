@@ -2,9 +2,9 @@ import classnames from 'classnames';
 import { MessageTypes } from '@/external/bot-skeleton';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
 import { TJournalItemExtra, TJournalItemProps } from '../journal.types';
-import AnalysisMessage from './analysis-message';
 import DateItem from './date-item';
 import FormatMessage from './format-message';
+import AnalysisMessage from './analysis-message';
 
 const getJournalItemContent = (
     message: string | ((value: () => void) => string),

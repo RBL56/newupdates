@@ -213,7 +213,7 @@
                 }
             }
 
-            &:after {
+            &::after {
                 content: '';
                 position: absolute;
                 top: -15px;
@@ -285,12 +285,12 @@
         }
 
         &.active {
-            background-color: $color-purple;
-            box-shadow: 0 0 20px rgba($color-purple, 0.7);
+            background-color: #4a148c;
+            box-shadow: 0 0 20px rgb(156 39 176 / 70%);
             transform: scale(1.1);
 
             .percentage-bar {
-                background: rgba($color-purple, 0.4);
+                background: rgb(156 39 176 / 40%);
             }
 
             span {
@@ -751,14 +751,14 @@
     }
 
     .debug-panel {
-        background: rgb(0 0 0 / 40%);
+        background: rgba(0, 0, 0, 0.4);
         padding: 10px;
         border-radius: 8px;
         margin-top: 15px;
-        font-family: 'Courier New', 'Courier', monospace;
+        font-family: 'Courier New', Courier, monospace;
         font-size: 11px;
-        color: #0f0;
-        border: 1px solid rgb(0 255 0 / 20%);
+        color: #00ff00;
+        border: 1px solid rgba(0, 255, 0, 0.2);
 
         .debug-row {
             display: flex;
@@ -775,23 +775,23 @@
         }
 
         &.stalled {
-            color: #f44;
-            border-color: #f44;
+            color: #ff4444;
+            border-color: #ff4444;
             animation: pulse-debug-border 1s infinite;
         }
     }
 
     @keyframes pulse-debug-border {
         0% {
-            border-color: rgb(255 68 68 / 20%);
+            border-color: rgba(255, 68, 68, 0.2);
         }
 
         50% {
-            border-color: rgb(255 68 68 / 80%);
+            border-color: rgba(255, 68, 68, 0.8);
         }
 
         100% {
-            border-color: rgb(255 68 68 / 20%);
+            border-color: rgba(255, 68, 68, 0.2);
         }
     }
 }

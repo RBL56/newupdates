@@ -122,10 +122,10 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
                         }
                         const should_validate = field.should_have
                             ? field.should_have?.every(item => {
-                                  const item_value = formikData?.[item.key]?.toString();
-                                  if (item.multiple) return item.multiple.includes(item_value);
-                                  return formikData?.[item.key] === item.value;
-                              })
+                                const item_value = formikData?.[item.key]?.toString();
+                                if (item.multiple) return item.multiple.includes(item_value);
+                                return formikData?.[item.key] === item.value;
+                            })
                             : true;
                         if (should_validate && field.name === 'max_stake') {
                             min = +form_data?.stake;

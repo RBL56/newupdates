@@ -47,7 +47,7 @@
                 padding-right: 0.4rem;
             }
 
-            > * {
+            >* {
                 align-self: center;
             }
 
@@ -57,10 +57,10 @@
         }
 
         &--start {
-            background-color: #f0f !important;
+            background-color: #FF00FF !important;
 
             &:hover {
-                background-color: #e600e6 !important;
+                background-color: #E600E6 !important;
             }
         }
     }
@@ -79,7 +79,7 @@
             padding-inline-end: 0.8rem;
         }
 
-        > * {
+        >* {
             @include desktop-screen {
                 align-self: center;
             }
@@ -123,7 +123,7 @@
                 }
             }
 
-            > * {
+            >* {
                 align-self: center;
             }
         }
@@ -192,7 +192,7 @@
             }
 
             // Sync with checked state animation
-            .dc-toggle-switch:checked + .dc-toggle-switch__label .dc-toggle-switch__button {
+            .dc-toggle-switch:checked+.dc-toggle-switch__label .dc-toggle-switch__button {
                 transform: translateX(1.6rem);
             }
         }

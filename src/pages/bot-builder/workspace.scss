@@ -35,7 +35,7 @@
 
 /* Blockly Input Overrides for Theme Awareness */
 .blocklyEditableText {
-    & > rect {
+    &>rect {
         fill: var(--fill-normal) !important;
         rx: 15px; // Rounded corners for pill shape
         ry: 15px;
@@ -44,7 +44,7 @@
         y: 0 !important;
     }
 
-    & > text {
+    &>text {
         fill: var(--text-prominent) !important;
         font-family: 'Inter', sans-serif; // Assuming Inter is available, strictly matching screenshot
         font-weight: bold;

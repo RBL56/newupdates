@@ -44,12 +44,11 @@ window.Blockly.Blocks.last_n_ticks_direction = {
 };
 
 window.Blockly.JavaScript.javascriptGenerator.forBlock.last_n_ticks_direction = block => {
-    const ticksCount =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
-            block,
-            'TICKS_COUNT',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
-        ) || '5';
+    const ticksCount = window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        block,
+        'TICKS_COUNT',
+        window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+    ) || '5';
     const direction = block.getFieldValue('DIRECTION');
 
     const code = `(function() {

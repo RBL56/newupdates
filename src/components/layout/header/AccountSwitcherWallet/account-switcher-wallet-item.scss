@@ -24,7 +24,7 @@
             opacity: 0.8;
         }
 
-        &:hover:not(&--active, :disabled) {
+        &:hover:not(&--active):not(:disabled) {
             background-color: var(--general-hover);
         }
 

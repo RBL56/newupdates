@@ -5,8 +5,7 @@
 .vh-settings {
     cursor: pointer;
     text-decoration: underline;
-    fill: #ffa500 !important;
-
+    fill: #FFA500 !important;
     /* Make it orange-ish to stand out */
     font-weight: bold;
 }
@@ -14,7 +13,7 @@
 .virtual-hook-modal {
     .dc-modal__container {
         background-color: #151725;
-        color: #fff;
+        color: #ffffff;
         border: 1px solid #333;
         width: 350px !important;
     }
@@ -40,18 +39,18 @@
         .icon-container {
             width: 48px;
             height: 48px;
-            background-color: #ffa500;
+            background-color: #FFA500;
             border-radius: 10px;
             display: flex;
             justify-content: center;
             align-items: center;
             margin-bottom: 1rem;
-            box-shadow: 0 0 20px rgb(255 165 0 / 30%);
+            box-shadow: 0 0 20px rgba(255, 165, 0, 0.3);
 
             svg {
                 width: 24px;
                 height: 24px;
-                fill: #fff;
+                fill: #ffffff;
             }
         }
 
@@ -76,7 +75,7 @@
 
         .toggle-label {
             font-weight: bold;
-            color: #ffa500;
+            color: #FFA500;
             text-transform: uppercase;
             font-size: 1.1rem;
         }
@@ -87,7 +86,7 @@
     }
 
     &__setting-card {
-        background-color: #1f2235;
+        background-color: #1F2235;
         border-radius: 8px;
         padding: 0.8rem;
         margin-bottom: 0.8rem;
@@ -121,7 +120,7 @@
             .setting-info {
                 h3 {
                     font-size: 1.2rem;
-                    margin: 0 0 0.2rem;
+                    margin: 0 0 0.2rem 0;
                     color: white;
                 }
 
@@ -147,7 +146,7 @@
                 font-size: 1.1rem;
 
                 &:focus {
-                    border-color: #ffa500;
+                    border-color: #FFA500;
                     outline: none;
                 }
             }
@@ -182,7 +181,7 @@
             }
 
             span {
-                color: #ffa500;
+                color: #FFA500;
                 font-weight: bold;
                 font-size: 1.1rem;
             }
@@ -191,7 +190,7 @@
 
     &__save-btn {
         width: 100%;
-        background-color: #ffa500;
+        background-color: #FFA500;
         color: #000;
         border: none;
         padding: 1rem;

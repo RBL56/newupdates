@@ -1,11 +1,11 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import Dialog from '@/components/shared_ui/dialog';
-import Text from '@/components/shared_ui/text';
-import ToggleSwitch from '@/components/shared_ui/toggle-switch';
 import { useStore } from '@/hooks/useStore';
 import { Localize, localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
+import ToggleSwitch from '@/components/shared_ui/toggle-switch';
+import Text from '@/components/shared_ui/text';
 import { rudderStackSendOpenEvent } from '../../../analytics/rudderstack-common-events';
 import ToolbarButton from './toolbar-button';
 import WorkspaceGroup from './workspace-group';
@@ -65,6 +65,8 @@ const Toolbar = observer(() => {
                         </>
                     )}
 
+
+
                     {isDesktop && <WorkspaceGroup />}
                 </div>
             </div>
@@ -96,6 +98,7 @@ const Toolbar = observer(() => {
                     <Localize i18n_default_text='Any unsaved changes will be lost.' />
                 )}
             </Dialog>
+
         </React.Fragment>
     );
 });

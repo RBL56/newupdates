@@ -36,12 +36,11 @@ window.Blockly.Blocks.nth_last_digit = {
 };
 
 window.Blockly.JavaScript.javascriptGenerator.forBlock.nth_last_digit = block => {
-    const nthTick =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
-            block,
-            'NTH_TICK',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
-        ) || '1';
+    const nthTick = window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        block,
+        'NTH_TICK',
+        window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+    ) || '1';
 
     const code = `Bot.getNthLastDigit(${nthTick})`;
     return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];

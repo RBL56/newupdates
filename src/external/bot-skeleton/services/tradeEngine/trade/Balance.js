@@ -61,8 +61,7 @@ export default Engine =>
             const request_start = performance.now();
 
             // Request immediate balance update
-            return api_base.api
-                .send({ balance: 1, subscribe: 1 })
+            return api_base.api.send({ balance: 1, subscribe: 1 })
                 .then(response => {
                     const request_time = performance.now() - request_start;
                     console.log(`[Balance] Refresh completed in ${request_time.toFixed(2)}ms`);

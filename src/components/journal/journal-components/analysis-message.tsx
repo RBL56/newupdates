@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
-import { LabelPairedCircleCheckMdFillIcon, LabelPairedCircleXmarkMdFillIcon } from '@deriv/quill-icons/LabelPaired';
 import { Localize } from '@deriv-com/translations';
+import { LabelPairedCircleCheckMdFillIcon, LabelPairedCircleXmarkMdFillIcon } from '@deriv/quill-icons/LabelPaired';
 
 type TAnalysisData = {
     type: string;
@@ -17,16 +17,11 @@ const AnalysisMessage = ({ data }: { data: TAnalysisData }) => {
 
     const getConditionText = () => {
         switch (condition) {
-            case 'LT':
-                return 'less than';
-            case 'GT':
-                return 'greater than';
-            case 'EQ':
-                return 'equal to';
-            case 'NEQ':
-                return 'not equal to';
-            default:
-                return condition;
+            case 'LT': return 'less than';
+            case 'GT': return 'greater than';
+            case 'EQ': return 'equal to';
+            case 'NEQ': return 'not equal to';
+            default: return condition;
         }
     };
 
@@ -39,15 +34,13 @@ const AnalysisMessage = ({ data }: { data: TAnalysisData }) => {
                         market,
                         condition: getConditionText(),
                         digit,
-                        digits: digits.join(', '),
+                        digits: digits.join(', ')
                     }}
                 />
-                <span
-                    className={classnames('analysis-message__result', {
-                        'analysis-message__result--true': result,
-                        'analysis-message__result--false': !result,
-                    })}
-                >
+                <span className={classnames('analysis-message__result', {
+                    'analysis-message__result--true': result,
+                    'analysis-message__result--false': !result,
+                })}>
                     {result ? (
                         <>
                             <LabelPairedCircleCheckMdFillIcon fill='var(--status-success)' iconSize='sm' />

@@ -1,12 +1,12 @@
 import React from 'react';
 import Cookies from 'js-cookie';
-import LoadingScreen from '@/components/loading-screen/loading-screen';
 import { generateDerivApiInstance } from '@/external/bot-skeleton/services/api/appId';
 import { observer as globalObserver } from '@/external/bot-skeleton/utils/observer';
 import { useOfflineDetection } from '@/hooks/useOfflineDetection';
 import { clearAuthData } from '@/utils/auth-utils';
 import { localize } from '@deriv-com/translations';
 import { URLUtils } from '@deriv-com/utils';
+import LoadingScreen from '@/components/loading-screen/loading-screen';
 import App from './App';
 
 // Extend Window interface to include is_tmb_enabled property

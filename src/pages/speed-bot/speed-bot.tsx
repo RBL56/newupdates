@@ -25,6 +25,7 @@ type Transaction = {
     batch_size?: number;
 };
 
+
 // Journal Entry Type
 type JournalEntry = {
     id: number;
@@ -106,6 +107,7 @@ const SpeedBot = observer(() => {
     const [lastTickColor, setLastTickColor] = useState('');
     const [journal, setJournal] = useState<JournalEntry[]>([]);
 
+
     const [activeTab, setActiveTab] = useState<'summary' | 'transactions' | 'journal'>('transactions');
 
     const liveDigitsRef = useRef<HTMLDivElement>(null);
@@ -113,7 +115,7 @@ const SpeedBot = observer(() => {
     const liveDigitsBufferRef = useRef<{ value: number; color: string }[]>([]);
     const ldpCellsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-    const pendingBatchRef = useRef<Map<string, { id: number; size: number }>>(new Map());
+    const pendingBatchRef = useRef<Map<string, { id: number, size: number }>>(new Map());
 
     const digitHistoryRef = useRef<number[]>([]);
     const lastResultRef = useRef<'won' | 'lost' | null>(null);
@@ -186,177 +188,96 @@ const SpeedBot = observer(() => {
         }
     }, [dashboard.active_tab, run_panel, showToast]);
 
-    useEffect(() => {
-        volatilityRef.current = volatility;
-    }, [volatility]);
-    useEffect(() => {
-        tradeTypeRef.current = tradeType;
-    }, [tradeType]);
-    useEffect(() => {
-        ticksRef.current = ticks;
-    }, [ticks]);
-    useEffect(() => {
-        bulkEnabledRef.current = bulkEnabled;
-    }, [bulkEnabled]);
-    useEffect(() => {
-        bulkTradesRef.current = bulkTrades;
-    }, [bulkTrades]);
-    useEffect(() => {
-        entryEnabledRef.current = entryEnabled;
-    }, [entryEnabled]);
-    useEffect(() => {
-        entryPointRef.current = entryPoint;
-    }, [entryPoint]);
-    useEffect(() => {
-        entryDigitRef.current = entryDigit;
-    }, [entryDigit]);
-    useEffect(() => {
-        digitRangeStartRef.current = digitRangeStart;
-    }, [digitRangeStart]);
-    useEffect(() => {
-        digitRangeEndRef.current = digitRangeEnd;
-    }, [digitRangeEnd]);
-    useEffect(() => {
-        predictionModeRef.current = predictionMode;
-    }, [predictionMode]);
-    useEffect(() => {
-        singleDigitRef.current = singleDigit;
-    }, [singleDigit]);
-    useEffect(() => {
-        singleStakeRef.current = singleStake;
-    }, [singleStake]);
-    useEffect(() => {
-        predPreRef.current = predPre;
-    }, [predPre]);
-    useEffect(() => {
-        predPostRef.current = predPost;
-    }, [predPost]);
-    useEffect(() => {
-        recoveryContractTypeRef.current = recoveryContractType;
-    }, [recoveryContractType]);
-    useEffect(() => {
-        predictionsRef.current = predictions;
-    }, [predictions]);
-    useEffect(() => {
-        runModeRef.current = runMode;
-    }, [runMode]);
+    useEffect(() => { volatilityRef.current = volatility; }, [volatility]);
+    useEffect(() => { tradeTypeRef.current = tradeType; }, [tradeType]);
+    useEffect(() => { ticksRef.current = ticks; }, [ticks]);
+    useEffect(() => { bulkEnabledRef.current = bulkEnabled; }, [bulkEnabled]);
+    useEffect(() => { bulkTradesRef.current = bulkTrades; }, [bulkTrades]);
+    useEffect(() => { entryEnabledRef.current = entryEnabled; }, [entryEnabled]);
+    useEffect(() => { entryPointRef.current = entryPoint; }, [entryPoint]);
+    useEffect(() => { entryDigitRef.current = entryDigit; }, [entryDigit]);
+    useEffect(() => { digitRangeStartRef.current = digitRangeStart; }, [digitRangeStart]);
+    useEffect(() => { digitRangeEndRef.current = digitRangeEnd; }, [digitRangeEnd]);
+    useEffect(() => { predictionModeRef.current = predictionMode; }, [predictionMode]);
+    useEffect(() => { singleDigitRef.current = singleDigit; }, [singleDigit]);
+    useEffect(() => { singleStakeRef.current = singleStake; }, [singleStake]);
+    useEffect(() => { predPreRef.current = predPre; }, [predPre]);
+    useEffect(() => { predPostRef.current = predPost; }, [predPost]);
+    useEffect(() => { recoveryContractTypeRef.current = recoveryContractType; }, [recoveryContractType]);
+    useEffect(() => { predictionsRef.current = predictions; }, [predictions]);
+    useEffect(() => { runModeRef.current = runMode; }, [runMode]);
 
-    useEffect(() => {
-        isAutoTradingRef.current = isAutoTrading;
-    }, [isAutoTrading]);
-    useEffect(() => {
-        martingaleEnabledRef.current = martingaleEnabled;
-    }, [martingaleEnabled]);
-    useEffect(() => {
-        martingaleMultiplierRef.current = martingaleMultiplier;
-    }, [martingaleMultiplier]);
-    useEffect(() => {
-        stakeRef.current = stake;
-    }, [stake]);
-    useEffect(() => {
-        currentStakeRef.current = currentStake;
-    }, [currentStake]);
-    useEffect(() => {
-        consecutiveLossesRef.current = consecutiveLosses;
-    }, [consecutiveLosses]);
-    useEffect(() => {
-        isTradingRef.current = isTrading;
-    }, [isTrading]);
-    useEffect(() => {
-        totalProfitRef.current = totalProfit;
-    }, [totalProfit]);
-    useEffect(() => {
-        stopLossTotalRef.current = stopLossTotal;
-    }, [stopLossTotal]);
-    useEffect(() => {
-        stopLossTotalEnabledRef.current = stopLossTotalEnabled;
-    }, [stopLossTotalEnabled]);
-    useEffect(() => {
-        takeProfitTotalRef.current = takeProfitTotal;
-    }, [takeProfitTotal]);
-    useEffect(() => {
-        takeProfitEnabledRef.current = takeProfitEnabled;
-    }, [takeProfitEnabled]);
-    useEffect(() => {
-        stopLossConsecutiveRef.current = stopLossConsecutive;
-    }, [stopLossConsecutive]);
-    useEffect(() => {
-        stopLossConsecutiveEnabledRef.current = stopLossConsecutiveEnabled;
-    }, [stopLossConsecutiveEnabled]);
-    useEffect(() => {
-        transactionsRef.current = transactions;
-    }, [transactions]);
+    useEffect(() => { isAutoTradingRef.current = isAutoTrading; }, [isAutoTrading]);
+    useEffect(() => { martingaleEnabledRef.current = martingaleEnabled; }, [martingaleEnabled]);
+    useEffect(() => { martingaleMultiplierRef.current = martingaleMultiplier; }, [martingaleMultiplier]);
+    useEffect(() => { stakeRef.current = stake; }, [stake]);
+    useEffect(() => { currentStakeRef.current = currentStake; }, [currentStake]);
+    useEffect(() => { consecutiveLossesRef.current = consecutiveLosses; }, [consecutiveLosses]);
+    useEffect(() => { isTradingRef.current = isTrading; }, [isTrading]);
+    useEffect(() => { totalProfitRef.current = totalProfit; }, [totalProfit]);
+    useEffect(() => { stopLossTotalRef.current = stopLossTotal; }, [stopLossTotal]);
+    useEffect(() => { stopLossTotalEnabledRef.current = stopLossTotalEnabled; }, [stopLossTotalEnabled]);
+    useEffect(() => { takeProfitTotalRef.current = takeProfitTotal; }, [takeProfitTotal]);
+    useEffect(() => { takeProfitEnabledRef.current = takeProfitEnabled; }, [takeProfitEnabled]);
+    useEffect(() => { stopLossConsecutiveRef.current = stopLossConsecutive; }, [stopLossConsecutive]);
+    useEffect(() => { stopLossConsecutiveEnabledRef.current = stopLossConsecutiveEnabled; }, [stopLossConsecutiveEnabled]);
+    useEffect(() => { transactionsRef.current = transactions; }, [transactions]);
 
-    const addJournal = useCallback(
-        (msg: string, type: JournalEntry['type'] = 'info', barrier?: number | string) => {
-            setJournal(prev =>
-                [
-                    {
-                        id: Date.now() + Math.random(),
-                        message: msg,
-                        type,
-                        timestamp: Date.now(),
-                        is_demo: client.is_virtual,
-                        volatility: volatilityRef.current,
-                        barrier,
-                    },
-                    ...prev,
-                ].slice(0, 100)
-            ); // Keep last 100
-        },
-        [client.is_virtual]
-    ); // volatilityRef.current is used, so no need to depend on volatility state
 
-    const handleTradeCompletion = useCallback(
-        (poc: any, status: Transaction['status']) => {
-            const contractId = String(poc.contract_id);
-            if (!activeContractIdsRef.current.has(contractId)) return;
+    const addJournal = useCallback((msg: string, type: JournalEntry['type'] = 'info', barrier?: number | string) => {
+        setJournal(prev => [{
+            id: Date.now() + Math.random(),
+            message: msg,
+            type,
+            timestamp: Date.now(),
+            is_demo: client.is_virtual,
+            volatility: volatilityRef.current,
+            barrier
+        }, ...prev].slice(0, 100)); // Keep last 100
+    }, [client.is_virtual]); // volatilityRef.current is used, so no need to depend on volatility state
 
-            lastResultRef.current = status;
-            activeContractIdsRef.current.delete(contractId);
+    const handleTradeCompletion = useCallback((poc: any, status: Transaction['status']) => {
+        const contractId = String(poc.contract_id);
+        if (!activeContractIdsRef.current.has(contractId)) return;
 
-            if (activeContractIdsRef.current.size === 0) {
-                setIsTrading(false);
-                isTradingRef.current = false;
-            }
+        lastResultRef.current = status;
+        activeContractIdsRef.current.delete(contractId);
 
-            const profitStr = poc.profit !== undefined ? Number(poc.profit).toFixed(2) : '0.00';
-            const exitDigit = status === 'won' || status === 'lost' ? poc.exit_tick_display_value?.slice(-1) : null;
+        if (activeContractIdsRef.current.size === 0) {
+            setIsTrading(false);
+            isTradingRef.current = false;
+        }
 
-            console.log(
-                `[SpeedBot] Trade completed: ${status.toUpperCase()} | Profit: ${profitStr} | Digit: ${exitDigit}`
-            );
-            addJournal(
-                `Trade ${status.toUpperCase()}: Profit ${profitStr}${exitDigit ? `, Digit ${exitDigit}` : ''}`,
-                status === 'won' ? 'success' : 'error'
-            );
+        const profitStr = poc.profit !== undefined ? Number(poc.profit).toFixed(2) : '0.00';
+        const exitDigit = status === 'won' || status === 'lost' ? poc.exit_tick_display_value?.slice(-1) : null;
 
-            if (!isAutoTradingRef.current) {
-                showToast(
-                    `Trade ${status.toUpperCase()}! ${exitDigit ? `Digit: ${exitDigit}` : ''} Profit: ${profitStr}`
+        console.log(`[SpeedBot] Trade completed: ${status.toUpperCase()} | Profit: ${profitStr} | Digit: ${exitDigit}`);
+        addJournal(`Trade ${status.toUpperCase()}: Profit ${profitStr}${exitDigit ? `, Digit ${exitDigit}` : ''}`, status === 'won' ? 'success' : 'error');
+
+        if (!isAutoTradingRef.current) {
+            showToast(`Trade ${status.toUpperCase()}! ${exitDigit ? `Digit: ${exitDigit}` : ''} Profit: ${profitStr}`);
+        }
+
+        // Refresh balance
+        if (api_base.api) {
+            api_base.api.send({ balance: 1, subscribe: 1 });
+        }
+
+        // Process stats
+        if (status === 'won') {
+            setConsecutiveLosses(0);
+            setCurrentStake(stakeRef.current);
+            setLastResultDisplay('WIN');
+        } else if (status === 'lost') {
+            setConsecutiveLosses(prev => prev + 1);
+            if (martingaleEnabledRef.current) {
+                setCurrentStake(prev =>
+                    Number((prev * martingaleMultiplierRef.current).toFixed(2))
                 );
             }
-
-            // Refresh balance
-            if (api_base.api) {
-                api_base.api.send({ balance: 1, subscribe: 1 });
-            }
-
-            // Process stats
-            if (status === 'won') {
-                setConsecutiveLosses(0);
-                setCurrentStake(stakeRef.current);
-                setLastResultDisplay('WIN');
-            } else if (status === 'lost') {
-                setConsecutiveLosses(prev => prev + 1);
-                if (martingaleEnabledRef.current) {
-                    setCurrentStake(prev => Number((prev * martingaleMultiplierRef.current).toFixed(2)));
-                }
-                setLastResultDisplay('LOSS');
-            }
-        },
-        [showToast]
-    );
+            setLastResultDisplay('LOSS');
+        }
+    }, [showToast]);
 
     // -- Helpers --
     const getSymbol = (vol: string) => {
@@ -447,7 +368,12 @@ const SpeedBot = observer(() => {
             const prev = lastDigits[lastDigits.length - 2];
             const start = digitRangeStartRef.current;
             const end = digitRangeEndRef.current;
-            return prev >= start && prev <= end && latest >= start && latest <= end;
+            return (
+                prev >= start &&
+                prev <= end &&
+                latest >= start &&
+                latest <= end
+            );
         }
         if (entryPointRef.current === 'last_even') {
             return latest % 2 === 0;
@@ -467,14 +393,7 @@ const SpeedBot = observer(() => {
         return false;
     };
 
-    const executeTrade = async (
-        req: any,
-        tradeStake: number,
-        contract_type: string,
-        _prefetchedProposal?: any,
-        batchId?: number,
-        batchSize?: number
-    ) => {
+    const executeTrade = async (req: any, tradeStake: number, contract_type: string, _prefetchedProposal?: any, batchId?: number, batchSize?: number) => {
         try {
             // Speed bot optimization: Buy by Parameters (Single round-trip)
             console.log(`[SpeedBot] Executing direct buy for ${contract_type}:`, req);
@@ -496,7 +415,7 @@ const SpeedBot = observer(() => {
                     symbol: req.symbol,
                     barrier: req.barrier,
                 },
-                passthrough: req.passthrough,
+                passthrough: req.passthrough
             };
 
             const buyRes: any = await api_base.api.send(buyRequest);
@@ -514,10 +433,9 @@ const SpeedBot = observer(() => {
                     const existing = prev.find(tx => String(tx.id) === String(buyRes.buy.contract_id));
                     if (existing) {
                         if (existing.batch_id) return prev;
-                        return prev.map(tx =>
-                            String(tx.id) === String(buyRes.buy.contract_id)
-                                ? { ...tx, batch_id: batchId, batch_size: batchSize }
-                                : tx
+                        return prev.map(tx => String(tx.id) === String(buyRes.buy.contract_id)
+                            ? { ...tx, batch_id: batchId, batch_size: batchSize }
+                            : tx
                         );
                     }
 
@@ -532,7 +450,7 @@ const SpeedBot = observer(() => {
                         timestamp: Date.now(),
                         barrier: req.barrier,
                         batch_id: batchId,
-                        batch_size: batchSize,
+                        batch_size: batchSize
                     };
                     return [newTx, ...prev];
                 });
@@ -546,7 +464,7 @@ const SpeedBot = observer(() => {
                 botObserver.emit('bot.running');
                 botObserver.emit('contract.status', {
                     id: 'contract.purchase_received',
-                    buy: buyRes.buy,
+                    buy: buyRes.buy
                 });
 
                 // Only show success toast for single trades to avoid spam
@@ -583,8 +501,9 @@ const SpeedBot = observer(() => {
                 is_virtual: client.is_virtual,
                 is_logged_in: client.is_logged_in,
                 isAuthorized,
-                api_exists: !!api_base.api,
+                api_exists: !!api_base.api
             });
+
 
             // REMOVED Virtual Account Check
             /*if (!client.is_virtual) {
@@ -614,11 +533,10 @@ const SpeedBot = observer(() => {
             const contract_type = getContractType();
             // Base Stake: usage depends on mode. For 'multi', we use individual stakes.
             // For others, we use customStake (if auto martanigaling) or global 'stake'.
-            // UPDATE: If Martingale is enabled, 'Manual Trade' should probably use 'currentStake'
+            // UPDATE: If Martingale is enabled, 'Manual Trade' should probably use 'currentStake' 
             // to continue the sequence, unless a specific customStake was passed (e.g. from specific card).
             // If it's a "Global Trade Once", customStake is undefined.
-            const defaultStake =
-                safeStake || (martingaleEnabledRef.current ? currentStakeRef.current : stakeRef.current);
+            const defaultStake = safeStake || (martingaleEnabledRef.current ? currentStakeRef.current : stakeRef.current);
 
             const configs: { barrier?: number; stake: number }[] = [];
 
@@ -626,7 +544,8 @@ const SpeedBot = observer(() => {
             // If customBarrier is provided, we are trading a SPECIFIC prediction (or single override)
             if (safeBarrier !== undefined) {
                 configs.push({ barrier: safeBarrier, stake: defaultStake });
-            } else if (['DIGITMATCH', 'DIGITDIFF', 'DIGITOVER', 'DIGITUNDER'].includes(contract_type)) {
+            }
+            else if (['DIGITMATCH', 'DIGITDIFF', 'DIGITOVER', 'DIGITUNDER'].includes(contract_type)) {
                 if (predictionModeRef.current === 'multi' && predictionsRef.current.length > 0) {
                     // Multi Mode: Trade ALL predictions with their specific stakes (unless customBarrier set)
                     predictionsRef.current.forEach(p => {
@@ -634,10 +553,8 @@ const SpeedBot = observer(() => {
                     });
                 } else if (predictionModeRef.current === 'recovery') {
                     // Recovery Mode Logic
-                    const val =
-                        consecutiveLossesRef.current > 0 ? Number(predPostRef.current) : Number(predPreRef.current);
-                    const contractType =
-                        consecutiveLossesRef.current > 0 ? recoveryContractTypeRef.current : contract_type;
+                    const val = consecutiveLossesRef.current > 0 ? Number(predPostRef.current) : Number(predPreRef.current);
+                    const contractType = consecutiveLossesRef.current > 0 ? recoveryContractTypeRef.current : contract_type;
                     configs.push({ barrier: val, stake: defaultStake, contract_type: contractType });
                 } else {
                     // Single / Default
@@ -693,14 +610,12 @@ const SpeedBot = observer(() => {
                         ...baseReq,
                         amount: cfg.stake,
                         // Add unique passthrough for traceability in the batch
-                        passthrough: { batch_idx: i, batch_id: batchId || Date.now() },
+                        passthrough: { batch_idx: i, batch_id: batchId || Date.now() }
                     };
                     if (cfg.barrier !== undefined) specificReq.barrier = cfg.barrier;
                     if (cfg.contract_type) specificReq.contract_type = cfg.contract_type;
 
-                    promises.push(
-                        executeTrade(specificReq, cfg.stake, specificReq.contract_type, undefined, batchId, totalTrades)
-                    );
+                    promises.push(executeTrade(specificReq, cfg.stake, specificReq.contract_type, undefined, batchId, totalTrades));
                 }
             }
 
@@ -741,8 +656,9 @@ const SpeedBot = observer(() => {
             is_virtual: client.is_virtual,
             is_logged_in: client.is_logged_in,
             isAuthorized,
-            api_exists: !!api_base.api,
+            api_exists: !!api_base.api
         });
+
 
         // REMOVED Virtual Account Check
         /*if (!client.is_virtual) {
@@ -795,7 +711,10 @@ const SpeedBot = observer(() => {
             showToast('Take Profit Reached!');
             return;
         }
-        if (stopLossConsecutiveEnabledRef.current && consecutiveLossesRef.current >= stopLossConsecutiveRef.current) {
+        if (
+            stopLossConsecutiveEnabledRef.current &&
+            consecutiveLossesRef.current >= stopLossConsecutiveRef.current
+        ) {
             setIsAutoTrading(false);
             showToast('Max Consecutive Losses Reached!');
             return;
@@ -909,7 +828,7 @@ const SpeedBot = observer(() => {
             isMounted = false;
             // Unsubscribe from stream
             if (activeSubscriptionId && api_base.api) {
-                api_base.api.send({ forget: activeSubscriptionId }).catch(() => {});
+                api_base.api.send({ forget: activeSubscriptionId }).catch(() => { });
                 activeSubscriptionId = null;
                 subscriptionIdRef.current = null;
             }
@@ -974,11 +893,12 @@ const SpeedBot = observer(() => {
                         // Since for loop is old->new, we can just push to a temp array then slice
                     });
 
+
                     // We want newest first in the buffer for display
                     // The loop above gave us historical order
                     // Let's re-process last 40 safely
                     const last40 = res.history.prices.slice(-40);
-                    // Actually, updateLiveDigits unshifts (adds to front), so we should feed it Oldest -> Newest?
+                    // Actually, updateLiveDigits unshifts (adds to front), so we should feed it Oldest -> Newest? 
                     // No, unshift adds to front, so if we feed 1, then 2, buffer is [2, 1].
                     // So we want Oldest -> Newest feed to have Newest at front.
 
@@ -1036,27 +956,17 @@ const SpeedBot = observer(() => {
 
             if (!tick) return;
 
-            const incomingSymbol = String(tick.symbol || msg.symbol || '')
-                .trim()
-                .toUpperCase();
+            const incomingSymbol = String(tick.symbol || msg.symbol || '').trim().toUpperCase();
             const targetSymbol = symbol.toUpperCase();
 
             // More robust matching: exact, without _INDEX, or if one contains the other
-            const isMatch =
-                incomingSymbol === targetSymbol ||
+            const isMatch = incomingSymbol === targetSymbol ||
                 incomingSymbol.replace('_INDEX', '') === targetSymbol.replace('_INDEX', '') ||
                 (incomingSymbol.length > 3 && targetSymbol.includes(incomingSymbol)) ||
                 (targetSymbol.length > 3 && incomingSymbol.includes(targetSymbol));
 
             if (isMatch) {
-                const quote =
-                    tick.quote !== undefined
-                        ? tick.quote
-                        : tick.close !== undefined
-                          ? tick.close
-                          : tick.last_tick !== undefined
-                            ? tick.last_tick
-                            : undefined;
+                const quote = tick.quote !== undefined ? tick.quote : (tick.close !== undefined ? tick.close : (tick.last_tick !== undefined ? tick.last_tick : undefined));
                 if (quote === undefined || quote === null) return;
 
                 setTicksCount(prev => prev + 1);
@@ -1068,9 +978,7 @@ const SpeedBot = observer(() => {
                 setLastTickColor(color);
 
                 // DEBUG LOG: Movement proof
-                console.log(
-                    `[SpeedBot] Tick received: ${quote} | Precision: ${precision} | Extracted Digit: ${digit} | Symbol: ${incomingSymbol}`
-                );
+                console.log(`[SpeedBot] Tick received: ${quote} | Precision: ${precision} | Extracted Digit: ${digit} | Symbol: ${incomingSymbol}`);
 
                 // 1. Direct DOM Update for Speed (Live Digits)
                 updateLiveDigits({ value: digit, color });
@@ -1111,8 +1019,7 @@ const SpeedBot = observer(() => {
     useEffect(() => {
         if (!api_base.api) return;
 
-        const isEnded = (poc: any) =>
-            poc.is_sold || poc.status === 'won' || poc.status === 'lost' || poc.status === 'sold';
+        const isEnded = (poc: any) => poc.is_sold || poc.status === 'won' || poc.status === 'lost' || poc.status === 'sold';
 
         const handleMessage = (response: any) => {
             if (response.proposal_open_contract) {
@@ -1124,17 +1031,13 @@ const SpeedBot = observer(() => {
                 // addJournal(`Stream: ${contractId} ${poc.status}`, 'info');
 
                 // Use Ref for check to avoid stale closure issues
-                const isKnownContract =
-                    activeContractIdsRef.current.has(contractId) ||
+                const isKnownContract = activeContractIdsRef.current.has(contractId) ||
                     transactionsRef.current.some(t => String(t.id) === contractId);
 
                 if (isKnownContract) {
                     // Log significant updates
                     if (poc.status === 'won' || poc.status === 'lost') {
-                        addJournal(
-                            `Result: ${contractId} ${poc.status.toUpperCase()}`,
-                            poc.status === 'won' ? 'success' : 'error'
-                        );
+                        addJournal(`Result: ${contractId} ${poc.status.toUpperCase()}`, poc.status === 'won' ? 'success' : 'error');
                     }
                 }
 
@@ -1146,12 +1049,8 @@ const SpeedBot = observer(() => {
                     if (existingIndex === -1) {
                         if (isActive) {
                             console.log(`[SpeedBot] New Active Transaction found for ${contractId}`);
-                            const status: Transaction['status'] =
-                                poc.status === 'won' || Number(poc.profit) > 0
-                                    ? 'won'
-                                    : poc.status === 'lost' || Number(poc.profit) < 0
-                                      ? 'lost'
-                                      : 'running';
+                            const status: Transaction['status'] = (poc.status === 'won' || Number(poc.profit) > 0) ? 'won' :
+                                (poc.status === 'lost' || Number(poc.profit) < 0) ? 'lost' : 'running';
 
                             const batchInfo = pendingBatchRef.current.get(contractId);
 
@@ -1165,7 +1064,7 @@ const SpeedBot = observer(() => {
                                 status,
                                 timestamp: Date.now(),
                                 batch_id: batchInfo?.id,
-                                batch_size: batchInfo?.size,
+                                batch_size: batchInfo?.size
                             };
 
                             if (poc.is_sold || poc.status === 'won' || poc.status === 'lost' || poc.status === 'sold') {
@@ -1181,7 +1080,7 @@ const SpeedBot = observer(() => {
                     let status: Transaction['status'] = tx.status;
 
                     if (poc.is_sold || poc.status === 'won' || poc.status === 'lost' || poc.status === 'sold') {
-                        status = poc.status === 'won' || Number(poc.profit) > 0 ? 'won' : 'lost';
+                        status = (poc.status === 'won' || Number(poc.profit) > 0) ? 'won' : 'lost';
                         if (isActive) {
                             statusToProcess = status;
                         }
@@ -1197,28 +1096,11 @@ const SpeedBot = observer(() => {
                         return isNaN(d) ? undefined : d;
                     };
 
-                    const profit =
-                        poc.profit !== undefined
-                            ? Number(poc.profit).toFixed(2)
-                            : poc.bid_price && poc.buy_price
-                              ? Number(poc.bid_price - poc.buy_price).toFixed(2)
-                              : tx.profit;
+                    const profit = poc.profit !== undefined ? Number(poc.profit).toFixed(2) :
+                        (poc.bid_price && poc.buy_price ? Number(poc.bid_price - poc.buy_price).toFixed(2) : tx.profit);
 
-                    const exit_digit =
-                        lastDigit(poc.exit_tick_display_value) ??
-                        lastDigit(poc.exit_spot) ??
-                        lastDigit(poc.tick_val) ??
-                        lastDigit(
-                            poc.tick_stream
-                                ? poc.tick_stream[poc.tick_stream.length - 1]?.tick_display_value
-                                : undefined
-                        ) ??
-                        tx.exit_digit;
-                    const entry_digit =
-                        lastDigit(poc.entry_tick_display_value) ??
-                        lastDigit(poc.entry_spot) ??
-                        lastDigit(poc.tick_stream ? poc.tick_stream[0]?.tick_display_value : undefined) ??
-                        tx.entry_digit;
+                    const exit_digit = lastDigit(poc.exit_tick_display_value) ?? lastDigit(poc.exit_spot) ?? lastDigit(poc.tick_val) ?? lastDigit(poc.tick_stream ? poc.tick_stream[poc.tick_stream.length - 1]?.tick_display_value : undefined) ?? tx.exit_digit;
+                    const entry_digit = lastDigit(poc.entry_tick_display_value) ?? lastDigit(poc.entry_spot) ?? lastDigit(poc.tick_stream ? poc.tick_stream[0]?.tick_display_value : undefined) ?? tx.entry_digit;
 
                     const batchInfo = pendingBatchRef.current.get(contractId);
                     const updatedTx = {
@@ -1228,7 +1110,7 @@ const SpeedBot = observer(() => {
                         exit_digit,
                         entry_digit,
                         batch_id: tx.batch_id || batchInfo?.id,
-                        batch_size: tx.batch_size || batchInfo?.size,
+                        batch_size: tx.batch_size || batchInfo?.size
                     };
                     const next = [...prev];
                     next[existingIndex] = updatedTx;
@@ -1318,6 +1200,9 @@ const SpeedBot = observer(() => {
         setPredictions(prev => prev.map(p => (p.id === id ? { ...p, [field]: value } : p)));
     };
 
+
+
+
     const handleDigitClick = (d: number) => {
         showToast(`Digit ${d} selected!`);
 
@@ -1331,6 +1216,12 @@ const SpeedBot = observer(() => {
         }
     };
 
+
+
+
+
+
+
     // -- Result Processing (Manual & Auto) --
     // Handled in Transaction Monitor via handleMessage for speed and reliability.
 
@@ -1343,19 +1234,18 @@ const SpeedBot = observer(() => {
 
             activeIds.forEach(id => {
                 // Explicitly fetch status without subscribe to check
-                api_base.api
-                    .send({ proposal_open_contract: 1, contract_id: Number(id) })
+                api_base.api.send({ proposal_open_contract: 1, contract_id: Number(id) })
                     .then((res: any) => {
                         if (res.proposal_open_contract) {
                             const poc = res.proposal_open_contract;
                             if (poc.is_sold || poc.status === 'won' || poc.status === 'lost') {
                                 console.log('[SpeedBot] Poller found finished contract:', id);
                                 // The handleMessage observer *should* pick this up because we are broadcasting to it?
-                                // No, handleMessage is subscribed to api.onMessage.
+                                // No, handleMessage is subscribed to api.onMessage. 
                                 // api.send response is handled here in .then.
                                 // So we need to manually trigger the update logic or reuse it.
                                 // Ideally, we just emit it to the stream manually or call a shared handler.
-                                // Let's just create a synthetic event for handleMessage consumers if possible,
+                                // Let's just create a synthetic event for handleMessage consumers if possible, 
                                 // OR just update local state directly.
 
                                 // Calling the shared logic:
@@ -1379,14 +1269,11 @@ const SpeedBot = observer(() => {
                                         return prev;
                                     }
 
-                                    const status: Transaction['status'] =
-                                        poc.status === 'won' || Number(poc.profit) > 0 ? 'won' : 'lost';
+                                    const status: Transaction['status'] = (poc.status === 'won' || Number(poc.profit) > 0) ? 'won' : 'lost';
                                     statusToProcess = status;
 
                                     const profit = poc.profit !== undefined ? Number(poc.profit).toFixed(2) : tx.profit;
-                                    const exit_digit = poc.exit_tick_display_value
-                                        ? parseInt(poc.exit_tick_display_value.slice(-1), 10)
-                                        : tx.exit_digit;
+                                    const exit_digit = (poc.exit_tick_display_value) ? parseInt(poc.exit_tick_display_value.slice(-1), 10) : tx.exit_digit;
 
                                     const next = [...prev];
                                     next[idx] = { ...tx, status, profit, exit_digit };
@@ -1468,15 +1355,7 @@ const SpeedBot = observer(() => {
                                 </span>
                             </div>
                         </div>
-                        <div
-                            style={{
-                                fontSize: '10px',
-                                opacity: 0.5,
-                                marginBottom: '10px',
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                            }}
-                        >
+                        <div style={{ fontSize: '10px', opacity: 0.5, marginBottom: '10px', display: 'flex', justifyContent: 'space-between' }}>
                             <span>Status: {debugStatus}</span>
                             <span>Ticks: {ticksCount}</span>
                         </div>
@@ -1766,9 +1645,9 @@ const SpeedBot = observer(() => {
                                                                 color: '#fff',
                                                                 padding: '4px 8px',
                                                                 fontSize: '12px',
-                                                                borderRadius: '4px',
+                                                                borderRadius: '4px'
                                                             }}
-                                                            onClick={e => {
+                                                            onClick={(e) => {
                                                                 e.stopPropagation();
                                                                 tradeOnce(pred.stake, pred.digit);
                                                             }}
@@ -1856,15 +1735,9 @@ const SpeedBot = observer(() => {
 
                     {/* -- Live Data Section -- */}
                     <section className='card' style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+
                         {/* Always visible Live Digits */}
-                        <div
-                            style={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                                marginBottom: '12px',
-                            }}
-                        >
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
                             <h3 style={{ margin: 0 }}>Live digits</h3>
                             <div className='status-dot-pulse'></div>
                         </div>
@@ -1906,9 +1779,7 @@ const SpeedBot = observer(() => {
                             </div>
                             <div className='metric'>
                                 <div className='label'>Last digit</div>
-                                <div className='value' ref={lastDigitRef}>
-                                    {lastDigit}
-                                </div>
+                                <div className='value' ref={lastDigitRef}>{lastDigit}</div>
                             </div>
                         </div>
 
@@ -1929,39 +1800,26 @@ const SpeedBot = observer(() => {
                                 >
                                     <div className='icon'>
                                         {isAutoTrading ? (
-                                            <svg width='24' height='24' viewBox='0 0 24 24' fill='none'>
-                                                <rect x='6' y='6' width='12' height='12' rx='2' fill='white' />
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                <rect x="6" y="6" width="12" height="12" rx="2" fill="white" />
                                             </svg>
                                         ) : (
-                                            <svg width='24' height='24' viewBox='0 0 24 24' fill='none'>
-                                                <path d='M8 5V19L19 12L8 5Z' fill='white' />
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                <path d="M8 5V19L19 12L8 5Z" fill="white" />
                                             </svg>
                                         )}
                                     </div>
-                                    <span>{isAutoTrading ? 'Stop' : runMode === 'once' ? 'Run Once' : 'Run Auto'}</span>
+                                    <span>
+                                        {isAutoTrading ? 'Stop' : runMode === 'once' ? 'Run Once' : 'Run Auto'}
+                                    </span>
                                 </button>
                                 <button
                                     className={clsx('run-btn', 'arrow', isAutoTrading ? 'running' : '')}
                                     onClick={() => setShowRunMenu(!showRunMenu)}
-                                    style={{
-                                        borderTopLeftRadius: 0,
-                                        borderBottomLeftRadius: 0,
-                                        padding: '0 8px',
-                                        width: 'auto',
-                                        borderLeft: '1px solid rgba(255,255,255,0.2)',
-                                    }}
+                                    style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0, padding: '0 8px', width: 'auto', borderLeft: '1px solid rgba(255,255,255,0.2)' }}
                                 >
-                                    <svg
-                                        width='12'
-                                        height='12'
-                                        viewBox='0 0 24 24'
-                                        fill='none'
-                                        style={{
-                                            transform: showRunMenu ? 'rotate(180deg)' : 'rotate(0deg)',
-                                            transition: 'transform 0.2s',
-                                        }}
-                                    >
-                                        <path d='M7 10L12 15L17 10H7Z' fill='white' />
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style={{ transform: showRunMenu ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>
+                                        <path d="M7 10L12 15L17 10H7Z" fill="white" />
                                     </svg>
                                 </button>
 
@@ -1975,15 +1833,8 @@ const SpeedBot = observer(() => {
                                             }}
                                         >
                                             <div className='mode-icon'>
-                                                <svg
-                                                    width='16'
-                                                    height='16'
-                                                    viewBox='0 0 24 24'
-                                                    fill='none'
-                                                    stroke='currentColor'
-                                                    strokeWidth='2'
-                                                >
-                                                    <path d='M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83' />
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
                                                 </svg>
                                             </div>
                                             <div className='mode-info'>
@@ -2000,15 +1851,8 @@ const SpeedBot = observer(() => {
                                             }}
                                         >
                                             <div className='mode-icon'>
-                                                <svg
-                                                    width='16'
-                                                    height='16'
-                                                    viewBox='0 0 24 24'
-                                                    fill='none'
-                                                    stroke='currentColor'
-                                                    strokeWidth='2'
-                                                >
-                                                    <path d='M5 12h14M12 5l7 7-7 7' />
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                    <path d="M5 12h14M12 5l7 7-7 7" />
                                                 </svg>
                                             </div>
                                             <div className='mode-info'>
@@ -2025,24 +1869,16 @@ const SpeedBot = observer(() => {
                                     {isTrading
                                         ? 'Contract running...'
                                         : !isAutoTrading
-                                          ? 'Ready / Stopped'
-                                          : lastResultDisplay === 'WIN'
-                                            ? 'Contract won'
-                                            : lastResultDisplay === 'LOSS'
-                                              ? 'Contract lost'
-                                              : 'Waiting for entry...'}
+                                            ? 'Ready / Stopped'
+                                            : lastResultDisplay === 'WIN'
+                                                ? 'Contract won'
+                                                : lastResultDisplay === 'LOSS'
+                                                    ? 'Contract lost'
+                                                    : 'Waiting for entry...'}
                                 </div>
                                 <div className='progress-track'>
                                     <div
-                                        className={clsx(
-                                            'progress-fill',
-                                            isTrading && 'animating',
-                                            lastResultDisplay === 'WIN'
-                                                ? 'win'
-                                                : lastResultDisplay === 'LOSS'
-                                                  ? 'loss'
-                                                  : ''
-                                        )}
+                                        className={clsx('progress-fill', isTrading && 'animating', lastResultDisplay === 'WIN' ? 'win' : lastResultDisplay === 'LOSS' ? 'loss' : '')}
                                         style={{ width: isTrading ? '100%' : '0%' }}
                                     ></div>
                                 </div>
@@ -2081,15 +1917,7 @@ const SpeedBot = observer(() => {
                                         Wait, the bot status block was in the previous code but I replaced it. 
                                         Let's re-add the bot status block here. 
                                     */}
-                                    <div
-                                        className='bot-status'
-                                        style={{
-                                            marginTop: '16px',
-                                            display: 'grid',
-                                            gridTemplateColumns: '1fr 1fr',
-                                            gap: '10px',
-                                        }}
-                                    >
+                                    <div className='bot-status' style={{ marginTop: '16px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
                                         <div className='metric' style={{ background: '#1e293b', gridColumn: 'span 2' }}>
                                             <div className='label'>Account Balance</div>
                                             <div className='value' style={{ color: '#2ea3f2' }}>
@@ -2098,42 +1926,25 @@ const SpeedBot = observer(() => {
                                         </div>
                                         <div className='metric' style={{ background: '#1e293b' }}>
                                             <div className='label'>Last Result</div>
-                                            <div
-                                                className='value'
-                                                style={{
-                                                    color:
-                                                        lastResultDisplay === 'WIN'
-                                                            ? '#00d085'
-                                                            : lastResultDisplay === 'LOSS'
-                                                              ? '#ff444f'
-                                                              : '#fff',
-                                                }}
-                                            >
+                                            <div className='value' style={{
+                                                color: lastResultDisplay === 'WIN' ? '#00d085' : lastResultDisplay === 'LOSS' ? '#ff444f' : '#fff'
+                                            }}>
                                                 {lastResultDisplay || '—'}
                                             </div>
                                         </div>
                                         <div className='metric' style={{ background: '#1e293b' }}>
                                             <div className='label'>Total Profit</div>
-                                            <div
-                                                className='value'
-                                                style={{ color: totalProfit >= 0 ? '#00d085' : '#ff444f' }}
-                                            >
-                                                {totalProfit >= 0
-                                                    ? `+$${totalProfit.toFixed(2)}`
-                                                    : `-$${Math.abs(totalProfit).toFixed(2)}`}
+                                            <div className='value' style={{ color: totalProfit >= 0 ? '#00d085' : '#ff444f' }}>
+                                                {totalProfit >= 0 ? `+$${totalProfit.toFixed(2)}` : `-$${Math.abs(totalProfit).toFixed(2)}`}
                                             </div>
                                         </div>
                                         <div className='metric' style={{ background: '#1e293b' }}>
                                             <div className='label'>Wins</div>
-                                            <div className='value' style={{ color: '#00d085' }}>
-                                                {totalWins}
-                                            </div>
+                                            <div className='value' style={{ color: '#00d085' }}>{totalWins}</div>
                                         </div>
                                         <div className='metric' style={{ background: '#1e293b' }}>
                                             <div className='label'>Losses</div>
-                                            <div className='value' style={{ color: '#ff444f' }}>
-                                                {totalLosses}
-                                            </div>
+                                            <div className='value' style={{ color: '#ff444f' }}>{totalLosses}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -2142,12 +1953,8 @@ const SpeedBot = observer(() => {
                             {activeTab === 'transactions' && (
                                 <div className='transactions-view fade-in'>
                                     <div className='actions-bar'>
-                                        <button className='action-btn' disabled>
-                                            Download
-                                        </button>
-                                        <button className='action-btn' disabled>
-                                            View Detail
-                                        </button>
+                                        <button className='action-btn' disabled>Download</button>
+                                        <button className='action-btn' disabled>View Detail</button>
                                     </div>
 
                                     <div className='tx-table-header'>
@@ -2159,15 +1966,7 @@ const SpeedBot = observer(() => {
                                     <div className='tx-list'>
                                         {(() => {
                                             // Group transactions and create display items
-                                            const allDisplayItems: (
-                                                | Transaction
-                                                | {
-                                                      isBulk: boolean;
-                                                      batchId: number;
-                                                      contracts: Transaction[];
-                                                      stats: any;
-                                                  }
-                                            )[] = [];
+                                            const allDisplayItems: (Transaction | { isBulk: boolean, batchId: number, contracts: Transaction[], stats: any })[] = [];
                                             const processedBatches = new Set();
 
                                             transactions.forEach(tx => {
@@ -2178,10 +1977,7 @@ const SpeedBot = observer(() => {
                                                 const tx = item as Transaction;
                                                 const isBulkPart = !!tx.batch_id;
                                                 return (
-                                                    <div
-                                                        key={tx.id}
-                                                        className={clsx('tx-row', isBulkPart && 'bulk-part')}
-                                                    >
+                                                    <div key={tx.id} className={clsx('tx-row', isBulkPart && 'bulk-part')}>
                                                         <div className='col-type'>
                                                             <div className={clsx('dot-indicator', tx.status)}></div>
                                                             {isBulkPart && <span className='bulk-indicator'>B</span>}
@@ -2200,12 +1996,7 @@ const SpeedBot = observer(() => {
                                                         <div className='col-pl'>
                                                             <div className='stake'>{tx.stake.toFixed(2)} USD</div>
                                                             <div className={clsx('profit', tx.status)}>
-                                                                {tx.status === 'won'
-                                                                    ? `+${tx.profit}`
-                                                                    : tx.status === 'lost'
-                                                                      ? `-${tx.stake.toFixed(2)}`
-                                                                      : '0.00'}{' '}
-                                                                USD
+                                                                {tx.status === 'won' ? `+${tx.profit}` : tx.status === 'lost' ? `-${tx.stake.toFixed(2)}` : '0.00'} USD
                                                             </div>
                                                         </div>
                                                     </div>
@@ -2221,21 +2012,11 @@ const SpeedBot = observer(() => {
                                         <div className='stat-row'>
                                             <div className='stat-item'>
                                                 <div className='label'>Total stake</div>
-                                                <div className='val'>
-                                                    {transactions.reduce((acc, t) => acc + t.stake, 0).toFixed(2)} USD
-                                                </div>
+                                                <div className='val'>{transactions.reduce((acc, t) => acc + t.stake, 0).toFixed(2)} USD</div>
                                             </div>
                                             <div className='stat-item'>
                                                 <div className='label'>Total payout</div>
-                                                <div className='val'>
-                                                    {transactions
-                                                        .reduce(
-                                                            (acc, t) => acc + (t.status === 'won' ? t.payout : 0),
-                                                            0
-                                                        )
-                                                        .toFixed(2)}{' '}
-                                                    USD
-                                                </div>
+                                                <div className='val'>{transactions.reduce((acc, t) => acc + (t.status === 'won' ? t.payout : 0), 0).toFixed(2)} USD</div>
                                             </div>
                                             <div className='stat-item'>
                                                 <div className='label'>No. of runs</div>
@@ -2245,15 +2026,11 @@ const SpeedBot = observer(() => {
                                         <div className='stat-row'>
                                             <div className='stat-item'>
                                                 <div className='label'>Contracts lost</div>
-                                                <div className='val'>
-                                                    {transactions.filter(t => t.status === 'lost').length}
-                                                </div>
+                                                <div className='val'>{transactions.filter(t => t.status === 'lost').length}</div>
                                             </div>
                                             <div className='stat-item'>
                                                 <div className='label'>Contracts won</div>
-                                                <div className='val'>
-                                                    {transactions.filter(t => t.status === 'won').length}
-                                                </div>
+                                                <div className='val'>{transactions.filter(t => t.status === 'won').length}</div>
                                             </div>
                                             <div className='stat-item'>
                                                 <div className='label'>Total profit/loss</div>
@@ -2290,37 +2067,16 @@ const SpeedBot = observer(() => {
                                             <div key={entry.id} className={clsx('journal-entry', entry.type)}>
                                                 <div className='entry-meta'>
                                                     <span className='time'>
-                                                        {new Date(entry.timestamp).toLocaleTimeString([], {
-                                                            hour12: false,
-                                                        })}
+                                                        {new Date(entry.timestamp).toLocaleTimeString([], { hour12: false })}
                                                     </span>
-                                                    <span
-                                                        className={clsx(
-                                                            'account-badge',
-                                                            entry.is_demo ? 'demo' : 'real'
-                                                        )}
-                                                    >
+                                                    <span className={clsx('account-badge', entry.is_demo ? 'demo' : 'real')}>
                                                         {entry.is_demo ? 'DEMO' : 'REAL'}
                                                     </span>
                                                     {entry.volatility && (
-                                                        <span className='vol-badge'>
-                                                            {entry.volatility.replace('R_', 'V')}
-                                                        </span>
+                                                        <span className='vol-badge'>{entry.volatility.replace('R_', 'V')}</span>
                                                     )}
                                                     {entry.barrier !== undefined && (
-                                                        <span
-                                                            className='barrier-badge'
-                                                            style={{
-                                                                background: '#3b82f6',
-                                                                color: '#fff',
-                                                                fontSize: '10px',
-                                                                padding: '2px 6px',
-                                                                borderRadius: '4px',
-                                                                fontWeight: 'bold',
-                                                            }}
-                                                        >
-                                                            B: {entry.barrier}
-                                                        </span>
+                                                        <span className='barrier-badge' style={{ background: '#3b82f6', color: '#fff', fontSize: '10px', padding: '2px 6px', borderRadius: '4px', fontWeight: 'bold' }}>B: {entry.barrier}</span>
                                                     )}
                                                 </div>
                                                 <span className='msg'>{entry.message}</span>

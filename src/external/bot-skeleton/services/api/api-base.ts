@@ -1,6 +1,5 @@
 import Cookies from 'js-cookie';
 import { Subject } from 'rxjs';
-import copy_trading_service from '@/services/copy-trading-service';
 import CommonStore from '@/stores/common-store';
 import { TAuthData } from '@/types/api-types';
 import { clearAuthData } from '@/utils/auth-utils';
@@ -18,6 +17,7 @@ import {
 import ApiHelpers from './api-helpers';
 import { generateDerivApiInstance, V2GetActiveClientId, V2GetActiveToken } from './appId';
 import chart_api from './chart-api';
+import copy_trading_service from '@/services/copy-trading-service';
 
 type CurrentSubscription = {
     id: string;
@@ -273,20 +273,17 @@ class APIBase {
             0: 'CONNECTING',
             1: 'OPEN',
             2: 'CLOSING',
-            3: 'CLOSED',
+            3: 'CLOSED'
         };
 
         console.log('[APIBase] Connection check:', {
             readyState,
             stateName: stateNames[readyState as keyof typeof stateNames] || 'UNKNOWN',
-            needsReconnect: readyState !== undefined && readyState > 1,
+            needsReconnect: readyState !== undefined && readyState > 1
         });
 
         if (readyState !== undefined && readyState > 1) {
-            console.log(
-                '%c[APIBase] Connection lost - attempting to reconnect...',
-                'color: #ff9800; font-weight: bold'
-            );
+            console.log('%c[APIBase] Connection lost - attempting to reconnect...', 'color: #ff9800; font-weight: bold');
 
             // Add a small delay before reconnecting to avoid rapid reconnection attempts
             setTimeout(() => {
@@ -363,32 +360,26 @@ class APIBase {
 
             // Sync account management structures
             const existingAccountsList = JSON.parse(localStorage.getItem('accountsList') ?? '{}');
-            localStorage.setItem(
-                'accountsList',
-                JSON.stringify({
-                    ...existingAccountsList,
-                    [authorize.loginid]: token,
-                })
-            );
+            localStorage.setItem('accountsList', JSON.stringify({
+                ...existingAccountsList,
+                [authorize.loginid]: token
+            }));
 
             const existingClientAccounts = JSON.parse(localStorage.getItem('clientAccounts') ?? '{}');
-            localStorage.setItem(
-                'clientAccounts',
-                JSON.stringify({
-                    ...existingClientAccounts,
-                    [authorize.loginid]: {
-                        token: token,
-                        currency: authorize.currency,
-                        landing_company_name: authorize.landing_company_name,
-                        is_virtual: authorize.is_virtual,
-                        loginid: authorize.loginid,
-                        email: authorize.email,
-                        balance: authorize.balance,
-                        residence: authorize.country,
-                        created_at: authorize.created_at, // Ensure created_at is saved
-                    },
-                })
-            );
+            localStorage.setItem('clientAccounts', JSON.stringify({
+                ...existingClientAccounts,
+                [authorize.loginid]: {
+                    token: token,
+                    currency: authorize.currency,
+                    landing_company_name: authorize.landing_company_name,
+                    is_virtual: authorize.is_virtual,
+                    loginid: authorize.loginid,
+                    email: authorize.email,
+                    balance: authorize.balance,
+                    residence: authorize.country,
+                    created_at: authorize.created_at, // Ensure created_at is saved
+                }
+            }));
 
             if (this.has_active_symbols) {
                 this.toggleRunButton(false);
@@ -449,7 +440,7 @@ class APIBase {
             authorized: this.is_authorized,
             activeSymbols: this.has_active_symbols,
             subscriptionsActive: this.subscriptions_ready,
-            apiConnected: this.api?.connection?.readyState === 1,
+            apiConnected: this.api?.connection?.readyState === 1
         };
 
         console.log('[APIBase] Readiness checks:', checks);
@@ -627,7 +618,7 @@ class APIBase {
             is_authorized: this.is_authorized,
             has_active_symbols: this.has_active_symbols,
             subscriptions_ready: this.subscriptions_ready,
-            api_connected: this.api?.connection?.readyState === 1,
+            api_connected: this.api?.connection?.readyState === 1
         };
     }
 }

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
+import { reaction } from 'mobx';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import { Localize, localize } from '@deriv-com/translations';
@@ -30,9 +30,7 @@ const VOLATILITY_OPTIONS = [
 const TICK_OPTIONS = [
     { value: 10, label: '10 ticks' },
     { value: 50, label: '50 ticks' },
-    { value: 60, label: '60 ticks' },
     { value: 100, label: '100 ticks' },
-    { value: 120, label: '120 ticks' },
     { value: 500, label: '500 ticks' },
     { value: 1000, label: '1000 ticks' },
     { value: 2000, label: '2000 ticks' },
@@ -136,7 +134,7 @@ const Dcircle = observer(() => {
             () => ({
                 ticks: [...dcircle.recentTicks],
                 threshold: dcircle.threshold,
-                currentDigit: dcircle.currentDigit,
+                currentDigit: dcircle.currentDigit
             }),
             ({ ticks, threshold, currentDigit }) => {
                 if (!tickFeedRef.current) return;
@@ -156,16 +154,14 @@ const Dcircle = observer(() => {
 
                 // Full render if first load or threshold changed
                 if (isFirstLoad || thresholdChanged) {
-                    const html = ticks
-                        .map(tick => {
-                            let colorClass = 'neutral';
-                            if (tick.digit < threshold) colorClass = 'green';
-                            else if (tick.digit === threshold) colorClass = 'neutral';
-                            else colorClass = 'red';
-                            // Add no-animation class for historical items to avoid massive blinking on load
-                            return `<div class="digit-box ${colorClass} no-animation">${tick.digit}</div>`;
-                        })
-                        .join('');
+                    const html = ticks.map(tick => {
+                        let colorClass = 'neutral';
+                        if (tick.digit < threshold) colorClass = 'green';
+                        else if (tick.digit === threshold) colorClass = 'neutral';
+                        else colorClass = 'red';
+                        // Add no-animation class for historical items to avoid massive blinking on load
+                        return `<div class="digit-box ${colorClass} no-animation">${tick.digit}</div>`;
+                    }).join('');
                     tickFeedRef.current.innerHTML = html;
                     lastTickId = newTickId;
                     lastThreshold = threshold;
@@ -344,6 +340,7 @@ const Dcircle = observer(() => {
                 <div className='analysis-title'>{localize('Recent Digits')}</div>
                 <div className='tick-feed-grid' ref={tickFeedRef}></div>
             </div>
+
         </div>
     );
 });
