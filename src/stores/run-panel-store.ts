@@ -29,7 +29,6 @@ export default class RunPanelStore {
     dbot: TDbot;
     core: TStores;
     disposeReactionsFn: () => void;
-    disposeReactionsFn: () => void;
     timer: NodeJS.Timeout | null;
     balance_timer: NodeJS.Timeout | null = null;
 
@@ -591,6 +590,7 @@ export default class RunPanelStore {
             ui.setAccountSwitcherDisabledMessage();
             this.unregisterBotListeners();
             self_exclusion.resetSelfExclusion();
+            this.stopBalanceRefresh();
         };
         if (this.error_type === ErrorTypes.RECOVERABLE_ERRORS) {
             // Bot should indicate it started in below cases:
@@ -620,6 +620,7 @@ export default class RunPanelStore {
             ui.setAccountSwitcherDisabledMessage();
             this.unregisterBotListeners();
             self_exclusion.resetSelfExclusion();
+            this.stopBalanceRefresh();
         }
 
         this.setHasOpenContract(false);
