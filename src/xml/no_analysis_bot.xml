@@ -371,123 +371,120 @@
   </block>
   <block type="after_purchase" id="after" deletable="false" x="800" y="60">
     <statement name="AFTERPURCHASE_STACK">
-      <block type="controls_if" id="checks">
-        <mutation xmlns="http://www.w3.org/1999/xhtml" elseif="1" else="1"></mutation>
+      <block type="controls_if" id="win_loss_logic">
+        <mutation xmlns="http://www.w3.org/1999/xhtml" else="1"></mutation>
         <value name="IF0">
-          <block type="logic_compare" id="tp_check">
-            <field name="OP">GTE</field>
-            <value name="A">
-              <block type="total_profit" id="profit"></block>
-            </value>
-            <value name="B">
-              <block type="variables_get" id="get_tp">
-                <field name="VAR" id="2fsi69b#+YPNS9Zix[-v">Take Profit</field>
-              </block>
-            </value>
+          <block type="contract_check_result" id="is_win">
+            <field name="CHECK_RESULT">win</field>
           </block>
         </value>
         <statement name="DO0">
-          <block type="text_print" id="tp_msg">
-            <value name="TEXT">
-              <shadow type="text" id="tp_txt">
-                <field name="TEXT">Take Profit Reached!</field>
-              </shadow>
+          <block type="variables_set" id="reset_stake">
+            <field name="VAR" id="xL#n*$V/G2mnQTxpEw$Z">Stake</field>
+            <value name="VALUE">
+              <block type="variables_get" id="get_win_stake">
+                <field name="VAR" id="Y=b.m:UR1*1P_b!:c%Ak">win-stake</field>
+              </block>
             </value>
-          </block>
-        </statement>
-        <value name="IF1">
-          <block type="logic_compare" id="sl_check">
-            <field name="OP">LTE</field>
-            <value name="A">
-              <block type="total_profit" id="loss"></block>
-            </value>
-            <value name="B">
-              <block type="math_single" id="neg_sl">
-                <field name="OP">NEG</field>
-                <value name="NUM">
-                  <block type="variables_get" id="get_sl">
-                    <field name="VAR" id="+R;*DN.|9N![P;Y:Ahwb">Stop Loss</field>
+            <next>
+              <block type="variables_set" id="reset_state">
+                <field name="VAR" id="s_state">strategy_state</field>
+                <value name="VALUE">
+                  <block type="math_number" id="reset_state_val">
+                    <field name="NUM">0</field>
                   </block>
                 </value>
               </block>
-            </value>
-          </block>
-        </value>
-        <statement name="DO1">
-          <block type="text_print" id="sl_msg">
-            <value name="TEXT">
-              <shadow type="text" id="sl_txt">
-                <field name="TEXT">Stop Loss Hit.</field>
-              </shadow>
-            </value>
+            </next>
           </block>
         </statement>
         <statement name="ELSE">
-          <block type="controls_if" id="win_loss_logic">
-            <mutation xmlns="http://www.w3.org/1999/xhtml" else="1"></mutation>
+          <block type="variables_set" id="martingale_stake">
+            <field name="VAR" id="xL#n*$V/G2mnQTxpEw$Z">Stake</field>
+            <value name="VALUE">
+              <block type="math_arithmetic" id="calc_mart">
+                <field name="OP">MULTIPLY</field>
+                <value name="A">
+                  <block type="variables_get" id="prev_stake">
+                    <field name="VAR" id="xL#n*$V/G2mnQTxpEw$Z">Stake</field>
+                  </block>
+                </value>
+                <value name="B">
+                  <block type="variables_get" id="get_mart">
+                    <field name="VAR" id="[13;h[Aa6^F?UtC#,Zr[">Martingale</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <next>
+              <block type="variables_set" id="shift_state">
+                <field name="VAR" id="s_state">strategy_state</field>
+                <value name="VALUE">
+                  <block type="math_number" id="shift_state_val">
+                    <field name="NUM">1</field>
+                  </block>
+                </value>
+              </block>
+            </next>
+          </block>
+        </statement>
+        <next>
+          <block type="controls_if" id="checks">
+            <mutation xmlns="http://www.w3.org/1999/xhtml" elseif="1" else="1"></mutation>
             <value name="IF0">
-              <block type="contract_check_result" id="is_win">
-                <field name="CHECK_RESULT">win</field>
+              <block type="logic_compare" id="tp_check">
+                <field name="OP">GTE</field>
+                <value name="A">
+                  <block type="total_profit" id="profit"></block>
+                </value>
+                <value name="B">
+                  <block type="variables_get" id="get_tp">
+                    <field name="VAR" id="2fsi69b#+YPNS9Zix[-v">Take Profit</field>
+                  </block>
+                </value>
               </block>
             </value>
             <statement name="DO0">
-              <block type="variables_set" id="reset_stake">
-                <field name="VAR" id="xL#n*$V/G2mnQTxpEw$Z">Stake</field>
-                <value name="VALUE">
-                  <block type="variables_get" id="get_win_stake">
-                    <field name="VAR" id="Y=b.m:UR1*1P_b!:c%Ak">win-stake</field>
-                  </block>
+              <block type="text_print" id="tp_msg">
+                <value name="TEXT">
+                  <shadow type="text" id="tp_txt">
+                    <field name="TEXT">Take Profit Reached!</field>
+                  </shadow>
                 </value>
-                <next>
-                  <block type="variables_set" id="reset_state">
-                    <field name="VAR" id="s_state">strategy_state</field>
-                    <value name="VALUE">
-                      <block type="math_number" id="reset_state_val">
-                        <field name="NUM">0</field>
+              </block>
+            </statement>
+            <value name="IF1">
+              <block type="logic_compare" id="sl_check">
+                <field name="OP">LTE</field>
+                <value name="A">
+                  <block type="total_profit" id="loss"></block>
+                </value>
+                <value name="B">
+                  <block type="math_single" id="neg_sl">
+                    <field name="OP">NEG</field>
+                    <value name="NUM">
+                      <block type="variables_get" id="get_sl">
+                        <field name="VAR" id="+R;*DN.|9N![P;Y:Ahwb">Stop Loss</field>
                       </block>
                     </value>
-                    <next>
-                      <block type="trade_again" id="again_win"></block>
-                    </next>
                   </block>
-                </next>
+                </value>
+              </block>
+            </value>
+            <statement name="DO1">
+              <block type="text_print" id="sl_msg">
+                <value name="TEXT">
+                  <shadow type="text" id="sl_txt">
+                    <field name="TEXT">Stop Loss Hit.</field>
+                  </shadow>
+                </value>
               </block>
             </statement>
             <statement name="ELSE">
-              <block type="variables_set" id="martingale_stake">
-                <field name="VAR" id="xL#n*$V/G2mnQTxpEw$Z">Stake</field>
-                <value name="VALUE">
-                  <block type="math_arithmetic" id="calc_mart">
-                    <field name="OP">MULTIPLY</field>
-                    <value name="A">
-                      <block type="variables_get" id="prev_stake">
-                        <field name="VAR" id="xL#n*$V/G2mnQTxpEw$Z">Stake</field>
-                      </block>
-                    </value>
-                    <value name="B">
-                      <block type="variables_get" id="get_mart">
-                        <field name="VAR" id="[13;h[Aa6^F?UtC#,Zr[">Martingale</field>
-                      </block>
-                    </value>
-                  </block>
-                </value>
-                <next>
-                  <block type="variables_set" id="shift_state">
-                    <field name="VAR" id="s_state">strategy_state</field>
-                    <value name="VALUE">
-                      <block type="math_number" id="shift_state_val">
-                        <field name="NUM">1</field>
-                      </block>
-                    </value>
-                    <next>
-                      <block type="trade_again" id="again_loss"></block>
-                    </next>
-                  </block>
-                </next>
-              </block>
+              <block type="trade_again" id="again"></block>
             </statement>
           </block>
-        </statement>
+        </next>
       </block>
     </statement>
   </block>
