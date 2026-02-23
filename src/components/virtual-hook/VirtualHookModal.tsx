@@ -45,7 +45,10 @@ const VirtualHookModal = observer(({ is_open, onClose }: Partial<VirtualHookModa
         enable_after_initial,
         virtual_trades_condition,
         real_trades_condition,
-        alternating_market
+        alternating_market,
+        is_scanner_enabled,
+        scan_volatility,
+        scan_jumps,
     } = client.virtual_hook_settings;
 
     const toggleEnabled = () => {
@@ -140,6 +143,45 @@ const VirtualHookModal = observer(({ is_open, onClose }: Partial<VirtualHookModa
                     {alternating_market ? localize('ALTERNATING MARKET: ON') : localize('ALTERNATING MARKET: OFF')}
                 </div>
             </div>
+
+            <div className="virtual-hook-modal__toggle-section" style={{ borderTop: '1px solid #333', paddingTop: '15px' }}>
+                <label className="switch">
+                    <input
+                        type="checkbox"
+                        checked={is_scanner_enabled}
+                        onChange={() => client.setVirtualHookSettings({ is_scanner_enabled: !is_scanner_enabled })}
+                    />
+                    <span className="slider round"></span>
+                </label>
+                <div
+                    className="toggle-label"
+                    onClick={() => client.setVirtualHookSettings({ is_scanner_enabled: !is_scanner_enabled })}
+                    style={{ cursor: 'pointer', color: is_scanner_enabled ? '#FFA500' : '#888' }}
+                >
+                    {is_scanner_enabled ? localize('SCAN ALL MARKETS: ON') : localize('SCAN ALL MARKETS: OFF')}
+                </div>
+            </div>
+
+            {(is_scanner_enabled || alternating_market) && (
+                <div className="virtual-hook-modal__scanner-filters" style={{ padding: '0 20px 15px', display: 'flex', gap: '15px' }}>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '12px' }}>
+                        <input
+                            type="checkbox"
+                            checked={scan_volatility}
+                            onChange={() => client.setVirtualHookSettings({ scan_volatility: !scan_volatility })}
+                        />
+                        {localize('Volatility')}
+                    </label>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '12px' }}>
+                        <input
+                            type="checkbox"
+                            checked={scan_jumps}
+                            onChange={() => client.setVirtualHookSettings({ scan_jumps: !scan_jumps })}
+                        />
+                        {localize('Jumps')}
+                    </label>
+                </div>
+            )}
 
             <div className="virtual-hook-modal__setting-card">
                 <div className="virtual-hook-modal__setting-card--left">

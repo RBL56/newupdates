@@ -43,6 +43,9 @@ export default class ClientStore {
         virtual_trades_condition: 2, // Number of consecutive losses
         real_trades_condition: 'Immediately', // 'Immediately' or number of trades
         alternating_market: false,
+        is_scanner_enabled: false,
+        scan_volatility: true,
+        scan_jumps: false,
     };
 
     setVirtualHookSettings = (settings: Partial<typeof this.virtual_hook_settings>) => {

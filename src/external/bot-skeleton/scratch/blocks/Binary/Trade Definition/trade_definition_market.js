@@ -6,7 +6,7 @@ import { excludeOptionFromContextMenu, modifyContextMenu, runIrreversibleEvents 
 window.Blockly.Blocks.trade_definition_market = {
     init() {
         this.jsonInit({
-            message0: localize('Market: {{ input_market }} > {{ input_submarket }} > {{ input_symbol }} %4 Virtual Hook: %5 %6 Alternating Market: %7', {
+            message0: localize('Market: {{ input_market }} > {{ input_submarket }} > {{ input_symbol }} %4', {
                 input_market: '%1',
                 input_submarket: '%2',
                 input_symbol: '%3',
@@ -31,17 +31,28 @@ window.Blockly.Blocks.trade_definition_market = {
                     type: 'input_dummy',
                     name: 'VH_INPUT',
                 },
+            ],
+            message1: localize('Virtual Hook: %1'),
+            args1: [
                 {
                     type: 'field_checkbox',
                     name: 'VIRTUAL_HOOK',
                     checked: false,
                 },
-                {
-                    type: 'input_dummy',
-                },
+            ],
+            message2: localize('Alternating Market: %1'),
+            args2: [
                 {
                     type: 'field_checkbox',
                     name: 'ALTERNATING_MARKET',
+                    checked: false,
+                },
+            ],
+            message3: localize('Scan All Markets: %1'),
+            args3: [
+                {
+                    type: 'field_checkbox',
+                    name: 'SCANNING_ALL_MARKET',
                     checked: false,
                 },
             ],
@@ -140,6 +151,11 @@ window.Blockly.Blocks.trade_definition_market = {
                 if (DBotStore.instance && DBotStore.instance.client) {
                     DBotStore.instance.client.setVirtualHookSettings({ alternating_market: is_checked });
                 }
+            } else if (event.name === 'SCANNING_ALL_MARKET') {
+                const is_checked = this.getFieldValue('SCANNING_ALL_MARKET') === 'TRUE';
+                if (DBotStore.instance && DBotStore.instance.client) {
+                    DBotStore.instance.client.setVirtualHookSettings({ is_scanner_enabled: is_checked });
+                }
             }
         } else if (
             event.type === window.Blockly.Events.BLOCK_DRAG &&
@@ -154,25 +170,38 @@ window.Blockly.Blocks.trade_definition_market = {
         // Sync state on create
         if (event.type === window.Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
             if (DBotStore.instance && DBotStore.instance.client) {
-                const is_checked = this.getFieldValue('VIRTUAL_HOOK') === 'TRUE';
                 const settings = DBotStore.instance.client.virtual_hook_settings;
 
-                // If XML has it, respect it. If XML lacks it, use store default.
+                // Sync VIRTUAL_HOOK
                 if (this.getField('VIRTUAL_HOOK') && settings) {
-                    // Logic to avoid overwriting a previous user desire if the XML is old
+                    const is_checked = this.getFieldValue('VIRTUAL_HOOK') === 'TRUE';
                     const has_vh_field_in_xml = event.xml.toString().includes('VIRTUAL_HOOK');
                     if (!has_vh_field_in_xml && settings.is_enabled) {
                         this.setFieldValue('TRUE', 'VIRTUAL_HOOK');
                     } else {
                         DBotStore.instance.client.setVirtualHookSettings({ is_enabled: is_checked });
                     }
+                }
 
-                    const is_alternating_checked = this.getFieldValue('ALTERNATING_MARKET') === 'TRUE';
+                // Sync ALTERNATING_MARKET
+                if (this.getField('ALTERNATING_MARKET') && settings) {
+                    const is_checked = this.getFieldValue('ALTERNATING_MARKET') === 'TRUE';
                     const has_am_field_in_xml = event.xml.toString().includes('ALTERNATING_MARKET');
                     if (!has_am_field_in_xml && settings.alternating_market) {
                         this.setFieldValue('TRUE', 'ALTERNATING_MARKET');
                     } else {
-                        DBotStore.instance.client.setVirtualHookSettings({ alternating_market: is_alternating_checked });
+                        DBotStore.instance.client.setVirtualHookSettings({ alternating_market: is_checked });
+                    }
+                }
+
+                // Sync SCANNING_ALL_MARKET
+                if (this.getField('SCANNING_ALL_MARKET') && settings) {
+                    const is_checked = this.getFieldValue('SCANNING_ALL_MARKET') === 'TRUE';
+                    const has_scanner_field_in_xml = event.xml.toString().includes('SCANNING_ALL_MARKET');
+                    if (!has_scanner_field_in_xml && settings.is_scanner_enabled) {
+                        this.setFieldValue('TRUE', 'SCANNING_ALL_MARKET');
+                    } else {
+                        DBotStore.instance.client.setVirtualHookSettings({ is_scanner_enabled: is_checked });
                     }
                 }
             }
