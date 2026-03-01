@@ -102,6 +102,16 @@
                                     <field name="NUM">0</field>
                                   </block>
                                 </value>
+                                <next>
+                                  <block type="variables_set" id="init_entry">
+                                    <field name="VAR" id="e_found">entry_found</field>
+                                    <value name="VALUE">
+                                      <block type="logic_boolean" id="init_entry_bool">
+                                        <field name="BOOL">TRUE</field>
+                                      </block>
+                                    </value>
+                                  </block>
+                                </next>
                               </block>
                             </next>
                           </block>
@@ -117,75 +127,6 @@
       </block>
     </statement>
     <statement name="SUBMARKET">
-      <block type="controls_if" id="sticky_check">
-        <mutation xmlns="http://www.w3.org/1999/xhtml" else="1"></mutation>
-        <value name="IF0">
-          <block type="logic_compare" id="is_sticky">
-            <field name="OP">GT</field>
-            <value name="A">
-              <block type="variables_get" id="get_sticky_val">
-                <field name="VAR" id="sticky_count">Sticky_Runs_Remaining</field>
-              </block>
-            </value>
-            <value name="B">
-              <block type="math_number" id="sticky_zero">
-                <field name="NUM">0</field>
-              </block>
-            </value>
-          </block>
-        </value>
-        <statement name="DO0">
-          <block type="variables_set" id="dec_sticky">
-            <field name="VAR" id="sticky_count">Sticky_Runs_Remaining</field>
-            <value name="VALUE">
-              <block type="math_arithmetic" id="sticky_sub">
-                <field name="OP">MINUS</field>
-                <value name="A">
-                  <block type="variables_get" id="get_sticky_prev">
-                    <field name="VAR" id="sticky_count">Sticky_Runs_Remaining</field>
-                  </block>
-                </value>
-                <value name="B">
-                  <block type="math_number" id="sticky_one">
-                    <field name="NUM">1</field>
-                  </block>
-                </value>
-              </block>
-            </value>
-            <next>
-              <block type="notify" id="sticky_notify">
-                <field name="NOTIFICATION_TYPE">info</field>
-                <field name="NOTIFICATION_SOUND">silent</field>
-                <value name="MESSAGE">
-                  <shadow type="text" id="sticky_msg">
-                    <field name="TEXT">Sticky Run Active: Staying on current market.</field>
-                  </shadow>
-                </value>
-                <next>
-                  <block type="variables_set" id="set_entry_sticky">
-                    <field name="VAR" id="e_found">entry_found</field>
-                    <value name="VALUE">
-                      <block type="logic_boolean" id="sticky_entry_bool">
-                        <field name="BOOL">TRUE</field>
-                      </block>
-                    </value>
-                  </block>
-                </next>
-              </block>
-            </next>
-          </block>
-        </statement>
-        <statement name="ELSE">
-          <block type="variables_set" id="reset_entry">
-            <field name="VAR" id="e_found">entry_found</field>
-            <value name="VALUE">
-              <block type="logic_boolean" id="reset_entry_bool">
-                <field name="BOOL">FALSE</field>
-              </block>
-            </value>
-          </block>
-        </statement>
-        <next>
           <block type="controls_whileUntil" id="entry_loop">
             <field name="MODE">UNTIL</field>
             <value name="BOOL">
@@ -240,24 +181,14 @@
                               </block>
                             </value>
                             <next>
-                              <block type="variables_set" id="p_sticky_set">
-                                <field name="VAR" id="sticky_count">Sticky_Runs_Remaining</field>
-                                <value name="VALUE">
-                                  <block type="math_number" id="p_sticky_val">
-                                    <field name="NUM">2</field>
-                                  </block>
+                              <block type="notify" id="p_entry_notify">
+                                <field name="NOTIFICATION_TYPE">success</field>
+                                <field name="NOTIFICATION_SOUND">silent</field>
+                                <value name="MESSAGE">
+                                  <shadow type="text" id="p_entry_msg">
+                                    <field name="TEXT">Entry Found! (State 0)</field>
+                                  </shadow>
                                 </value>
-                                <next>
-                                  <block type="notify" id="p_entry_notify">
-                                    <field name="NOTIFICATION_TYPE">success</field>
-                                    <field name="NOTIFICATION_SOUND">silent</field>
-                                    <value name="MESSAGE">
-                                      <shadow type="text" id="p_entry_msg">
-                                        <field name="TEXT">Entry Found! (State 0)</field>
-                                      </shadow>
-                                    </value>
-                                  </block>
-                                </next>
                               </block>
                             </next>
                           </block>
@@ -291,24 +222,14 @@
                               </block>
                             </value>
                             <next>
-                              <block type="variables_set" id="s_sticky_set">
-                                <field name="VAR" id="sticky_count">Sticky_Runs_Remaining</field>
-                                <value name="VALUE">
-                                  <block type="math_number" id="s_sticky_val">
-                                    <field name="NUM">2</field>
-                                  </block>
+                              <block type="notify" id="s_entry_notify">
+                                <field name="NOTIFICATION_TYPE">success</field>
+                                <field name="NOTIFICATION_SOUND">silent</field>
+                                <value name="MESSAGE">
+                                  <shadow type="text" id="s_entry_msg">
+                                    <field name="TEXT">Entry Found! (State 1)</field>
+                                  </shadow>
                                 </value>
-                                <next>
-                                  <block type="notify" id="s_entry_notify">
-                                    <field name="NOTIFICATION_TYPE">success</field>
-                                    <field name="NOTIFICATION_SOUND">silent</field>
-                                    <value name="MESSAGE">
-                                      <shadow type="text" id="s_entry_msg">
-                                        <field name="TEXT">Entry Found! (State 1)</field>
-                                      </shadow>
-                                    </value>
-                                  </block>
-                                </next>
                               </block>
                             </next>
                           </block>
@@ -437,6 +358,16 @@
                     <field name="NUM">0</field>
                   </block>
                 </value>
+                <next>
+                  <block type="variables_set" id="win_entry_set">
+                    <field name="VAR" id="e_found">entry_found</field>
+                    <value name="VALUE">
+                      <block type="logic_boolean" id="init_entry_bool_win">
+                        <field name="BOOL">TRUE</field>
+                      </block>
+                    </value>
+                  </block>
+                </next>
               </block>
             </next>
           </block>
@@ -468,11 +399,11 @@
                   </block>
                 </value>
                 <next>
-                  <block type="variables_set" id="loss_sticky_reset">
-                    <field name="VAR" id="sticky_count">Sticky_Runs_Remaining</field>
+                  <block type="variables_set" id="loss_entry_set">
+                    <field name="VAR" id="e_found">entry_found</field>
                     <value name="VALUE">
-                      <block type="math_number" id="loss_sticky_val">
-                        <field name="NUM">0</field>
+                      <block type="logic_boolean" id="loss_entry_val">
+                        <field name="BOOL">FALSE</field>
                       </block>
                     </value>
                   </block>
