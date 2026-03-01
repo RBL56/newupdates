@@ -6,6 +6,7 @@ import CommonStore from './common-store';
 import DashboardStore from './dashboard-store';
 import DataCollectionStore from './data-collection-store';
 import DcircleStore from './dcircle-store';
+import DigitEliteProStore from './digit-elite-pro-store';
 import FlyoutHelpStore from './flyout-help-store';
 import FlyoutStore from './flyout-store';
 import GoogleDriveStore from './google-drive-store';
@@ -40,6 +41,7 @@ export default class RootStore {
     public self_exclusion: SelfExclusionStore;
     public dashboard: DashboardStore;
     public dcircle: DcircleStore;
+    public digit_elite_pro: DigitEliteProStore;
 
     public chart_store: ChartStore;
     public blockly_store: BlocklyStore;
@@ -82,6 +84,7 @@ export default class RootStore {
         this.self_exclusion = new SelfExclusionStore(this, this.core);
         this.dashboard = new DashboardStore(this, this.core);
         this.dcircle = new DcircleStore(this);
+        this.digit_elite_pro = new DigitEliteProStore(this);
 
         // need to be at last for dependency
         this.chart_store = new ChartStore(this);

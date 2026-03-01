@@ -1,15 +1,10 @@
 import React from 'react';
-import { Localize } from '@deriv-com/translations';
+import DigitElitePro from '../digit-elite-pro/DigitElitePro';
 
 const LocoHub = () => {
     return (
-        <div className='loco-hub'>
-            <h1>
-                <Localize i18n_default_text='LOCO HUB' />
-            </h1>
-            <p>
-                <Localize i18n_default_text='Welcome to the LOCO HUB. This feature is coming soon.' />
-            </p>
+        <div className='loco-hub' style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <DigitElitePro />
         </div>
     );
 };
