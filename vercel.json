@@ -13,7 +13,7 @@
             "headers": [
                 {
                     "key": "Permissions-Policy",
-                    "value": "autoplay=*"
+                    "value": "autoplay=(*), speaker-selection=(*), microphone=(*), geolocation=()"
                 }
             ]
         }

@@ -7,6 +7,7 @@ import unstoppableDifferBotXml from '@/xml/UNSTOPPABLE DIFFER BOT.xml';
 import overUnderAutoSwitcherXml from '@/xml/OVER UNDER AUTO SWITCHER.xml';
 import under3BotV1Xml from '@/xml/UNDER_3_BOT_V1.xml';
 import noAnalysisBotXml from '@/xml/no_analysis_bot.xml';
+import noAnalysisBotV1Xml from '@/xml/no%20analysis%201.xml';
 
 export type TBotConfig = {
     id: string;
@@ -78,7 +79,7 @@ export const FREE_BOTS: TBotConfig[] = [
         id: 'no_analysis_bot',
         name: 'No Analysis Bot',
         description: 'Dynamic digit strategy that shifts logic on loss',
-        xml: noAnalysisBotXml,
+        xml: noAnalysisBotV1Xml,
         category: 'Automatic',
     },
 ];
