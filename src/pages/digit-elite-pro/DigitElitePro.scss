@@ -360,7 +360,7 @@
 
         @include mobile-screen {
             grid-template-columns: repeat(10, 1fr); // Fewer columns = bigger dots on mobile
-            gap: 3px;
+            gap: 4px;
         }
 
         .h-dot {
@@ -370,10 +370,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 9px;
+            font-size: 10px;
             font-weight: 900;
             color: white;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
 
             @include mobile-screen {
                 font-size: 11px; // Clearly readable on phone

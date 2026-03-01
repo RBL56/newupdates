@@ -801,7 +801,7 @@ const SpeedBot = observer(() => {
 
     const updateLiveDigits = useCallback((item: { value: number; color: string }) => {
         liveDigitsBufferRef.current.push(item);
-        if (liveDigitsBufferRef.current.length > 40) {
+        if (liveDigitsBufferRef.current.length > 60) {
             liveDigitsBufferRef.current.shift();
         }
 
@@ -809,8 +809,8 @@ const SpeedBot = observer(() => {
             const newDigitHtml = `<div class="digit ${item.color}">${item.value}</div>`;
             liveDigitsRef.current.insertAdjacentHTML('beforeend', newDigitHtml);
 
-            // Maintain the limit of 40 in the DOM - remove from the beginning for "down to up" flow
-            if (liveDigitsRef.current.children.length > 40) {
+            // Maintain the limit of 60 in the DOM - remove from the beginning for "down to up" flow
+            if (liveDigitsRef.current.children.length > 60) {
                 liveDigitsRef.current.firstElementChild?.remove();
             }
         }
@@ -896,13 +896,13 @@ const SpeedBot = observer(() => {
 
                     // We want newest first in the buffer for display
                     // The loop above gave us historical order
-                    // Let's re-process last 40 safely
-                    const last40 = res.history.prices.slice(-40);
+                    // Let's re-process last 60 safely
+                    const last60 = res.history.prices.slice(-60);
                     // Actually, updateLiveDigits unshifts (adds to front), so we should feed it Oldest -> Newest? 
                     // No, unshift adds to front, so if we feed 1, then 2, buffer is [2, 1].
                     // So we want Oldest -> Newest feed to have Newest at front.
 
-                    last40.forEach((p: number) => {
+                    last60.forEach((p: number) => {
                         const { digit, color } = processTick(p, precision);
                         updateLiveDigits({ value: digit, color });
                     });

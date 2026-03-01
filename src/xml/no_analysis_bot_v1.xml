@@ -139,101 +139,31 @@
       </block>
     </statement>
     <statement name="SUBMARKET">
-      <block type="timeout" id="xwA~tKWozVYg=)u.5]}m">
-        <statement name="TIMEOUTSTACK">
-          <block type="controls_whileUntil" id="(?`xk?LQ`I.Y%)Gd(y~x">
-            <field name="MODE">UNTIL</field>
-            <value name="BOOL">
-              <block type="logic_compare" id="`F6Ju/arK{*^Yh@DA[a4">
-                <field name="OP">EQ</field>
-                <value name="A">
-                  <block type="variables_get" id="e35qpNND=ZUwcAXqv(oC">
-                    <field name="VAR" id="@(K8+LZ-|UiG(,V/$We{">entry_point</field>
-                  </block>
-                </value>
-                <value name="B">
-                  <block type="logic_boolean" id="JPAu6NMdmPvB^YI,M@li">
-                    <field name="BOOL">TRUE</field>
-                  </block>
-                </value>
-              </block>
-            </value>
-            <statement name="DO">
-              <block type="controls_if" id="Sl3uv`h(+X7Z+msjEY`M">
-                <value name="IF0">
-                  <block type="last_digits_condition" id="N!sHirMz9XH`w21-N3/)">
-                    <mutation xmlns="http://www.w3.org/1999/xhtml" digit_input="true"></mutation>
-                    <field name="CONDITION">LT</field>
-                    <value name="DIGITS_COUNT">
-                      <shadow type="math_number" id="9H69ayU$26++els{~)/|">
-                        <field name="NUM">5</field>
-                      </shadow>
-                    </value>
-                    <value name="DIGIT">
-                      <block type="math_number" id="%`h*#^iE7HxEZL=U!/u%">
-                        <field name="NUM">2</field>
-                      </block>
-                    </value>
-                  </block>
-                </value>
-                <statement name="DO0">
-                  <block type="variables_set" id="r3)NS8GB73+Xs%bU}OYh">
-                    <field name="VAR" id="@(K8+LZ-|UiG(,V/$We{">entry_point</field>
-                    <value name="VALUE">
-                      <block type="logic_boolean" id=":=LSs5RDolt6u=ezvg$+">
-                        <field name="BOOL">TRUE</field>
-                      </block>
-                    </value>
-                    <next>
-                      <block type="notify" id="c$^;[p`~w:pEYA!:H];N">
-                        <field name="NOTIFICATION_TYPE">success</field>
-                        <field name="NOTIFICATION_SOUND">silent</field>
-                        <value name="MESSAGE">
-                          <shadow type="text" id="tg;job82tn`n!-O_?/?]">
-                            <field name="TEXT">ENTRY FOUND </field>
-                          </shadow>
-                        </value>
-                      </block>
-                    </next>
-                  </block>
-                </statement>
-              </block>
-            </statement>
-          </block>
-        </statement>
-        <value name="SECONDS">
-          <block type="math_number" id="+SM#.!Rpx?Qq=PV$(`tr">
-            <field name="NUM">0</field>
+      <block type="trade_definition_tradeoptions" id="bTRRAtlrO1HOKPi6/(ac">
+        <mutation xmlns="http://www.w3.org/1999/xhtml" has_first_barrier="false" has_second_barrier="false" has_prediction="true"></mutation>
+        <field name="DURATIONTYPE_LIST">t</field>
+        <field name="TURBO_MODE">FALSE</field>
+        <value name="DURATION">
+          <shadow type="math_number_positive" id="]P3h/-zY!Yl-puI51RL;">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="AMOUNT">
+          <shadow type="math_number_positive" id="@?@7pa:H:R02wwN+Gtci">
+            <field name="NUM">0.35</field>
+          </shadow>
+          <block type="variables_get" id="K/LRa(#^M@KlAy9qj.A]">
+            <field name="VAR" id="xL#n*$V/G2mnQTxpEw$Z">Stake</field>
           </block>
         </value>
-        <next>
-          <block type="trade_definition_tradeoptions" id="bTRRAtlrO1HOKPi6/(ac">
-            <mutation xmlns="http://www.w3.org/1999/xhtml" has_first_barrier="false" has_second_barrier="false" has_prediction="true"></mutation>
-            <field name="DURATIONTYPE_LIST">t</field>
-            <field name="TURBO_MODE">FALSE</field>
-            <value name="DURATION">
-              <shadow type="math_number_positive" id="]P3h/-zY!Yl-puI51RL;">
-                <field name="NUM">1</field>
-              </shadow>
-            </value>
-            <value name="AMOUNT">
-              <shadow type="math_number_positive" id="@?@7pa:H:R02wwN+Gtci">
-                <field name="NUM">0.35</field>
-              </shadow>
-              <block type="variables_get" id="K/LRa(#^M@KlAy9qj.A]">
-                <field name="VAR" id="xL#n*$V/G2mnQTxpEw$Z">Stake</field>
-              </block>
-            </value>
-            <value name="PREDICTION">
-              <shadow type="math_number_positive" id="LIR[];M_dIfP+UT%9,`^" inline="true">
-                <field name="NUM">1</field>
-              </shadow>
-              <block type="variables_get" id="T1wHYJg{4}3[mYcr+bdN">
-                <field name="VAR" id="od}gW]AT@InXc%udDb^g">prediction </field>
-              </block>
-            </value>
+        <value name="PREDICTION">
+          <shadow type="math_number_positive" id="LIR[];M_dIfP+UT%9,`^" inline="true">
+            <field name="NUM">1</field>
+          </shadow>
+          <block type="variables_get" id="T1wHYJg{4}3[mYcr+bdN">
+            <field name="VAR" id="od}gW]AT@InXc%udDb^g">prediction </field>
           </block>
-        </next>
+        </value>
       </block>
     </statement>
   </block>
@@ -368,33 +298,60 @@
       </block>
     </statement>
   </block>
-  <block type="before_purchase" id="{;|=$fe~kz1zntrLFJ-n" deletable="false" x="0" y="1589">
+  <block type="before_purchase" id="{;|=$fe~kz1zntrLFJ-n" deletable="false" x="0" y="800">
     <statement name="BEFOREPURCHASE_STACK">
-      <block type="controls_if" id="#LlW9@VsvW??g7mMPTXS">
+      <block type="controls_if" id="blk_entry_root">
+        <mutation xmlns="http://www.w3.org/1999/xhtml" else="1"></mutation>
         <value name="IF0">
-          <block type="logic_compare" id="3o7R1Y))0:[DtvtUj^7Q">
+          <block type="logic_compare" id="blk_check_entry_v1">
             <field name="OP">EQ</field>
             <value name="A">
-              <block type="variables_get" id="3+W.WcbNg|bn53G,Hegd">
-                <field name="VAR" id="od}gW]AT@InXc%udDb^g">prediction </field>
+              <block type="variables_get" id="e35qpNND=ZUwcAXqv(oC">
+                <field name="VAR" id="@(K8+LZ-|UiG(,V/$We{">entry_point</field>
               </block>
             </value>
             <value name="B">
-              <block type="variables_get" id=":$Gmq+U:iO`ZM;Np]O!4">
-                <field name="VAR" id="183|^jGmcOOGHX)!e[kh">prediction 1</field>
+              <block type="logic_boolean" id="JPAu6NMdmPvB^YI,M@li">
+                <field name="BOOL">TRUE</field>
               </block>
             </value>
           </block>
         </value>
         <statement name="DO0">
-          <block type="purchase" id="1ou9Ph4nt5v1S]j$?rms">
-            <field name="PURCHASE_LIST">DIGITOVER</field>
+          <block type="controls_if" id="#LlW9@VsvW??g7mMPTXS">
+            <mutation xmlns="http://www.w3.org/1999/xhtml" else="1"></mutation>
+            <value name="IF0">
+              <block type="logic_compare" id="3o7R1Y))0:[DtvtUj^7Q">
+                <field name="OP">EQ</field>
+                <value name="A">
+                  <block type="variables_get" id="3+W.WcbNg|bn53G,Hegd">
+                    <field name="VAR" id="od}gW]AT@InXc%udDb^g">prediction </field>
+                  </block>
+                </value>
+                <value name="B">
+                  <block type="variables_get" id=":$Gmq+U:iO`ZM;Np]O!4">
+                    <field name="VAR" id="183|^jGmcOOGHX)!e[kh">prediction 1</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <statement name="DO0">
+              <block type="purchase" id="1ou9Ph4nt5v1S]j$?rms">
+                <field name="PURCHASE_LIST">DIGITOVER</field>
+              </block>
+            </statement>
+            <statement name="ELSE">
+              <block type="purchase" id="-HF:O#rz`urfHc7^],)^">
+                <field name="PURCHASE_LIST">DIGITUNDER</field>
+              </block>
+            </statement>
           </block>
         </statement>
-        <next>
-          <block type="controls_if" id="|R_g7GTN(YSUk5sOWb3]">
+        <statement name="ELSE">
+          <block type="controls_if" id="blk_scan_v1">
+            <mutation xmlns="http://www.w3.org/1999/xhtml" else="1"></mutation>
             <value name="IF0">
-              <block type="logic_compare" id="TkRpkc`!p.`sSvmxy2f:">
+              <block type="logic_compare" id="blk_pred_check_scan">
                 <field name="OP">EQ</field>
                 <value name="A">
                   <block type="variables_get" id="aR*6s!*FQ=VSx{#:bb|U">
@@ -402,110 +359,88 @@
                   </block>
                 </value>
                 <value name="B">
-                  <block type="variables_get" id="c_K/-T^HpvS({PD]Lp?t">
-                    <field name="VAR" id="_%[O!e^U^XR8UWEv|+dl">trade digit 2</field>
+                  <block type="variables_get" id="vfig~=cZnccTJLfhV?I^">
+                    <field name="VAR" id="183|^jGmcOOGHX)!e[kh">prediction 1</field>
                   </block>
                 </value>
               </block>
             </value>
             <statement name="DO0">
-              <block type="controls_if" id="eqDnW4+SrIi70ZAybIj@">
+              <block type="controls_if" id="blk_cond_p1">
                 <value name="IF0">
-                  <block type="logic_compare" id="K~S7GPHMhqtc#hE^5`hd">
-                    <field name="OP">EQ</field>
-                    <value name="A">
-                      <block type="variables_get" id="vfig~=cZnccTJLfhV?I^">
-                        <field name="VAR" id="@lXOmSzi*iX#EpP!WEBX">entryloop</field>
-                      </block>
+                  <block type="last_digits_condition" id="N!sHirMz9XH`w21-N3/)">
+                    <mutation xmlns="http://www.w3.org/1999/xhtml" digit_input="true"></mutation>
+                    <field name="CONDITION">LT</field>
+                    <value name="DIGITS_COUNT">
+                      <shadow type="math_number" id="9H69ayU$26++els{~)/|">
+                        <field name="NUM">5</field>
+                      </shadow>
                     </value>
-                    <value name="B">
-                      <block type="logic_boolean" id="4vPRJC`0GG2a80p9*TCO">
-                        <field name="BOOL">TRUE</field>
+                    <value name="DIGIT">
+                      <block type="math_number" id="%`h*#^iE7HxEZL=U!/u%">
+                        <field name="NUM">2</field>
                       </block>
                     </value>
                   </block>
                 </value>
                 <statement name="DO0">
-                  <block type="controls_whileUntil" id="mOn88_5sKC`L}=8.0sy{">
-                    <field name="MODE">UNTIL</field>
-                    <value name="BOOL">
-                      <block type="logic_compare" id="u]FX^!AJu^e7hUJYVW{h">
-                        <field name="OP">EQ</field>
-                        <value name="A">
-                          <block type="variables_get" id="9bo-eLr,kxmb,(m.1Pa,">
-                            <field name="VAR" id="@(K8+LZ-|UiG(,V/$We{">entry_point</field>
-                          </block>
-                        </value>
-                        <value name="B">
-                          <block type="logic_boolean" id=";*,6qC]*Rdx7?{ucT^|%">
-                            <field name="BOOL">TRUE</field>
-                          </block>
-                        </value>
+                  <block type="variables_set" id="r3)NS8GB73+Xs%bU}OYh">
+                    <field name="VAR" id="@(K8+LZ-|UiG(,V/$We{">entry_point</field>
+                    <value name="VALUE">
+                      <block type="logic_boolean" id=":=LSs5RDolt6u=ezvg$+">
+                        <field name="BOOL">TRUE</field>
                       </block>
                     </value>
-                    <statement name="DO">
-                      <block type="timeout" id="H+m89!)kqeh/3X]PrI{7">
-                        <statement name="TIMEOUTSTACK">
-                          <block type="controls_if" id="YRpT7cb`/v4cQBmCR/7k">
-                            <value name="IF0">
-                              <block type="last_digits_condition" id="=)E|fmU{w^3Kc_[clYuQ">
-                                <mutation xmlns="http://www.w3.org/1999/xhtml" digit_input="true"></mutation>
-                                <field name="CONDITION">GT</field>
-                                <value name="DIGITS_COUNT">
-                                  <shadow type="math_number" id="p^UPwPxI8(4r6nd!id#T">
-                                    <field name="NUM">10</field>
-                                  </shadow>
-                                </value>
-                                <value name="DIGIT">
-                                  <block type="math_number" id="J}r(@sO|~?PMQBGMVGQq">
-                                    <field name="NUM">2</field>
-                                  </block>
-                                </value>
-                              </block>
-                            </value>
-                            <statement name="DO0">
-                              <block type="variables_set" id="Axmt_yTtHMW-jbZV[sw=">
-                                <field name="VAR" id="@(K8+LZ-|UiG(,V/$We{">entry_point</field>
-                                <value name="VALUE">
-                                  <block type="logic_boolean" id=".{p%F{Bx3f;dYA@/?.nC">
-                                    <field name="BOOL">TRUE</field>
-                                  </block>
-                                </value>
-                                <next>
-                                  <block type="notify" id="Kh3^{}D;4$UJlX%q%E_b">
-                                    <field name="NOTIFICATION_TYPE">success</field>
-                                    <field name="NOTIFICATION_SOUND">silent</field>
-                                    <value name="MESSAGE">
-                                      <shadow type="text" id="c`P1*TIl~67yn(+[O@XW">
-                                        <field name="TEXT">ENTRY FOUND </field>
-                                      </shadow>
-                                    </value>
-                                  </block>
-                                </next>
-                              </block>
-                            </statement>
-                          </block>
-                        </statement>
-                        <value name="SECONDS">
-                          <block type="math_number" id="mTAk~@aO$1n`L?b!S_0*">
-                            <field name="NUM">0</field>
-                          </block>
+                    <next>
+                      <block type="notify" id="c$^;[p`~w:pEYA!:H];N">
+                        <field name="NOTIFICATION_TYPE">success</field>
+                        <field name="NOTIFICATION_SOUND">silent</field>
+                        <value name="MESSAGE">
+                          <shadow type="text" id="tg;job82tn`n!-O_?/?]">
+                            <field name="TEXT">ENTRY FOUND </field>
+                          </shadow>
                         </value>
                       </block>
-                    </statement>
+                    </next>
+                  </block>
+                </statement>
+              </block>
+            </statement>
+            <statement name="ELSE">
+              <block type="controls_if" id="blk_cond_p2">
+                <value name="IF0">
+                  <block type="last_digits_condition" id="=)E|fmU{w^3Kc_[clYuQ">
+                    <mutation xmlns="http://www.w3.org/1999/xhtml" digit_input="true"></mutation>
+                    <field name="CONDITION">GT</field>
+                    <value name="DIGITS_COUNT">
+                      <shadow type="math_number" id="p^UPwPxI8(4r6nd!id#T">
+                        <field name="NUM">10</field>
+                      </shadow>
+                    </value>
+                    <value name="DIGIT">
+                      <block type="math_number" id="J}r(@sO|~?PMQBGMVGQq">
+                        <field name="NUM">2</field>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+                <statement name="DO0">
+                  <block type="variables_set" id="Axmt_yTtHMW-jbZV[sw=">
+                    <field name="VAR" id="@(K8+LZ-|UiG(,V/$We{">entry_point</field>
+                    <value name="VALUE">
+                      <block type="logic_boolean" id=".{p%F{Bx3f;dYA@/?.nC">
+                        <field name="BOOL">TRUE</field>
+                      </block>
+                    </value>
                     <next>
-                      <block type="variables_set" id="|LZH|Fj}sY5z.8Oi7?cQ">
-                        <field name="VAR" id="uWNAfO80qW#X}r~Q[[lv">prediction 2</field>
-                        <value name="VALUE">
-                          <block type="math_number" id=";9~EwBr;}A0G2/4qY.S9">
-                            <field name="NUM">4</field>
-                          </block>
+                      <block type="notify" id="Kh3^{}D;4$UJlX%q%E_b">
+                        <field name="NOTIFICATION_TYPE">success</field>
+                        <field name="NOTIFICATION_SOUND">silent</field>
+                        <value name="MESSAGE">
+                          <shadow type="text" id="c`P1*TIl~67yn(+[O@XW">
+                            <field name="TEXT">ENTRY FOUND </field>
+                          </shadow>
                         </value>
-                        <next>
-                          <block type="purchase" id="-HF:O#rz`urfHc7^],)^">
-                            <field name="PURCHASE_LIST">DIGITUNDER</field>
-                          </block>
-                        </next>
                       </block>
                     </next>
                   </block>
@@ -513,7 +448,7 @@
               </block>
             </statement>
           </block>
-        </next>
+        </statement>
       </block>
     </statement>
   </block>
