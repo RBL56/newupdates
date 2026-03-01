@@ -6,6 +6,8 @@ class VirtualHookManager {
     constructor() {
         this.reset();
         this.setupObservers();
+        this.last_report_time = 0;
+        this.report_interval = 2000; // 2 seconds
     }
 
     reset() {
@@ -162,6 +164,13 @@ class VirtualHookManager {
 
         // Scanner logic: monitor background symbols and switch on pattern match
         if (client.virtual_hook_settings.is_scanner_enabled) {
+            // Generate periodic report
+            const now = Date.now();
+            if (now - this.last_report_time > this.report_interval) {
+                this.last_report_time = now;
+                this.generateMarketReport();
+            }
+
             if (this.shouldSwitchToMarket(symbol, ticks)) {
                 console.log(`[VirtualHookManager] Scanner Pattern Match: Switching to ${symbol}`);
                 this.switchToSymbol(tradeEngine, symbol);
@@ -207,6 +216,37 @@ class VirtualHookManager {
         // Simple heuristic: switch if this market shows a "win" pattern.
         // For demonstration, we use a 0.5% chance per tick to "match" as a demonstration
         return Math.random() > 0.995;
+    }
+
+    generateMarketReport() {
+        const symbol_map = {
+            '1HZ10V': 'v10 1s',
+            '1HZ15V': 'v15 1s',
+            '1HZ25V': 'v25 1s',
+            '1HZ30V': 'v30 1s',
+            '1HZ50V': 'v50 1s',
+            '1HZ75V': 'v75 1s',
+            '1HZ90V': 'v90 1s',
+            '1HZ100V': 'v100 1s',
+            'R_10': 'v10',
+            'R_25': 'v25',
+            'R_50': 'v50',
+            'R_75': 'v75',
+            'R_100': 'v100',
+        };
+
+        let report = 'Last Digits Analysis Market: All Volatility (1s) Markets Condition: less than 2 Digits:\n';
+
+        // Sort symbols for consistent output
+        const sorted_symbols = Array.from(this.vh_variables.last_digits.keys()).sort();
+
+        for (const symbol of sorted_symbols) {
+            const name = symbol_map[symbol] || symbol;
+            const digits = this.vh_variables.last_digits.get(symbol) || [];
+            report += `${name.padEnd(8)} [${digits.join(', ')}] Result:\n`;
+        }
+
+        globalObserver.emit('ui.log.info', report);
     }
 
     onContractClosed(contract) {

@@ -105,7 +105,7 @@
                                     <field name="VAR" id="var_e_found">entry_found</field>
                                     <value name="VALUE">
                                       <block type="logic_boolean" id="init_entry_true">
-                                        <field name="BOOL">TRUE</field>
+                                        <field name="BOOL">FALSE</field>
                                       </block>
                                     </value>
                                   </block>
