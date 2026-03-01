@@ -274,7 +274,7 @@ const DigitElitePro = observer(() => {
                 </div>
                 <div className='digits-grid-container'>
                     <div id='digit-cursor' ref={cursorRef} style={{ opacity: lastDigit !== undefined ? 1 : 0 }}>
-                        {streak >= 2 && (
+                        {streak >= 3 && (
                             <div id='streak-badge' style={{ color: streak > 4 ? '#da3633' : '#000' }}>
                                 x{streak}
                             </div>
