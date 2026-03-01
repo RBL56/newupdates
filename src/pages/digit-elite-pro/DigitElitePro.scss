@@ -254,11 +254,11 @@
         gap: 6px;
         margin-top: 8px;
         width: 100%;
-        max-width: 320px; // Further constrained
+        max-width: 100%;
 
         @include mobile-screen {
-            gap: 3px;
-            max-width: 220px;
+            gap: 4px;
+            max-width: 100%;
         }
 
         .digit-circle {
@@ -291,18 +291,18 @@
             }
 
             .digit-num {
-                font-size: 11px; // Minimal font
+                font-size: 12px;
                 font-weight: 900;
 
                 @include mobile-screen {
-                    font-size: 9px;
+                    font-size: 11px;
                 }
             }
 
             .digit-pct {
-                font-size: 7px; // Minimal font
+                font-size: 8px;
                 font-weight: 700;
-                opacity: 0.8;
+                opacity: 0.9;
             }
         }
     }

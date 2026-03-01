@@ -58,6 +58,44 @@ const getMiscInterface = tradeEngine => {
             if (symbol.startsWith('R_')) return 'All Volatility Markets';
             return 'All Markets';
         },
+        getScannerReport: (condition, target) => {
+            const { client } = DBotStore.instance || {};
+            if (!client?.virtual_hook_settings?.is_scanner_enabled) return '';
+
+            try {
+                const VirtualHookManager = require('../VirtualHookManager').default;
+                const { scanned_symbols, last_digits } = VirtualHookManager.vh_variables;
+                const marketName = tradeEngine.getScannerMarketName();
+
+                let report = `Last Digits Analysis Market: ${marketName} Condition: ${condition} ${target} Digits:\n`;
+
+                scanned_symbols.forEach(symbol => {
+                    const digits = last_digits.get(symbol) || [];
+                    const displayName = tradeEngine.getSymbolDisplayName(symbol);
+
+                    let result = false;
+                    if (digits.length > 0) {
+                        const condition_map = {
+                            'less than': (d, t) => d < t,
+                            'greater than': (d, t) => d > t,
+                            'equal to': (d, t) => d === t,
+                            'less than or equal to': (d, t) => d <= t,
+                            'greater than or equal to': (d, t) => d >= t,
+                        };
+                        const checker = condition_map[condition.toLowerCase()];
+                        if (checker) {
+                            result = digits.every(d => checker(d, target));
+                        }
+                    }
+
+                    report += `${displayName.padEnd(10)} [${digits.join(', ')}] Result: ${result ? 'Entry Found' : ''}\n`;
+                });
+
+                return report;
+            } catch (e) {
+                return '';
+            }
+        },
     };
 };
 

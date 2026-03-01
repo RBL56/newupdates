@@ -17,6 +17,7 @@ class VirtualHookManager {
             scanned_symbols: [],
             active_subscriptions: new Map(),
             sticky_runs_remaining: 0,
+            last_digits: new Map(),
         };
         this.tradeEngine = null;
     }
@@ -143,10 +144,16 @@ class VirtualHookManager {
         this.vh_variables.active_subscriptions.clear();
         this.vh_variables.scanned_symbols = [];
         this.vh_variables.sticky_runs_remaining = 0;
+        this.vh_variables.last_digits.clear();
     }
 
     onScannerTick(tradeEngine, symbol, ticks) {
         const { client } = DBotStore.instance;
+
+        // Store last 5 digits for the report
+        const last_5_ticks = ticks.slice(-5);
+        const digits = last_5_ticks.map(t => parseInt(t.quote.toString().slice(-1)));
+        this.vh_variables.last_digits.set(symbol, digits);
 
         // Sticky logic: don't scan for new entries if we are currently mid-sticky-run
         if (this.vh_variables.sticky_runs_remaining > 0) {

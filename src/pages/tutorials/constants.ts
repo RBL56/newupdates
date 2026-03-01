@@ -446,7 +446,7 @@ export const faq_content = (): TFaqContent[] => [
             {
                 type: 'text',
                 content: localize(
-                    '<a href="https://www.youtube.com/watch?v=QdI5zCkO4Gk&t=203s" target="_blank">Watch this video</a> to learn how to build a trading bot on LOCO THE TRADER. Also, <a href="https://deriv.com/academy/blog/posts/how-to-build-a-basic-trading-bot-with-dbot/" target="_blank">check out this blog post</a> on building a trading bot.'
+                    '<a href="https://www.youtube.com/@LocoTradinghub" target="_blank">Watch this video</a> to learn how to build a trading bot on LOCO THE TRADER. Also, <a href="https://deriv.com/academy/blog/posts/how-to-build-a-basic-trading-bot-with-dbot/" target="_blank">check out this blog post</a> on building a trading bot.'
                 ),
             },
         ],

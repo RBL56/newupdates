@@ -12,21 +12,33 @@ export default class DigitEliteProStore {
     root_store: RootStore;
     symbol = '1HZ100V';
     symbols = [
-        { value: 'R_10', text: 'Volatility 10' },
-        { value: 'R_25', text: 'Volatility 25' },
-        { value: 'R_50', text: 'Volatility 50' },
-        { value: 'R_75', text: 'Volatility 75' },
-        { value: 'R_100', text: 'Volatility 100' },
-        { value: '1HZ10V', text: 'Volatility 10 (1s)' },
-        { value: '1HZ25V', text: 'Volatility 25 (1s)' },
-        { value: '1HZ50V', text: 'Volatility 50 (1s)' },
-        { value: '1HZ75V', text: 'Volatility 75 (1s)' },
-        { value: '1HZ100V', text: 'Volatility 100 (1s)' },
-        { value: '1HZ150V', text: 'Volatility 150 (1s)' },
-        { value: '1HZ250V', text: 'Volatility 250 (1s)' },
+        // Volatility (1s)
+        { value: '1HZ10V', text: 'V10 (1s)', group: 'Volatility (1s)' },
+        { value: '1HZ15V', text: 'V15 (1s)', group: 'Volatility (1s)' },
+        { value: '1HZ25V', text: 'V25 (1s)', group: 'Volatility (1s)' },
+        { value: '1HZ30V', text: 'V30 (1s)', group: 'Volatility (1s)' },
+        { value: '1HZ50V', text: 'V50 (1s)', group: 'Volatility (1s)' },
+        { value: '1HZ75V', text: 'V75 (1s)', group: 'Volatility (1s)' },
+        { value: '1HZ90V', text: 'V90 (1s)', group: 'Volatility (1s)' },
+        { value: '1HZ100V', text: 'V100 (1s)', group: 'Volatility (1s)' },
+        // Volatility Standard
+        { value: 'R_10', text: 'V10', group: 'Volatility Standard' },
+        { value: 'R_25', text: 'V25', group: 'Volatility Standard' },
+        { value: 'R_50', text: 'V50', group: 'Volatility Standard' },
+        { value: 'R_75', text: 'V75', group: 'Volatility Standard' },
+        { value: 'R_100', text: 'V100', group: 'Volatility Standard' },
+        // Daily Reset Indices
+        { value: 'RDBULL', text: 'Bull Market', group: 'Daily Reset Indices' },
+        { value: 'RDBEAR', text: 'Bear Market', group: 'Daily Reset Indices' },
+        // Jump Indices
+        { value: 'JD10', text: 'Jump 10', group: 'Jump Indices' },
+        { value: 'JD25', text: 'Jump 25', group: 'Jump Indices' },
+        { value: 'JD50', text: 'Jump 50', group: 'Jump Indices' },
+        { value: 'JD75', text: 'Jump 75', group: 'Jump Indices' },
+        { value: 'JD100', text: 'Jump 100', group: 'Jump Indices' },
     ];
     tradeType = 'Rise/Fall';
-    ticksCount = 100;
+    ticksCount = 1000;
     barrier = 4;
     stake = 1.0;
     isBuying = false;

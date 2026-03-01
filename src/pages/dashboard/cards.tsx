@@ -117,7 +117,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
             icon: <StandaloneYoutubeIcon height='48px' width='48px' fill='#FF0000' />,
             content: <Localize i18n_default_text='YouTube' />,
             callback: () => {
-                window.open('https://www.youtube.com/@Deriv', '_blank');
+                window.open('https://www.youtube.com/@LocoTradinghub', '_blank');
             },
         },
     ];

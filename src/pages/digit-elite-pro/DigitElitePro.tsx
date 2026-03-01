@@ -171,9 +171,26 @@ const DigitElitePro = observer(() => {
                     <div>
                         <div className='card-title'><Localize i18n_default_text='Market' /></div>
                         <select value={symbol} onChange={(e) => setSymbol(e.target.value)}>
-                            {symbols.map((sym) => (
-                                <option key={sym.value} value={sym.value}>{sym.text}</option>
-                            ))}
+                            <optgroup label='Volatility (1s)'>
+                                {symbols.filter(s => s.group === 'Volatility (1s)').map(sym => (
+                                    <option key={sym.value} value={sym.value}>{sym.text}</option>
+                                ))}
+                            </optgroup>
+                            <optgroup label='Volatility Standard'>
+                                {symbols.filter(s => s.group === 'Volatility Standard').map(sym => (
+                                    <option key={sym.value} value={sym.value}>{sym.text}</option>
+                                ))}
+                            </optgroup>
+                            <optgroup label='Daily Reset Indices'>
+                                {symbols.filter(s => s.group === 'Daily Reset Indices').map(sym => (
+                                    <option key={sym.value} value={sym.value}>{sym.text}</option>
+                                ))}
+                            </optgroup>
+                            <optgroup label='Jump Indices'>
+                                {symbols.filter(s => s.group === 'Jump Indices').map(sym => (
+                                    <option key={sym.value} value={sym.value}>{sym.text}</option>
+                                ))}
+                            </optgroup>
                         </select>
                     </div>
                     <div>

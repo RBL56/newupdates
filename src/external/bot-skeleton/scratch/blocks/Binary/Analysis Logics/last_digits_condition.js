@@ -144,6 +144,17 @@ window.Blockly.JavaScript.javascriptGenerator.forBlock.last_digits_condition = b
     const code = `(function() {
         var digits = Bot.getLastDigitList().slice(-${digitsCount});
         var result = digits.length > 0 && digits.every(function(d) { return ${conditionCode}; });
+        if (Bot.isScannerEnabled() && Bot.isScanning()) {
+            var conditionLabel = '${condition === 'LT' ? 'less than' : condition === 'GT' ? 'greater than' : condition === 'EQ' ? 'equal to' : condition}';
+            var report = Bot.getScannerReport(conditionLabel, ${digit});
+            if (report) {
+                Bot.notify({
+                    className: 'journal__text--info',
+                    message: report,
+                    sound: 'silent'
+                });
+            }
+        }
         Bot.notify({
             className: 'journal__text--warn',
             message: '__ANALYSIS__' + JSON.stringify({

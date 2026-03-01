@@ -30,7 +30,7 @@ const socialMediaLinks = [
     {
         icon: <SocialYoutubeBrandIcon width={40} height={40} className='social-media-modal__icon' />,
         label: 'YouTube',
-        href: '#',
+        href: 'https://www.youtube.com/@LocoTradinghub',
     },
     {
         icon: <SocialInstagramBrandIcon width={40} height={40} className='social-media-modal__icon' />,
@@ -68,7 +68,7 @@ const SocialMediaModal = ({ is_open, toggleModal }: TSocialMediaModal) => {
                             target='_blank'
                             rel='noopener noreferrer'
                             className='social-media-modal__item'
-                            onClick={(e) => e.preventDefault()}
+                            onClick={(e) => { if (link.href === '#') e.preventDefault(); }}
                         >
                             {link.icon}
                             <Text size='sm' weight='bold' className='social-media-modal__text'>
