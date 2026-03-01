@@ -171,6 +171,10 @@ export default class DigitEliteProStore {
     detectPrecision(quote: number) {
         if (Number.isInteger(quote)) return 0;
         const str = quote.toString();
+        if (str.includes('e')) {
+            const parts = str.split('e-');
+            return parts.length > 1 ? parseInt(parts[1]) : 0;
+        }
         if (str.includes('.')) return str.split('.')[1].length;
         return 0;
     }
@@ -241,8 +245,8 @@ export default class DigitEliteProStore {
     processTick(quote: number, isBulk = false) {
         if (this.pipSize === -1) this.pipSize = this.detectPrecision(quote);
 
-        const str = quote.toFixed(this.pipSize);
-        const digit = parseInt(str.slice(-1));
+        const factor = Math.pow(10, this.pipSize);
+        const digit = Math.floor(Number((quote * factor).toFixed(8))) % 10;
 
         if (!isNaN(digit)) {
             runInAction(() => {
@@ -260,7 +264,7 @@ export default class DigitEliteProStore {
                 }
 
                 if (!isBulk) {
-                    this.currentPrice = str;
+                    this.currentPrice = quote.toFixed(this.pipSize);
                     this.updateSignal();
                 }
             });

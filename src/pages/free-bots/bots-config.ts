@@ -79,7 +79,7 @@ export const FREE_BOTS: TBotConfig[] = [
         id: 'no_analysis_bot',
         name: 'No Analysis Bot',
         description: 'Dynamic digit strategy that shifts logic on loss',
-        xml: noAnalysisBotV1Xml,
+        xml: noAnalysisBotXml,
         category: 'Automatic',
     },
 ];
