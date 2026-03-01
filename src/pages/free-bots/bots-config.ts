@@ -7,7 +7,7 @@ import unstoppableDifferBotXml from '@/xml/UNSTOPPABLE DIFFER BOT.xml';
 import overUnderAutoSwitcherXml from '@/xml/OVER UNDER AUTO SWITCHER.xml';
 import under3BotV1Xml from '@/xml/UNDER_3_BOT_V1.xml';
 import noAnalysisBotXml from '@/xml/no_analysis_bot.xml';
-import noAnalysisBotV1Xml from '@/xml/no%20analysis%201.xml';
+import noAnalysisBotV1Xml from '@/xml/no_analysis_bot_v1.xml';
 
 export type TBotConfig = {
     id: string;

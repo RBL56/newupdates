@@ -123,12 +123,13 @@ export default defineConfig({
             resolve: {},
             module: {
                 rules: [
-                    test: /\.xml$/,
-                    exclude: /node_modules/,
-                    type: 'asset/source',
+                    {
+                        test: /\.xml$/,
+                        exclude: /node_modules/,
+                        type: 'asset/source',
                     },
                 ],
+            },
         },
     },
-},
 });
