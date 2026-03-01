@@ -247,6 +247,17 @@
                                     <field name="NUM">2</field>
                                   </block>
                                 </value>
+                                <next>
+                                  <block type="notify" id="p_entry_notify">
+                                    <field name="NOTIFICATION_TYPE">success</field>
+                                    <field name="NOTIFICATION_SOUND">silent</field>
+                                    <value name="MESSAGE">
+                                      <shadow type="text" id="p_entry_msg">
+                                        <field name="TEXT">Entry Found! (State 0)</field>
+                                      </shadow>
+                                    </value>
+                                  </block>
+                                </next>
                               </block>
                             </next>
                           </block>
@@ -287,6 +298,17 @@
                                     <field name="NUM">2</field>
                                   </block>
                                 </value>
+                                <next>
+                                  <block type="notify" id="s_entry_notify">
+                                    <field name="NOTIFICATION_TYPE">success</field>
+                                    <field name="NOTIFICATION_SOUND">silent</field>
+                                    <value name="MESSAGE">
+                                      <shadow type="text" id="s_entry_msg">
+                                        <field name="TEXT">Entry Found! (State 1)</field>
+                                      </shadow>
+                                    </value>
+                                  </block>
+                                </next>
                               </block>
                             </next>
                           </block>
